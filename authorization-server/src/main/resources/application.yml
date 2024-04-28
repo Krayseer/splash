@@ -1,0 +1,28 @@
+application:
+  auth-provider:
+    client-name: ${VK_CLIENT_NAME}
+    client-id: ${VK_CLIENT_ID}
+    client-secret: ${VK_CLIENT_SECRET}
+    authorization-uri: "https://oauth.vk.com/authorize"
+    token-uri: "https://oauth.vk.com/access_token"
+    redirect-uri: "http://localhost/login/oauth2/code/vk"
+    user-info-uri: "https://api.vk.com/method/users.get"
+    registration-id: vk
+
+server:
+  port: ${AUTHORIZATION_SERVER_PORT}
+
+spring:
+  datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${AUTHORIZATION_SERVER_DB}?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+      username: ${MYSQL_USER}
+      password: ${MYSQL_PASSWORD}
+
+  flyway:
+    baseline-on-migrate: true
+    baseline-description: <<Flyway Baseline>>
+    enabled: true
+    locations: classpath:db/migration
+    validate-on-migrate: true
+    fail-on-missing-locations: true

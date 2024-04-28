@@ -1,0 +1,74 @@
+server:
+  port: ${GATEWAY_PORT}
+  servlet:
+    session:
+      cookie:
+        name: GATEWAY-CLIENT
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: authorization-server
+          uri: http://localhost:${AUTHORIZATION_SERVER_PORT}
+          predicates:
+            - Path=/user/**
+        - id: order-service
+          uri: http://localhost:${ORDER_SERVICE_PORT}
+          predicates:
+            Path=/order/**
+          filters:
+            - TokenRelay
+        - id: configuration-service
+          uri: http://localhost:${CONFIGURATION_SERVICE_PORT}
+          predicates:
+            Path=/configuration/**
+          filters:
+            - TokenRelay
+        - id: service-of-services
+          uri: http://localhost:${SERVICE_OF_SERVICES_PORT}
+          predicates:
+            Path=/service/**
+
+  security:
+    oauth2:
+      client:
+        registration:
+          messaging-gateway-oidc:
+            provider: gateway-client-provider
+            client-id: relive-client
+            client-secret: relive-client
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - openid
+              - profile
+            client-name: messaging-gateway-oidc
+        provider:
+          gateway-client-provider:
+            authorization-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}/oauth2/authorize
+            token-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}/oauth2/token
+            jwk-set-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}/oauth2/jwks
+            user-info-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}/userinfo
+            user-name-attribute: sub
+
+  session:
+    redis:
+      flush-mode: on_save
+      namespace: gateway:session
+
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+    org.springframework.cloud.gateway: INFO

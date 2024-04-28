@@ -20,5 +20,83 @@
     <java.version>21</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spring-boot.version>3.2.5</spring-boot.version>
+    <vk.oauth-starter.version>0.0.1</vk.oauth-starter.version>
+    <postgres.version>42.7.3</postgres.version>
+    <kafka.version>3.1.2</kafka.version>
+    <lombok.version>1.18.32</lombok.version>
+    <commons-api.version>1.0.0</commons-api.version>
   </properties>
+
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+
+  <modules>
+    <module>notification-service</module>
+    <module>service-of-services</module>
+    <module>configuration-service</module>
+    <module>order-service</module>
+    <module>commons-api</module>
+    <module>gateway</module>
+    <module>authorization-server</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-mail</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.kafka</groupId>
+        <artifactId>spring-kafka</artifactId>
+        <version>${kafka.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>${postgres.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.Kravuar</groupId>
+        <artifactId>vk-oauth-spring-boot-starter</artifactId>
+        <version>${vk.oauth-starter.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>ru.anykeyers</groupId>
+        <artifactId>commons-api</artifactId>
+        <version>${commons-api.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 </project>
