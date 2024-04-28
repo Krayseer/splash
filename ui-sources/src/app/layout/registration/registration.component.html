@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="header-logo">
+    <a>
+      <img src="../../../assets/images/logoimage.svg" alt="Logo"/>
+    </a>
+  </div>
+  <div class="registration-container">
+    <h1 class="registration-title">Регистрация</h1>
+    <form class="form">
+      <div class="input-div input-name" style="display: flex; justify-content: space-between">
+        <input style="margin-right: 24px;" placeholder="Имя" class="input" type="text" id="firstName" name="firstName" ngModel required>
+        <input placeholder="Фамилия" class="input" type="text" id="lastName" name="lastName" ngModel required>
+      </div>
+      <div class="input-div">
+        <input placeholder="Почта" class="input" type="email" id="email" name="email" ngModel required email>
+      </div>
+      <div class="input-div">
+        <input placeholder="+7 (999) 999 99 99" class="input" type="tel" id="phone" name="phone" ngModel required>
+      </div>
+      <div class="input-div">
+        <input placeholder="Пароль" class="input" type="password" id="password" name="password" ngModel required>
+      </div>
+      <div style="margin-bottom: 40px" class="input-div">
+        <input placeholder="Подтвердите пароль" class="input" type="password" id="confirmPassword" name="confirmPassword" ngModel required>
+      </div>
+      <button type="submit" class="submit-button">Продолжить</button>
+    </form>
+    <div class="bottom-text-div">
+      <label style="margin-right: 4px;" class="bottom-text">Уже есть аккаунт? </label>
+      <a style="text-decoration: underline;" class="bottom-text">Войти</a>
+    </div>
+  </div>
+</div>
