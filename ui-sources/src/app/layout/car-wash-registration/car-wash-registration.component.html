@@ -1,1 +1,22 @@
-<p>car-wash-registration works!</p>
+<div class="container">
+  <div class="header-logo">
+    <a>
+      <img src="assets/images/logo.svg" alt="LogoPartner"/>
+    </a>
+  </div>
+  <div class="registration-container">
+    <h1 class="Inter registration-title">Регистрация мойки</h1>
+    <form class="form">
+      <div class="input-div">
+        <input placeholder="ИНН" class="input" type="text" id="INN" name="email" ngModel required email>
+      </div>
+      <div class="input-div">
+        <input placeholder="Тип организации" class="input" type="email" id="text" name="email" ngModel required email>
+      </div>
+      <div style="margin-bottom: 40px" class="input-div">
+        <input placeholder="Подтвердите пароль" class="input" type="password" id="confirmPassword" name="confirmPassword" ngModel required>
+      </div>
+      <button type="submit" class="submit-button">Зарегистрировать</button>
+    </form>
+  </div>
+</div>

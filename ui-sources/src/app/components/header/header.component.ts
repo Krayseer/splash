@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {NgOptimizedImage} from "@angular/common";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -12,4 +13,10 @@ import {NgOptimizedImage} from "@angular/common";
 })
 export class HeaderComponent {
 
+  constructor(private router: Router) {
+  }
+
+  goToOrder() {
+    this.router.navigate(["/order"]);
+  }
 }
