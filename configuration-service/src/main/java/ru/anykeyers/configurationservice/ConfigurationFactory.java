@@ -1,20 +1,30 @@
 package ru.anykeyers.configurationservice;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ru.anykeyers.commonsapi.dto.ConfigurationDTO;
+import ru.anykeyers.commonsapi.dto.ServiceDTO;
 import ru.anykeyers.configurationservice.domain.Configuration;
 import ru.anykeyers.configurationservice.domain.ConfigurationRequest;
+import ru.anykeyers.configurationservice.service.RemoteServicesService;
+
+import java.util.List;
 
 /**
  * Фабрика по созданию конфигруации
  */
-public final class ConfigurationFactory {
+@Component
+@RequiredArgsConstructor
+public class ConfigurationFactory {
+
+    private final RemoteServicesService remoteServicesService;
 
     /**
      * Создать конфигурацию на основе данных из запроса
      *
      * @param configurationRequest запрос с данными конфигурации
      */
-    public static Configuration createConfiguration(String username, ConfigurationRequest configurationRequest) {
+    public Configuration createConfiguration(String username, ConfigurationRequest configurationRequest) {
         return Configuration.builder()
                 .username(username)
                 .tin(configurationRequest.getTin())
@@ -32,7 +42,8 @@ public final class ConfigurationFactory {
      *
      * @param configuration конфигурация автомойки
      */
-    public static ConfigurationDTO createResponse(Configuration configuration) {
+    public ConfigurationDTO createResponse(Configuration configuration) {
+        List<ServiceDTO> services = remoteServicesService.getServices(configuration.getId());
         return ConfigurationDTO.builder()
                 .id(configuration.getId())
                 .username(configuration.getUsername())
@@ -43,6 +54,7 @@ public final class ConfigurationFactory {
                 .description(configuration.getDescription())
                 .phoneNumber(configuration.getPhoneNumber())
                 .address(configuration.getAddress())
+                .services(services)
                 .createdAt(configuration.getCreatedAt())
                 .build();
     }
@@ -52,12 +64,15 @@ public final class ConfigurationFactory {
      *
      * @param configuration конфигурация автомойки
      */
-    public static ConfigurationDTO createInfoResponse(Configuration configuration) {
+    public ConfigurationDTO createInfoResponse(Configuration configuration) {
+        List<ServiceDTO> services = remoteServicesService.getServices(configuration.getId());
         return ConfigurationDTO.builder()
+                .id(configuration.getId())
                 .name(configuration.getName())
                 .phoneNumber(configuration.getPhoneNumber())
                 .address(configuration.getAddress())
                 .description(configuration.getDescription())
+                .services(services)
                 .build();
     }
 

@@ -21,11 +21,13 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     private final ConfigurationRepository configurationRepository;
 
+    private final ConfigurationFactory configurationFactory;
+
     @Override
     public List<ConfigurationDTO> getAllConfigurations() {
         List<Configuration> configurations = configurationRepository.findAll();
         return configurations.stream()
-                .map(ConfigurationFactory::createInfoResponse)
+                .map(configurationFactory::createInfoResponse)
                 .toList();
     }
 
@@ -34,7 +36,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         Configuration configuration = configurationRepository.findByUsername(username).orElseThrow(
                 () -> new UserNotFoundConfigurationException(username)
         );
-        return ConfigurationFactory.createResponse(configuration);
+        return configurationFactory.createResponse(configuration);
     }
 
     @Override
@@ -42,12 +44,12 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         Configuration configuration = configurationRepository.findById(id).orElseThrow(
                 () -> new ConfigurationNotFoundException(id)
         );
-        return ConfigurationFactory.createResponse(configuration);
+        return configurationFactory.createResponse(configuration);
     }
 
     @Override
     public void saveConfiguration(String username, ConfigurationRequest configurationRequest) {
-        Configuration configuration = ConfigurationFactory.createConfiguration(username, configurationRequest);
+        Configuration configuration = configurationFactory.createConfiguration(username, configurationRequest);
         configurationRepository.save(configuration);
     }
 

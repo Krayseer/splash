@@ -11,7 +11,7 @@ import ru.anykeyers.commonsapi.dto.UserDTO;
 import ru.anykeyers.commonsapi.dto.email.EmailAddress;
 import ru.anykeyers.commonsapi.dto.email.EmailContent;
 import ru.anykeyers.commonsapi.dto.email.EmailDTO;
-import ru.anykeyers.orderservice.domain.OrderDTO;
+import ru.anykeyers.orderservice.domain.Order;
 import ru.anykeyers.orderservice.service.remote.RemoteConfigurationService;
 import ru.anykeyers.orderservice.service.remote.RemoteUserService;
 
@@ -36,7 +36,7 @@ public class EmailService {
      * @param order данные о заявке
      */
     @SneakyThrows
-    public void sendEmail(OrderDTO order) {
+    public void sendEmail(Order order) {
         UserDTO userDTO = remoteUserService.getUser(order.getUsername());
         ConfigurationDTO configurationDTO = remoteConfigurationService.getConfiguration(order.getCarWashId());
         EmailContent<String> message = new EmailContent<>(userDTO.getEmail(),

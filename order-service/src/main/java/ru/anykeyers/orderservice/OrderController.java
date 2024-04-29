@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import ru.anykeyers.orderservice.domain.OrderDTO;
+import ru.anykeyers.orderservice.domain.OrderRequest;
 import ru.anykeyers.orderservice.domain.OrderResponse;
 import ru.anykeyers.orderservice.service.OrderService;
 
@@ -21,8 +21,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public void saveOrder(@AuthenticationPrincipal Jwt jwt, @RequestBody OrderDTO orderDTO) {
-        orderService.saveOrder(jwt.getSubject(), orderDTO);
+    public void saveOrder(@AuthenticationPrincipal Jwt jwt, @RequestBody OrderRequest orderRequest) {
+        orderService.saveOrder(jwt.getSubject(), orderRequest);
     }
 
 }

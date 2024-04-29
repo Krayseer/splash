@@ -1,4 +1,4 @@
-package ru.anykeyers.configurationservice;
+package ru.anykeyers.configurationservice.context;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

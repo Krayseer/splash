@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -57,6 +58,11 @@ public class ConfigurationDTO {
      * Адрес
      */
     private String address;
+
+    /**
+     * Список услуг
+     */
+    private List<ServiceDTO> services;
 
     /**
      * Время регистрации автомойки

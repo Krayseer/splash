@@ -13,12 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDTO {
-
-    /**
-     * Имя пользователя
-     */
-    private String username;
+public class OrderRequest {
 
     /**
      * Идентификатор автомойки
@@ -26,19 +21,14 @@ public class OrderDTO {
     private Long carWashId;
 
     /**
-     * Идентификатор мойки
-     */
-    private Long boxId;
-
-    /**
      * Идентификаторы услуг
      */
     private List<Long> serviceIds;
 
-    /**
-     * Время заказа
-     */
-    private LocalDateTime time;
+//    /**
+//     * Время заказа
+//     */
+//    private LocalDateTime time;
 
     /**
      * Тип оплаты

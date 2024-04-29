@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.anykeyers.commonsapi.dto.ServiceDTO;
 import ru.anykeyers.orderservice.domain.Order;
-import ru.anykeyers.orderservice.domain.OrderDTO;
+import ru.anykeyers.orderservice.domain.OrderRequest;
 import ru.anykeyers.orderservice.domain.OrderResponse;
 import ru.anykeyers.orderservice.domain.OrderStatus;
 import ru.anykeyers.orderservice.service.remote.RemoteServicesService;
@@ -24,17 +24,18 @@ public final class OrderFactory {
     /**
      * Создать заказ
      *
-     * @param orderDTO данные для создания заказа
+     * @param username  имя пользователя создателя заказа
+     * @param orderRequest  данные для создания заказа
      */
-    public Order createOrder(OrderDTO orderDTO) {
+    public Order createOrder(String username, OrderRequest orderRequest) {
         return Order.builder()
-                .username(orderDTO.getUsername())
-                .carWashId(orderDTO.getCarWashId())
-                .boxId(orderDTO.getBoxId())
+                .username(username)
+                .carWashId(orderRequest.getCarWashId())
+                .boxId(1L)
                 .status(OrderStatus.CREATED)
-                .serviceIds(orderDTO.getServiceIds())
-                .time(orderDTO.getTime())
-                .typePayment(orderDTO.getTypePayment())
+                .serviceIds(orderRequest.getServiceIds())
+//                .time(orderRequest.getTime())
+                .typePayment(orderRequest.getTypePayment())
                 .createdAt(LocalDateTime.now())
                 .build();
     }

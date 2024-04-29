@@ -1,6 +1,6 @@
 package ru.anykeyers.orderservice.service;
 
-import ru.anykeyers.orderservice.domain.OrderDTO;
+import ru.anykeyers.orderservice.domain.OrderRequest;
 import ru.anykeyers.orderservice.domain.OrderResponse;
 
 /**
@@ -18,9 +18,9 @@ public interface OrderService {
     /**
      * Сохранить заказ
      *
-     * @param username  имя пользователя
-     * @param orderDTO  данные о заказе
+     * @param username      имя пользователя
+     * @param orderRequest  данные о заказе
      */
-    void saveOrder(String username, OrderDTO orderDTO);
+    void saveOrder(String username, OrderRequest orderRequest);
 
 }
