@@ -4,6 +4,7 @@ import {FooterComponent} from "../../components/footer/footer.component";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {CarWash} from "../../models/car-wash";
 import {CommonModule} from "@angular/common";
+import {SendOrder} from "../../models/send-order";
 
 @Component({
   selector: 'app-order-registration',
@@ -19,7 +20,12 @@ import {CommonModule} from "@angular/common";
 
 export class OrderRegistrationComponent{
   carWashes: CarWash[] = [];
-  selectedCarWashId: number | null = null;
+  selectedCarWashId: number = -1;
+  selectedServicesIndices: number[] = [];
+
+  isVisibleFirst: boolean = true;
+  isVisibleSecond: boolean = false;
+  isVisibleThird: boolean = false;
 
   constructor(private http: HttpClient) {
     this.getConfigs();
@@ -29,11 +35,36 @@ export class OrderRegistrationComponent{
     this.selectedCarWashId = id;
   }
 
+  goToSecondStep() {
+    this.isVisibleFirst = false;
+    this.isVisibleSecond = true;
+  }
+
+  isSelected(index: number) {
+    return this.selectedServicesIndices.includes(index);
+  }
+
+  toggleServiceSelection(index: number) {
+    const isSelected = this.selectedServicesIndices.includes(index);
+    if (isSelected) {
+      // Если сервис уже выбран, удалить его из массива выбранных сервисов
+      this.selectedServicesIndices = this.selectedServicesIndices.filter(i => i !== index);
+    } else {
+      // Если сервис не выбран, добавить его в массив выбранных сервисов
+      this.selectedServicesIndices.push(index);
+    }
+  }
+
   getConfigs() {
-    this.http.get<CarWash[]>("api/configuration/all").subscribe(
+    this.http.get<CarWash[]>("api/configuration").subscribe(
       (data) => {
         this.carWashes = data;
       }
     );
+  }
+
+  sendOrder() {
+    let order: SendOrder = new SendOrder(this.selectedCarWashId, this.selectedServicesIndices);
+    this.http.post("api/order", order).subscribe();
   }
 }

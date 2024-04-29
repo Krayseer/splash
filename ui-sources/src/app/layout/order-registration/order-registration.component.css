@@ -22,7 +22,7 @@
   background-color: #1D1D2D;
   border-radius: 500px;
   padding: 8px 15px;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
 }
 
 .step-label {
@@ -103,4 +103,28 @@
   font-weight: 700;
   font-size: 18px;
   line-height: 24px;
+}
+
+.reg-step2 {
+  padding: 24px 19% 24px 19%;
+}
+
+.service {
+  border: 2px solid #B5B8C3;
+  border-radius: 10px;
+  background-color: #F4F6FA;
+  padding: 8px 22px;
+  display: flex;
+  justify-content: space-between;
+  min-width: 550px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.service:last-child {
+  margin-bottom: 30px;
+}
+
+.selected-service{
+  background-color: blue;
 }

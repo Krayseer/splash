@@ -1,5 +1,5 @@
 <app-header></app-header>
-<div class="order-registration">
+<div class="order-registration" *ngIf="isVisibleFirst">
   <h2 class="Inter order-registration-title">Оформление заявки</h2>
   <div class="step">
     <label class="step-label Inter">Шаг 1 из 3 • Выбор автомойки</label>
@@ -24,7 +24,41 @@
       </button>
     </div>
   </div>
-  <button class="Inter continue-button" [disabled]="selectedCarWashId === null"
+  <button class="Inter continue-button" [disabled]="selectedCarWashId === null" (click)="goToSecondStep()"
           [ngStyle]="{'opacity': selectedCarWashId === null ? '0.5' : '1', 'cursor': selectedCarWashId === null ? 'not-allowed' : 'pointer'}">Далее</button>
+</div>
+<div class="order-registration reg-step2" *ngIf="isVisibleSecond && selectedCarWashId !== null">
+  <h2 class="Inter order-registration-title">Оформление заявки</h2>
+  <div class="step">
+    <label class="step-label Inter">Шаг 2 из 3 • Выбор услуг</label>
+  </div>
+  <div class="car-wash-info">
+    <img src="assets/images/carWash.png" class="step2-photo"/>
+    <h3 style="margin: 0;" class="Inter">{{ carWashes[selectedCarWashId - 1].name }}</h3>
+    <div style="display: flex; flex-direction: column; margin-bottom: 50px">
+      <label class="Inter">{{ carWashes[selectedCarWashId - 1].address }}</label>
+      <label class="Inter">{{ carWashes[selectedCarWashId - 1].phoneNumber }}</label>
+    </div>
+    <div style="display: flex; flex-direction: column; margin-bottom: 85px;">
+      <h3 style="margin: 0 0 7px 0;" class="Inter">Описание</h3>
+      <p style="margin: 0;" class="Inter">{{ carWashes[selectedCarWashId - 1].description }}</p>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column;">
+    <div class="service" *ngFor="let service of carWashes[selectedCarWashId - 1].services; let i = index"
+          [ngClass]="{'selected-service': isSelected(i)}"
+          (click)="toggleServiceSelection(i)">
+      <label class="Inter">{{ service.name }}</label>
+      <div style="display: flex; flex-direction: column;">
+        <label class="Inter">{{ service.price }} Р</label>
+        <label class="Inter">~{{ service.duration }} мин</label>
+      </div>
+    </div>
+  </div>
+  <button class="Inter continue-button" [disabled]="selectedServicesIndices.length === 0"
+          [ngStyle]="{'opacity': selectedServicesIndices.length === 0 ? '0.5' : '1', 'cursor': selectedServicesIndices.length === 0 ? 'not-allowed' : 'pointer'}"
+          (click)="sendOrder()">
+    Забронировать
+  </button>
 </div>
 <app-footer></app-footer>
