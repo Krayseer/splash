@@ -1,1 +1,30 @@
-<button (click)="sendOrder()">Отправить заявку</button>
+<app-header></app-header>
+<div class="order-registration">
+  <h2 class="Inter order-registration-title">Оформление заявки</h2>
+  <div class="step">
+    <label class="step-label Inter">Шаг 1 из 3 • Выбор автомойки</label>
+  </div>
+  <div>
+    <iframe class="map" src="https://yandex.com/map-widget/v1/?um=constructor%3Afc839d57eb45a05d5bc6c1c476ca3bb5ed94143e5f1a1b291a61214bfacd35a5&amp;source=constructor" width="1120" height="580" frameborder="0">
+
+    </iframe>
+  </div>
+  <div class="car-washes">
+    <div class="car-washes-item" *ngFor="let carWash of carWashes">
+      <img class="car-washes-item-image" src="assets/images/car-wash.png"/>
+      <h3 class="Inter car-washes-item-title">{{ carWash.name }}</h3>
+      <label class="Inter car-washes-item-address">{{ carWash.address }}</label>
+      <label class="Inter car-washes-item-phone">{{ carWash.phoneNumber }}</label>
+      <label class="Inter car-washes-item-price">{{ carWash.name }}</label>
+      <button class="Inter car-washes-item-button"
+              [ngClass]="{'selected': selectedCarWashId === carWash.id}"
+              (click)="selectCarWash(carWash.id)">
+        <ng-container *ngIf="selectedCarWashId === carWash.id; else notSelected">Выбрано</ng-container>
+        <ng-template #notSelected>Выбрать</ng-template>
+      </button>
+    </div>
+  </div>
+  <button class="Inter continue-button" [disabled]="selectedCarWashId === null"
+          [ngStyle]="{'opacity': selectedCarWashId === null ? '0.5' : '1', 'cursor': selectedCarWashId === null ? 'not-allowed' : 'pointer'}">Далее</button>
+</div>
+<app-footer></app-footer>

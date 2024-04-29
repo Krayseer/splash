@@ -1,21 +1,39 @@
-import { Component } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Order} from "../../models/order";
+import {Component, NgModule} from '@angular/core';
+import {HeaderComponent} from "../../components/header/header.component";
+import {FooterComponent} from "../../components/footer/footer.component";
+import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {CarWash} from "../../models/car-wash";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-order-registration',
   standalone: true,
-  imports: [],
+  imports: [
+    HeaderComponent,
+    FooterComponent,
+    CommonModule
+  ],
   templateUrl: './order-registration.component.html',
   styleUrl: './order-registration.component.css'
 })
-export class OrderRegistrationComponent {
+
+export class OrderRegistrationComponent{
+  carWashes: CarWash[] = [];
+  selectedCarWashId: number | null = null;
 
   constructor(private http: HttpClient) {
+    this.getConfigs();
   }
 
-  sendOrder() {
-    let order: Order = new Order("nikita", "1", "1", "12-01-2023", "creditCard")
-    this.http.post("api/order", order).subscribe();
+  selectCarWash(id: number) {
+    this.selectedCarWashId = id;
+  }
+
+  getConfigs() {
+    this.http.get<CarWash[]>("api/configuration/all").subscribe(
+      (data) => {
+        this.carWashes = data;
+      }
+    );
   }
 }

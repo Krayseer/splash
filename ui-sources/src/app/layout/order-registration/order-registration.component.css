@@ -1,0 +1,106 @@
+.order-registration {
+  background-color: #F4F6FA;
+  border: 1px solid #B5B8C3;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px auto;
+  max-width: 1200px;
+  padding: 24px 40px;
+  box-sizing: border-box;
+}
+
+.order-registration-title {
+  margin: 0 0 8px 0;
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 40px;
+}
+
+.step {
+  background-color: #1D1D2D;
+  border-radius: 500px;
+  padding: 8px 15px;
+  margin-bottom: 10px;
+}
+
+.step-label {
+  color: #F4F6FA;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.map {
+  border-radius: 15px;
+  border: 1px solid #B5B8C3;
+  margin-bottom: 80px;
+}
+
+.car-washes {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.car-washes-item {
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  margin-bottom: 30px;
+}
+
+
+.car-washes-item-title {
+  margin:  0 0 8px 0;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.car-washes-item-address {
+  color: #B5B8C3;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.car-washes-item-phone {
+  color: #B5B8C3;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.car-washes-item-price {
+  color: #B5B8C3;
+  font-size: 15px;
+  font-weight: 400;
+  margin-bottom: 25px;
+}
+
+.car-washes-item-button {
+  background-color: transparent;
+  border-radius: 10px;
+  border: 2px solid #1D1D2D;
+  color: #1D1D2D;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 20px;
+  max-width: 170px;
+}
+
+.selected {
+  background-color: #1D1D2D;
+  color: #F4F6FA
+}
+
+.continue-button {
+  background-color: #134EF2;
+  min-width: 360px;
+  padding: 16px;
+  color: #F4F6FA;
+  border-radius: 10px;
+  border: none;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+}
