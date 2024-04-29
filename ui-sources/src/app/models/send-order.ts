@@ -1,9 +1,9 @@
 export class SendOrder {
   carWashId: number;
-  servicesId: number[];
+  serviceIds: number[];
 
-  constructor(carWashId: number, servicesId: number[]) {
+  constructor(carWashId: number, serviceIds: number[]) {
     this.carWashId = carWashId;
-    this.servicesId = servicesId;
+    this.serviceIds = serviceIds;
   }
 }
