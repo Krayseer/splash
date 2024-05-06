@@ -11,7 +11,7 @@ import ru.anykeyers.authorizationserver.repository.UserRepository;
 import ru.anykeyers.authorizationserver.service.UserService;
 import ru.anykeyers.commonsapi.dto.UserDTO;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Collections;
 
 @Service
@@ -29,12 +29,13 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException(username);
         }
         return UserDTO.builder()
+                .id(user.getId())
+                .username(user.getUsername())
                 .name(user.getName())
                 .surname(user.getSurname())
-                .username(user.getUsername())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
-                .createdAt(user.getCreatedAt())
+                .createdAt(user.getCreatedAt().toString())
                 .build();
     }
 
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
                 .phoneNumber(userRequest.getPhoneNumber())
                 .roleList(Collections.singletonList(userRoles))
                 .photoUrl(userRequest.getPhotoUrl())
-                .createdAt(LocalDateTime.now())
+                .createdAt(Instant.now())
                 .build();
         userRepository.save(user);
     }

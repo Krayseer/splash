@@ -32,7 +32,7 @@ public final class ServiceFactory {
         return ServiceDTO.builder()
                 .id(serviceEntity.getId())
                 .name(serviceEntity.getName())
-                .duration(serviceEntity.getDuration())
+                .duration(Mapper.formatDate(serviceEntity.getDuration()))
                 .price(serviceEntity.getPrice())
                 .build();
     }

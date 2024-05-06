@@ -2,8 +2,10 @@ package ru.anykeyers.orderservice.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ru.anykeyers.orderservice.domain.constant.PaymentType;
+import ru.anykeyers.orderservice.domain.constant.State;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -44,7 +46,7 @@ public class Order {
      * Статус заказа
      */
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private State status;
 
     /**
      * Список идентификаторов услуг
@@ -53,9 +55,16 @@ public class Order {
     private List<Long> serviceIds;
 
     /**
-     * Время заказа
+     * Время начала заказа
      */
-    private LocalDateTime time;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Instant startTime;
+
+    /**
+     * Время окончания заказа
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    private Instant endTime;
 
     /**
      * Тип оплаты
@@ -66,6 +75,7 @@ public class Order {
     /**
      * Время создания заказа
      */
-    private LocalDateTime createdAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Instant createdAt;
 
 }

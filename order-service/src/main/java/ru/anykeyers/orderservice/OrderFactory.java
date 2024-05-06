@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.anykeyers.commonsapi.dto.ServiceDTO;
 import ru.anykeyers.orderservice.domain.Order;
-import ru.anykeyers.orderservice.domain.OrderRequest;
-import ru.anykeyers.orderservice.domain.OrderResponse;
-import ru.anykeyers.orderservice.domain.OrderStatus;
+import ru.anykeyers.orderservice.domain.dto.OrderRequest;
+import ru.anykeyers.orderservice.domain.dto.OrderResponse;
 import ru.anykeyers.orderservice.service.remote.RemoteServicesService;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -24,24 +23,31 @@ public final class OrderFactory {
     /**
      * Создать заказ
      *
-     * @param username  имя пользователя создателя заказа
+     * @param username      имя пользователя создателя заказа
      * @param orderRequest  данные для создания заказа
      */
     public Order createOrder(String username, OrderRequest orderRequest) {
         return Order.builder()
                 .username(username)
                 .carWashId(orderRequest.getCarWashId())
-                .boxId(1L)
-                .status(OrderStatus.CREATED)
                 .serviceIds(orderRequest.getServiceIds())
-//                .time(orderRequest.getTime())
+                .startTime(orderRequest.getTime())
                 .typePayment(orderRequest.getTypePayment())
-                .createdAt(LocalDateTime.now())
+                .createdAt(Instant.now())
                 .build();
     }
 
     /**
-     * Создать данные для отправки данных о заказе
+     * Создать список данных для отправки о заказах
+     *
+     * @param orders список заказов
+     */
+    public List<OrderResponse> createOrderResponse(List<Order> orders) {
+        return orders.stream().map(this::createOrderResponse).toList();
+    }
+
+    /**
+     * Создать данные для отправки о заказе
      *
      * @param order заказ
      */
@@ -53,10 +59,11 @@ public final class OrderFactory {
                 .carWashId(order.getCarWashId())
                 .boxId(order.getBoxId())
                 .status(order.getStatus())
-//                .time(order.getTime())
+                .startTime(order.getStartTime().toString())
+                .endTime(order.getEndTime().toString())
                 .services(services)
                 .typePayment(order.getTypePayment())
-//                .createdAt(order.getCreatedAt())
+                .createdAt(order.getCreatedAt().toString())
                 .build();
     }
 

@@ -2,12 +2,14 @@ package ru.anykeyers.configurationservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import ru.anykeyers.commonsapi.dto.ServiceDTO;
+import ru.anykeyers.configurationservice.exception.ServiceNotFoundException;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Удаленный сервис обработки услуг
@@ -26,11 +28,15 @@ public class RemoteServicesService {
      * @param carWashId идентификатор автомойки
      */
     public List<ServiceDTO> getServices(Long carWashId) {
-        ServiceDTO[] services = restTemplate.getForObject(URL + "/" + carWashId, ServiceDTO[].class);
-        if (services == null) {
-            throw new RuntimeException("Services not found");
+        try {
+            ServiceDTO[] services = restTemplate.getForObject(URL + "/" + carWashId, ServiceDTO[].class);
+            if (services == null) {
+                throw new ServiceNotFoundException(carWashId);
+            }
+            return Arrays.stream(services).toList();
+        } catch (RestClientException e) {
+            return Collections.emptyList();
         }
-        return Arrays.stream(services).toList();
     }
 
 }

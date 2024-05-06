@@ -40,7 +40,6 @@ public class DefaultSecurityConfig {
         return http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/user").authenticated()
                                 .requestMatchers("/user/**").permitAll()
                                 .anyRequest().authenticated()
                 )
@@ -75,17 +74,15 @@ public class DefaultSecurityConfig {
      * Постоянный GitHub клиент
      */
     @Bean
-    ClientRegistrationRepository clientRegistrationRepository(
-            JdbcTemplate jdbcTemplate,
-            @Value("${application.auth-provider.registration-id}") String registrationId,
-            @Value("${application.auth-provider.client-name}") String clientName,
-            @Value("${application.auth-provider.client-id}") String clientId,
-            @Value("${application.auth-provider.client-secret}") String clientSecret,
-            @Value("${application.auth-provider.authorization-uri}") String authorizationUri,
-            @Value("${application.auth-provider.token-uri}") String tokenUri,
-            @Value("${application.auth-provider.redirect-uri}") String redirectUri,
-            @Value("${application.auth-provider.user-info-uri}") String userInfoUri
-    ) {
+    ClientRegistrationRepository clientRegistrationRepository(JdbcTemplate jdbcTemplate,
+                                                              @Value("${application.auth-provider.registration-id}") String registrationId,
+                                                              @Value("${application.auth-provider.client-name}") String clientName,
+                                                              @Value("${application.auth-provider.client-id}") String clientId,
+                                                              @Value("${application.auth-provider.client-secret}") String clientSecret,
+                                                              @Value("${application.auth-provider.authorization-uri}") String authorizationUri,
+                                                              @Value("${application.auth-provider.token-uri}") String tokenUri,
+                                                              @Value("${application.auth-provider.redirect-uri}") String redirectUri,
+                                                              @Value("${application.auth-provider.user-info-uri}") String userInfoUri) {
         JdbcClientRegistrationRepository jdbcClientRegistrationRepository = new JdbcClientRegistrationRepository(jdbcTemplate);
         ClientRegistration clientRegistration = ClientRegistration.withRegistrationId(registrationId)
                 .clientId(clientId)

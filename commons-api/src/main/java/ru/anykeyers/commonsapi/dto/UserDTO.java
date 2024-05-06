@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 /**
@@ -49,6 +50,6 @@ public class UserDTO {
     /**
      * Время создания аккаунта
      */
-    private LocalDateTime createdAt;
+    private String createdAt;
 
 }

@@ -27,17 +27,18 @@ final class UserRepositoryOAuth2UserHandler implements Consumer<OAuth2User> {
     @Override
     public void accept(OAuth2User oAuth2User) {
         DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) oAuth2User;
-        if (this.userRepository.findUserByUsername(oAuth2User.getName()) == null) {
-            User user = new User();
-            user.setUsername(defaultOAuth2User.getName());
-            Role role = roleRepository.findByRoleCode(defaultOAuth2User.getAuthorities()
-                    .stream()
-                    .map(GrantedAuthority::getAuthority)
-                    .findFirst()
-                    .orElse("ROLE_OPERATION"));
-            user.setRoleList(Collections.singletonList(role));
-            userRepository.save(user);
+        if (userRepository.findUserByUsername(oAuth2User.getName()) != null) {
+            return;
         }
+        User user = new User();
+        user.setUsername(defaultOAuth2User.getName());
+        Role role = roleRepository.findByRoleCode(defaultOAuth2User.getAuthorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .findFirst()
+                .orElse("ROLE_OPERATION"));
+        user.setRoleList(Collections.singletonList(role));
+        userRepository.save(user);
     }
 
 }

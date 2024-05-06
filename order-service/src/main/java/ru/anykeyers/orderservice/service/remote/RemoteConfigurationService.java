@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.anykeyers.commonsapi.dto.ConfigurationDTO;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Удаленный сервис конфигурации автомоек
  */
@@ -12,7 +15,7 @@ import ru.anykeyers.commonsapi.dto.ConfigurationDTO;
 @RequiredArgsConstructor
 public class RemoteConfigurationService {
 
-    private static final String URL = "http://localhost:8052/configuration";
+    private static final String URL = "http://localhost:8052/";
 
     private final RestTemplate restTemplate;
 
@@ -22,8 +25,17 @@ public class RemoteConfigurationService {
      * @param id идентификатор автомойки
      */
     public ConfigurationDTO getConfiguration(Long id) {
-        String url = String.format("%s/%s", URL, id);
-        return restTemplate.getForObject(url, ConfigurationDTO.class);
+        return restTemplate.getForObject(URL + "configuration/" + id, ConfigurationDTO.class);
     }
 
+    /**
+     * Получить список идентификаторов боксов для автомойки
+     *
+     * @param id идентификатор автомойки
+     */
+    public List<Long> getBoxIds(Long id) {
+        Long[] ids = restTemplate.getForObject(URL + "box/" + id + "/ids", Long[].class);
+        assert ids != null;
+        return Arrays.stream(ids).toList();
+    }
 }

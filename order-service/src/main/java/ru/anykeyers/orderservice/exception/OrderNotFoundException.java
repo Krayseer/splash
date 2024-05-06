@@ -5,8 +5,8 @@ package ru.anykeyers.orderservice.exception;
  */
 public class OrderNotFoundException extends RuntimeException {
 
-    public OrderNotFoundException(String username) {
-        super(String.format("User %s has not order", username));
+    public OrderNotFoundException(Long id) {
+        super(String.format("Order with id %d not found", id));
     }
 
 }

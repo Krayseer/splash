@@ -36,4 +36,17 @@ public class RemoteServicesService {
         return Arrays.stream(services).toList();
     }
 
+    /**
+     * Получить период выполнения услуг
+     *
+     * @param serviceIds идентификаторы услуг
+     */
+    public long getServicesDuration(List<Long> serviceIds) {
+        String servicesString = serviceIds.stream().map(Object::toString).collect(Collectors.joining(", "));
+        Long duration = restTemplate.getForObject(URL + "/duration" + "?ids=" + servicesString, Long.class);
+        if (duration == null) {
+            throw new RuntimeException("Services not found");
+        }
+        return duration;
+    }
 }

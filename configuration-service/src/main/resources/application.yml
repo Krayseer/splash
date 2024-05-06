@@ -12,6 +12,7 @@ spring:
     hibernate:
       ddl-auto: update
     database: postgresql
+    generate-ddl: true
 
   security:
     oauth2:
@@ -19,6 +20,11 @@ spring:
         jwt:
           issuer-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}
           jwk-set-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}/oauth2/jwks
+
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://localhost:8761/eureka
 
 server:
   port: ${CONFIGURATION_SERVICE_PORT}

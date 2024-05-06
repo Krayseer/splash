@@ -45,7 +45,7 @@ public class EmailService {
                         Автомойка: %s
                         Бокс: %s
                         Время: %s
-                        """, configurationDTO.getName(), order.getBoxId(), order.getTime())
+                        """, configurationDTO.getName(), order.getBoxId(), order.getStartTime())
         );
         EmailDTO emailDTO = new EmailDTO(new EmailAddress(userDTO.getEmail()), message);
         kafkaTemplate.send(MessageQueue.EMAIL_SENDER, objectMapper.writeValueAsString(emailDTO));

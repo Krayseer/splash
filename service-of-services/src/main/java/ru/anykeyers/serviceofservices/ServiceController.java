@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.serviceofservices.domain.ServiceRequest;
 import ru.anykeyers.commonsapi.dto.ServiceDTO;
-import ru.anykeyers.serviceofservices.service.ServiceProcessor;
+import ru.anykeyers.serviceofservices.processor.ServiceProcessor;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,9 +20,12 @@ public class ServiceController {
 
     @GetMapping
     public List<ServiceDTO> getServices(@RequestParam("ids") String serviceIds) {
-        return serviceProcessor.getServices(
-                Arrays.stream(serviceIds.split(",")).map(Long::parseLong).toList()
-        );
+        return serviceProcessor.getServices(Mapper.parseFromString(serviceIds));
+    }
+
+    @GetMapping("/duration")
+    public long getServicesDuration(@RequestParam("ids") String serviceIds) {
+        return serviceProcessor.getServicesDuration(Mapper.parseFromString(serviceIds));
     }
 
     @GetMapping("/{carWashId}")

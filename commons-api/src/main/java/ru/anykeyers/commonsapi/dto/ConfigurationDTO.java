@@ -65,8 +65,13 @@ public class ConfigurationDTO {
     private List<ServiceDTO> services;
 
     /**
+     * Список боксов
+     */
+    private List<BoxDTO> boxes;
+
+    /**
      * Время регистрации автомойки
      */
-    private LocalDateTime createdAt;
+    private String createdAt;
 
 }
