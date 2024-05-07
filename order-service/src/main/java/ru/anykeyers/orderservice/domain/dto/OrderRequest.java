@@ -3,7 +3,7 @@ package ru.anykeyers.orderservice.domain.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.anykeyers.orderservice.domain.constant.PaymentType;
+import ru.anykeyers.commonsapi.domain.PaymentType;
 
 import java.time.Instant;
 import java.util.List;

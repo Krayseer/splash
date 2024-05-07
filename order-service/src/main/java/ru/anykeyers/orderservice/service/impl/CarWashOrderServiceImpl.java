@@ -3,7 +3,7 @@ package ru.anykeyers.orderservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.orderservice.OrderRepository;
-import ru.anykeyers.orderservice.domain.constant.State;
+import ru.anykeyers.commonsapi.domain.State;
 import ru.anykeyers.orderservice.service.CarWashOrderService;
 
 @Service

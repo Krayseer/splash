@@ -1,9 +1,8 @@
-package ru.anykeyers.orderservice.service.remote;
+package ru.anykeyers.commonsapi.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ru.anykeyers.commonsapi.dto.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.List;
 /**
  * Удаленный сервис конфигурации автомоек
  */
-@Service
 @RequiredArgsConstructor
 public class RemoteConfigurationService {
 

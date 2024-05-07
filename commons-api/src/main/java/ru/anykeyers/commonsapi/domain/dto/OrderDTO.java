@@ -1,12 +1,11 @@
-package ru.anykeyers.orderservice.domain.dto;
+package ru.anykeyers.commonsapi.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.anykeyers.commonsapi.dto.ServiceDTO;
-import ru.anykeyers.orderservice.domain.constant.PaymentType;
-import ru.anykeyers.orderservice.domain.constant.State;
+import ru.anykeyers.commonsapi.domain.PaymentType;
+import ru.anykeyers.commonsapi.domain.State;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderResponse {
+public class OrderDTO {
 
     /**
      * Идентификатор

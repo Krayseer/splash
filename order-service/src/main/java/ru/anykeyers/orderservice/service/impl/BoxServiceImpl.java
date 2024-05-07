@@ -7,7 +7,7 @@ import ru.anykeyers.orderservice.domain.Order;
 import ru.anykeyers.orderservice.domain.TimeRange;
 import ru.anykeyers.orderservice.domain.dto.TimeRangeDTO;
 import ru.anykeyers.orderservice.service.BoxService;
-import ru.anykeyers.orderservice.service.remote.RemoteConfigurationService;
+import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;

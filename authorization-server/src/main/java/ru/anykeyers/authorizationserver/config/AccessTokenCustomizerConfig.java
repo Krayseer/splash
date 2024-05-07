@@ -10,6 +10,7 @@ import ru.anykeyers.authorizationserver.domain.entity.Permission;
 import ru.anykeyers.authorizationserver.domain.entity.Role;
 import ru.anykeyers.authorizationserver.repository.RoleRepository;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -20,18 +21,15 @@ public class AccessTokenCustomizerConfig {
 
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer(RoleRepository roleRepository) {
-        return (context) -> {
+        return context -> {
             if (OAuth2TokenType.ACCESS_TOKEN.equals(context.getTokenType())) {
                 context.getClaims().claims(claim -> {
-                    Role role = roleRepository.findByRoleCode(
-                            context.getPrincipal().getAuthorities().stream()
-                                    .map(GrantedAuthority::getAuthority)
-                                    .findFirst()
-                                    .orElse("ROLE_OPERATION")
+                    List<Role> roles = roleRepository.findByRoleCodeIn(
+                        context.getPrincipal().getAuthorities().stream()
+                                .map(GrantedAuthority::getAuthority)
+                                .toList()
                     );
-                    claim.put("authorities", role.getPermissions().stream()
-                            .map(Permission::getPermissionCode)
-                            .collect(Collectors.toSet()));
+                    claim.put("authorities", roles.stream().map(Role::getRoleCode).collect(Collectors.toSet()));
                 });
             }
         };

@@ -1,18 +1,21 @@
 package ru.anykeyers.orderservice.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import ru.anykeyers.commonsapi.MessageQueue;
 import ru.anykeyers.orderservice.OrderFactory;
 import ru.anykeyers.orderservice.OrderRepository;
 import ru.anykeyers.orderservice.domain.*;
-import ru.anykeyers.orderservice.domain.constant.State;
+import ru.anykeyers.commonsapi.domain.State;
 import ru.anykeyers.orderservice.domain.dto.OrderRequest;
-import ru.anykeyers.orderservice.domain.dto.OrderResponse;
+import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.orderservice.service.BoxService;
-import ru.anykeyers.orderservice.service.EmailService;
 import ru.anykeyers.orderservice.service.StateService;
 import ru.anykeyers.orderservice.service.UserOrderService;
-import ru.anykeyers.orderservice.service.remote.RemoteServicesService;
+import ru.anykeyers.commonsapi.service.RemoteServicesService;
 
 import java.time.Instant;
 import java.util.List;
@@ -20,8 +23,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserOrderServiceImpl implements UserOrderService {
-
-    private final EmailService emailService;
 
     private final OrderFactory orderFactory;
 
@@ -33,20 +34,26 @@ public class UserOrderServiceImpl implements UserOrderService {
 
     private final RemoteServicesService remoteServicesService;
 
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
+    private final ObjectMapper objectMapper;
+
     @Override
-    public List<OrderResponse> getActiveOrders(String username) {
-        List<Order> orders = orderRepository.findByUsernameAndStatus(username, State.WAIT_PROCESS);
+    public List<OrderDTO> getActiveOrders(String username) {
+        List<State> activeStates = List.of(State.WAIT_CONFIRM, State.WAIT_PROCESS, State.PROCESSING);
+        List<Order> orders = orderRepository.findByUsernameAndStatusIn(username, activeStates);
         return orderFactory.createOrderResponse(orders);
     }
 
     @Override
-    public List<OrderResponse> getProcessedOrders(String username) {
+    public List<OrderDTO> getProcessedOrders(String username) {
         List<Order> orders = orderRepository.findByUsernameAndStatus(username, State.PROCESSED);
         return orderFactory.createOrderResponse(orders);
     }
 
     @Override
-    public OrderResponse saveOrder(String username, OrderRequest orderRequest) {
+    @SneakyThrows
+    public OrderDTO saveOrder(String username, OrderRequest orderRequest) {
         long duration = remoteServicesService.getServicesDuration(orderRequest.getServiceIds());
         if (orderRequest.getTime() == null) {
             orderRequest.setTime(Instant.now());
@@ -62,8 +69,9 @@ public class UserOrderServiceImpl implements UserOrderService {
         order.setStatus(stateService.nextState(order));
         order.setEndTime(endTime);
         order.setBoxId(boxId);
-        emailService.sendEmail(order);
-        return orderFactory.createOrderResponse(orderRepository.save(order));
+        OrderDTO orderDTO = orderFactory.createOrderResponse(orderRepository.save(order));
+        kafkaTemplate.send(MessageQueue.ORDER_CREATE, objectMapper.writeValueAsString(orderDTO));
+        return orderDTO;
     }
 
 }

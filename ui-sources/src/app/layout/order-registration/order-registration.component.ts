@@ -56,7 +56,7 @@ export class OrderRegistrationComponent{
   }
 
   getConfigs() {
-    this.http.get<CarWash[]>("api/configuration").subscribe(
+    this.http.get<CarWash[]>("api/configuration/all").subscribe(
       (data) => {
         this.carWashes = data;
       }
@@ -65,6 +65,7 @@ export class OrderRegistrationComponent{
 
   sendOrder() {
     let order: SendOrder = new SendOrder(this.selectedCarWashId, this.selectedServicesIndices);
-    this.http.post("api/order", order).subscribe();
+    this.http.post("api/order/user", order).subscribe();
+    // this.http.post("api/user/set-roles?userId=2", ["ROLE_MANAGER"]).subscribe();
   }
 }

@@ -1,4 +1,4 @@
-package ru.anykeyers.notificationservice;
+package ru.anykeyers.businessorderservice;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,13 +7,10 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
-import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
+import ru.anykeyers.businessorderservice.service.OrderService;
 import ru.anykeyers.commonsapi.MessageQueue;
-import ru.anykeyers.notificationservice.service.OrderService;
+import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 
-/**
- * Слушатель сообщений по Kafka
- */
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -31,7 +28,7 @@ public class KafkaMessageListener {
     public void receiveOrderCreate(String orderMessage) {
         OrderDTO order = objectMapper.readValue(orderMessage, new TypeReference<>() {
         });
-        orderService.notifyOrderCreate(order);
+        orderService.processOrder(order);
     }
 
 }

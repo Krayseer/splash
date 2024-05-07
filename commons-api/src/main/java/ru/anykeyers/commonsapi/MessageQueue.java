@@ -10,4 +10,9 @@ public final class MessageQueue {
      */
     public static final String EMAIL_SENDER = "email-sender";
 
+    /**
+     * Очередь с созданными заказами
+     */
+    public static final String ORDER_CREATE = "order-create";
+
 }

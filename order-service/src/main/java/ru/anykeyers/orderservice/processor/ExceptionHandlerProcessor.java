@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.anykeyers.commonsapi.dto.ApiError;
+import ru.anykeyers.commonsapi.domain.dto.ApiError;
 
 import java.util.HashMap;
 import java.util.Map;

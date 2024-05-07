@@ -1,7 +1,7 @@
 package ru.anykeyers.serviceofservices.processor;
 
 import ru.anykeyers.serviceofservices.domain.ServiceRequest;
-import ru.anykeyers.commonsapi.dto.ServiceDTO;
+import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 
 import java.util.List;
 

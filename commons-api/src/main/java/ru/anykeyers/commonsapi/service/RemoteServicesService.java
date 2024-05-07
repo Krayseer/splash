@@ -1,9 +1,8 @@
-package ru.anykeyers.orderservice.service.remote;
+package ru.anykeyers.commonsapi.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import ru.anykeyers.commonsapi.dto.ServiceDTO;
+import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.stream.Collectors;
 /**
  * Удаленный сервис обработки услуг
  */
-@Service
 @RequiredArgsConstructor
 public class RemoteServicesService {
 

@@ -1,4 +1,4 @@
-package ru.anykeyers.orderservice.domain.constant;
+package ru.anykeyers.commonsapi.domain;
 
 /**
  * Тип оплаты

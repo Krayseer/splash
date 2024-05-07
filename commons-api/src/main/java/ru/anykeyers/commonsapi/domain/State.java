@@ -1,10 +1,14 @@
-package ru.anykeyers.orderservice.domain.constant;
+package ru.anykeyers.commonsapi.domain;
 
 /**
  * Статус
  */
 public enum State {
 
+    /**
+     * Ожидает одобрения
+     */
+    WAIT_CONFIRM,
     /**
      * Ожидает обработки
      */

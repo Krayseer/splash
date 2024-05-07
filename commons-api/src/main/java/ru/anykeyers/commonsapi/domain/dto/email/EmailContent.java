@@ -1,4 +1,4 @@
-package ru.anykeyers.commonsapi.dto.email;
+package ru.anykeyers.commonsapi.domain.dto.email;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

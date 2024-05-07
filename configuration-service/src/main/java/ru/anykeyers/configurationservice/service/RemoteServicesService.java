@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-import ru.anykeyers.commonsapi.dto.ServiceDTO;
+import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 import ru.anykeyers.configurationservice.exception.ServiceNotFoundException;
 
 import java.util.Arrays;

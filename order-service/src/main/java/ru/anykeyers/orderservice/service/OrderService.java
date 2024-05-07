@@ -1,6 +1,6 @@
 package ru.anykeyers.orderservice.service;
 
-import ru.anykeyers.orderservice.domain.dto.OrderResponse;
+import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 
 /**
  * Сервис обработки заказов
@@ -12,6 +12,6 @@ public interface OrderService {
      *
      * @param id идентификатор заказа
      */
-    OrderResponse getOrder(Long id);
+    OrderDTO getOrder(Long id);
 
 }

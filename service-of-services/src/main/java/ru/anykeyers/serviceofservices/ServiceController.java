@@ -3,7 +3,7 @@ package ru.anykeyers.serviceofservices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.serviceofservices.domain.ServiceRequest;
-import ru.anykeyers.commonsapi.dto.ServiceDTO;
+import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 import ru.anykeyers.serviceofservices.processor.ServiceProcessor;
 
 import java.util.List;

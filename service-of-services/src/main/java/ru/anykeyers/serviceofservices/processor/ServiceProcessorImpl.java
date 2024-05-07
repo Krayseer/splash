@@ -6,7 +6,7 @@ import ru.anykeyers.serviceofservices.ServiceFactory;
 import ru.anykeyers.serviceofservices.ServiceRepository;
 import ru.anykeyers.serviceofservices.domain.ServiceEntity;
 import ru.anykeyers.serviceofservices.domain.ServiceRequest;
-import ru.anykeyers.commonsapi.dto.ServiceDTO;
+import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 
 import java.util.List;
 

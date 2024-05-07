@@ -2,8 +2,8 @@ package ru.anykeyers.orderservice.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.anykeyers.orderservice.domain.constant.PaymentType;
-import ru.anykeyers.orderservice.domain.constant.State;
+import ru.anykeyers.commonsapi.domain.PaymentType;
+import ru.anykeyers.commonsapi.domain.State;
 
 import java.time.Instant;
 import java.util.List;

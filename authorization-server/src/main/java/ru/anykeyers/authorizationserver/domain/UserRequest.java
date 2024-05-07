@@ -25,11 +25,6 @@ public class UserRequest {
     private String surname;
 
     /**
-     * Роль
-     */
-    private String role;
-
-    /**
      * Имя пользователя
      */
     private String username;

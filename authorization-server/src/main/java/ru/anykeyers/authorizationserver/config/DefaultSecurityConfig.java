@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.client.JdbcOAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
@@ -25,25 +28,25 @@ import ru.anykeyers.authorizationserver.repository.UserRepository;
 import ru.anykeyers.authorizationserver.service.impl.AuthorityMappingOAuth2UserService;
 import ru.anykeyers.authorizationserver.service.impl.JdbcUserDetailsService;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 /**
  * Стандартная кофнигурация Spring Security
  */
 @Configuration(proxyBeanMethods = false)
 @EnableWebSecurity
+@EnableMethodSecurity
 public class DefaultSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http,
                                                    UserRepositoryOAuth2UserHandler userHandler) throws Exception {
         return http
-                .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
+                .cors(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                                 .requestMatchers("/user/**").permitAll()
                                 .anyRequest().authenticated()
                 )
-                .formLogin(withDefaults())
+                .formLogin(Customizer.withDefaults())
                 .oauth2Login(oauth2login -> {
                     SavedUserAuthenticationSuccessHandler successHandler = new SavedUserAuthenticationSuccessHandler();
                     successHandler.setOauth2UserHandler(userHandler);
@@ -51,7 +54,6 @@ public class DefaultSecurityConfig {
                 })
                 .build();
     }
-
 
     /**
      * Класс контейнера информации о пользователе, используемый для получения информации о пользователе

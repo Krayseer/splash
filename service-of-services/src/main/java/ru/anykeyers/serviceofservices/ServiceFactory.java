@@ -2,7 +2,7 @@ package ru.anykeyers.serviceofservices;
 
 import ru.anykeyers.serviceofservices.domain.ServiceEntity;
 import ru.anykeyers.serviceofservices.domain.ServiceRequest;
-import ru.anykeyers.commonsapi.dto.ServiceDTO;
+import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 
 /**
  * Фабрика по созданию услуг

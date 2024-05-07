@@ -1,12 +1,14 @@
 package ru.anykeyers.authorizationserver;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.authorizationserver.domain.UserRequest;
 import ru.anykeyers.authorizationserver.service.UserService;
-import ru.anykeyers.commonsapi.dto.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.UserDTO;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,6 +30,12 @@ public class UserController {
     @GetMapping("/register")
     public void saveUser(@RequestBody UserRequest userRequest) {
         userService.registerUser(userRequest);
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping("/set-roles")
+    public void setUserRoles(@RequestParam("userId") Long userId, @RequestBody List<String> roles) {
+        userService.setUserRoles(userId, roles);
     }
 
 }

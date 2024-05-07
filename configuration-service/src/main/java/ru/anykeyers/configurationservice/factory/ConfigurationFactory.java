@@ -2,8 +2,8 @@ package ru.anykeyers.configurationservice.factory;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.anykeyers.commonsapi.dto.ConfigurationDTO;
-import ru.anykeyers.commonsapi.dto.ServiceDTO;
+import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 import ru.anykeyers.configurationservice.domain.entity.Configuration;
 import ru.anykeyers.configurationservice.domain.ConfigurationRequest;
 import ru.anykeyers.configurationservice.service.RemoteServicesService;

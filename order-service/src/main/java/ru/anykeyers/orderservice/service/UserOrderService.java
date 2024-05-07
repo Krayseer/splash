@@ -1,7 +1,7 @@
 package ru.anykeyers.orderservice.service;
 
 import ru.anykeyers.orderservice.domain.dto.OrderRequest;
-import ru.anykeyers.orderservice.domain.dto.OrderResponse;
+import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 
 import java.util.List;
 
@@ -15,14 +15,14 @@ public interface UserOrderService {
      *
      * @param username имя пользователя
      */
-    List<OrderResponse> getActiveOrders(String username);
+    List<OrderDTO> getActiveOrders(String username);
 
     /**
      * Получить список завершенных заказов
      *
      * @param username имя пользователя
      */
-    List<OrderResponse> getProcessedOrders(String username);
+    List<OrderDTO> getProcessedOrders(String username);
 
     /**
      * Создать заказ
@@ -30,6 +30,6 @@ public interface UserOrderService {
      * @param username      имя пользователя
      * @param orderRequest  данные о заказе
      */
-    OrderResponse saveOrder(String username, OrderRequest orderRequest);
+    OrderDTO saveOrder(String username, OrderRequest orderRequest);
 
 }
