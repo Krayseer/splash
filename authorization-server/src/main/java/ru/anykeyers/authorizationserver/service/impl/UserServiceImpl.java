@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
                 .surname(user.getSurname())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
+                .roles(user.getRoleList().stream().map(Role::getRoleCode).toList())
                 .createdAt(user.getCreatedAt().toString())
                 .build();
     }

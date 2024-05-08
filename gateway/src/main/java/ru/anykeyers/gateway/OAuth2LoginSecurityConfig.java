@@ -20,9 +20,18 @@ public class OAuth2LoginSecurityConfig {
                 .cors(ServerHttpSecurity.CorsSpec::disable)
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(authorize -> authorize
+                        // Сервер авторизации
+                        .pathMatchers("/user").authenticated()
                         .pathMatchers("/user/register").permitAll()
+
+                        // Сервис конфигурирования автомоек
                         .pathMatchers("/configuration/**").permitAll()
+
+                        // Сервис обработки услуг
                         .pathMatchers("/service/**").permitAll()
+
+                        // Сервис обработки заказов
+                        .pathMatchers("/order/user").authenticated()
                         .anyExchange().authenticated()
                 )
                 .oauth2Login(Customizer.withDefaults())

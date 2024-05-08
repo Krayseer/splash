@@ -21,7 +21,7 @@ final class SavedUserAuthenticationSuccessHandler implements AuthenticationSucce
     private final AuthenticationSuccessHandler delegate = new SavedRequestAwareAuthenticationSuccessHandler();
 
     @Setter
-    private Consumer<OAuth2User> oauth2UserHandler = (user) -> {
+    private Consumer<OAuth2User> oauth2UserHandler = user -> {
     };
 
     @Override

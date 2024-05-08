@@ -2,6 +2,8 @@ package ru.anykeyers.authorizationserver;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.authorizationserver.domain.UserRequest;
 import ru.anykeyers.authorizationserver.service.UserService;
@@ -30,6 +32,15 @@ public class UserController {
     @GetMapping("/register")
     public void saveUser(@RequestBody UserRequest userRequest) {
         userService.registerUser(userRequest);
+    }
+
+    @GetMapping("/roles")
+    public List<String> getUserRoles() {
+        return SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")

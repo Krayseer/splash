@@ -18,6 +18,14 @@ public class RemoteServicesService {
 
     private final RestTemplate restTemplate;
 
+    public List<ServiceDTO> getServices(Long carWashId) {
+        ServiceDTO[] services = restTemplate.getForObject(URL + "/" + carWashId, ServiceDTO[].class);
+        if (services == null) {
+            throw new RuntimeException("Services not found");
+        }
+        return Arrays.stream(services).toList();
+    }
+
     /**
      * Получить список с данными об услугах
      *
@@ -47,4 +55,5 @@ public class RemoteServicesService {
         }
         return duration;
     }
+
 }

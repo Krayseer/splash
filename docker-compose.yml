@@ -4,6 +4,8 @@ services:
   mysql:
     image: 'mysql'
     container_name: mysql
+    env_file:
+      - .env
     ports:
       - '${MYSQL_PORT}:3306'
     environment:
@@ -14,13 +16,19 @@ services:
     container_name: postgresql
     ports:
       - '${POSTGRES_PORT}:5432'
+    env_file:
+      - .env
     environment:
       - POSTGRES_USERNAME=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   redis:
     image: 'redis'
-    container_name: jedis
+    container_name: redis
+    env_file:
+      - .env
     ports:
       - '${REDIS_PORT}:6379'
 

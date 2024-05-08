@@ -60,7 +60,8 @@ CREATE TABLE `role_mtm_permission`
     PRIMARY KEY (`id`)
 );
 
-INSERT INTO `user` (`id`, `username`, `password`, `phone_number`, `email`) VALUES (1, 'admin', '{noop}password', '13523456789', '123456@163.com');
+INSERT INTO `user` (`id`, `name`, `surname`, `username`, `password`, `phone_number`, `email`, `created_at`)
+VALUES (1, 'Главный', 'Администратор', 'admin', '{noop}password', '13523456789', '123456@163.com', '2024-05-09 00:45:32');
 
 INSERT INTO `role` (`id`, `role_code`) VALUES (1, 'ROLE_USER');
 INSERT INTO `role` (`id`, `role_code`) VALUES (2, 'ROLE_ADMIN');
@@ -69,10 +70,10 @@ INSERT INTO `role` (`id`, `role_code`) VALUES (4, 'ROLE_PRODUCT_MANAGER');
 INSERT INTO `role` (`id`, `role_code`) VALUES (5, 'ROLE_ANALYST');
 INSERT INTO `role` (`id`, `role_code`) VALUES (6, 'ROLE_WASHER');
 
+INSERT INTO `user_mtm_role` (`id`, `user_id`, `role_id`) VALUES (1, 1, 2);
+
 INSERT INTO `permission` (`id`, `permission_name`, `permission_code`) VALUES (1, 'read the article', 'read');
 INSERT INTO `permission` (`id`, `permission_name`, `permission_code`) VALUES (2, 'write the article', 'write');
-
-INSERT INTO `user_mtm_role` (`id`, `user_id`, `role_id`) VALUES (1, 1, 1);
 
 INSERT INTO `role_mtm_permission` (`id`, `role_id`, `permission_id`) VALUES (1, 1, 1);
 INSERT INTO `role_mtm_permission` (`id`, `role_id`, `permission_id`) VALUES (2, 1, 2);

@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
-import ru.anykeyers.authorizationserver.domain.entity.Permission;
 import ru.anykeyers.authorizationserver.domain.entity.Role;
 import ru.anykeyers.authorizationserver.repository.RoleRepository;
 

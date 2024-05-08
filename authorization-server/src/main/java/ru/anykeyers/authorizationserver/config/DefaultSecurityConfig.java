@@ -42,10 +42,6 @@ public class DefaultSecurityConfig {
         return http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                                .requestMatchers("/user/**").permitAll()
-                                .anyRequest().authenticated()
-                )
                 .formLogin(Customizer.withDefaults())
                 .oauth2Login(oauth2login -> {
                     SavedUserAuthenticationSuccessHandler successHandler = new SavedUserAuthenticationSuccessHandler();

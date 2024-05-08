@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
+import ru.anykeyers.commonsapi.service.RemoteServicesService;
 import ru.anykeyers.configurationservice.domain.entity.Configuration;
 import ru.anykeyers.configurationservice.domain.ConfigurationRequest;
-import ru.anykeyers.configurationservice.service.RemoteServicesService;
 
 import java.util.List;
 

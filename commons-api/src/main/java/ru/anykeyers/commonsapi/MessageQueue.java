@@ -6,13 +6,13 @@ package ru.anykeyers.commonsapi;
 public final class MessageQueue {
 
     /**
-     * Очередь отправки сообщений на email
-     */
-    public static final String EMAIL_SENDER = "email-sender";
-
-    /**
      * Очередь с созданными заказами
      */
     public static final String ORDER_CREATE = "order-create";
+
+    /**
+     * Очередь одобрения приглашений
+     */
+    public static final String INVITATION_APPLY = "invitation-apply";
 
 }

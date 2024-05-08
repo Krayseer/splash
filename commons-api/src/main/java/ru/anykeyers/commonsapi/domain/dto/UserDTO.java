@@ -5,8 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Ответ с данными о пользователе
@@ -51,5 +50,10 @@ public class UserDTO {
      * Время создания аккаунта
      */
     private String createdAt;
+
+    /**
+     * Список ролей
+     */
+    private List<String> roles;
 
 }

@@ -1,7 +1,7 @@
 package ru.anykeyers.notificationservice.service;
 
-import ru.anykeyers.commonsapi.domain.dto.email.EmailAddress;
-import ru.anykeyers.commonsapi.domain.dto.email.EmailContent;
+import ru.anykeyers.notificationservice.domain.EmailAddress;
+import ru.anykeyers.notificationservice.domain.EmailContent;
 
 /**
  * Сервис отправки сообщений по email

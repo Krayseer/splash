@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.domain.dto.email.EmailAddress;
-import ru.anykeyers.commonsapi.domain.dto.email.EmailContent;
+import ru.anykeyers.notificationservice.domain.EmailAddress;
+import ru.anykeyers.notificationservice.domain.EmailContent;
 import ru.anykeyers.notificationservice.service.EmailService;
 
 /**
