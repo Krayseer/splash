@@ -5,9 +5,10 @@ import org.springframework.stereotype.Component;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 import ru.anykeyers.commonsapi.service.RemoteServicesService;
+import ru.anykeyers.configurationservice.domain.dto.ConfigurationRegisterRequest;
 import ru.anykeyers.configurationservice.domain.entity.Configuration;
-import ru.anykeyers.configurationservice.domain.ConfigurationRequest;
 
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -22,18 +23,15 @@ public class ConfigurationFactory {
     /**
      * Создать конфигурацию на основе данных из запроса
      *
-     * @param configurationRequest запрос с данными конфигурации
+     * @param registerRequest запрос с данными конфигурации
      */
-    public Configuration createConfiguration(String username, ConfigurationRequest configurationRequest) {
+    public Configuration createConfiguration(String username, ConfigurationRegisterRequest registerRequest) {
         return Configuration.builder()
                 .username(username)
-                .tin(configurationRequest.getTin())
-                .typeOrg(configurationRequest.getTypeOrg())
-                .email(configurationRequest.getEmail())
-                .name(configurationRequest.getName())
-                .description(configurationRequest.getDescription())
-                .phoneNumber(configurationRequest.getPhoneNumber())
-                .address(configurationRequest.getAddress())
+                .tin(registerRequest.getTin())
+                .typeOrganization(registerRequest.getTypeOrganization())
+                .email(registerRequest.getEmail())
+                .createdAt(Instant.now())
                 .build();
     }
 
@@ -48,7 +46,7 @@ public class ConfigurationFactory {
                 .id(configuration.getId())
                 .username(configuration.getUsername())
                 .tin(configuration.getTin())
-                .typeOrg(configuration.getTypeOrg())
+                .typeOrganization(configuration.getTypeOrganization().name())
                 .email(configuration.getEmail())
                 .name(configuration.getName())
                 .description(configuration.getDescription())

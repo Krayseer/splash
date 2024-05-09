@@ -1,4 +1,4 @@
-package ru.anykeyers.configurationservice.domain;
+package ru.anykeyers.configurationservice.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

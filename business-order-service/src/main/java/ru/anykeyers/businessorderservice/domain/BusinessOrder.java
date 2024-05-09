@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import lombok.*;
 
 /**
- *
+ * Бизнес заказ
  */
 @Entity
 @Getter
@@ -17,12 +17,21 @@ import lombok.*;
 @AllArgsConstructor
 public class BusinessOrder {
 
+    /**
+     * Идентификатор
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Идентификатор заказа
+     */
     private Long orderId;
 
+    /**
+     * Идентификатор работника
+     */
     private Long employeeId;
 
 }

@@ -5,7 +5,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
-import ru.anykeyers.configurationservice.domain.ConfigurationRequest;
+import ru.anykeyers.configurationservice.domain.dto.ConfigurationRegisterRequest;
+import ru.anykeyers.configurationservice.domain.dto.ConfigurationRequest;
 import ru.anykeyers.configurationservice.service.ConfigurationService;
 
 import java.util.List;
@@ -37,8 +38,14 @@ public class ConfigurationController {
 
     @PostMapping
     public void saveConfiguration(@AuthenticationPrincipal Jwt jwt,
-                                  @RequestBody ConfigurationRequest configurationRequest) {
-        configurationService.saveConfiguration(jwt.getSubject(), configurationRequest);
+                                  @RequestBody ConfigurationRegisterRequest registerRequest) {
+        configurationService.registerConfiguration(jwt.getSubject(), registerRequest);
+    }
+
+    @PutMapping
+    public void updateConfiguration(@AuthenticationPrincipal Jwt jwt,
+                                    @RequestBody ConfigurationRequest configurationRequest) {
+        configurationService.updateConfiguration(jwt.getSubject(), configurationRequest);
     }
 
 }

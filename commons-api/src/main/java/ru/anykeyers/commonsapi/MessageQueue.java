@@ -15,4 +15,9 @@ public final class MessageQueue {
      */
     public static final String INVITATION_APPLY = "invitation-apply";
 
+    /**
+     * Очередь назначения работника заказу
+     */
+    public static final String ORDER_EMPLOYEE_APPLY = "order-employee-apply";
+
 }

@@ -1,31 +1,17 @@
-package ru.anykeyers.configurationservice.domain;
+package ru.anykeyers.configurationservice.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.anykeyers.configurationservice.domain.TypeOrganization;
 
 /**
- * Запрос с данными для регистрации автомойки
+ * Запрос с данными об автомойке
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConfigurationRequest {
-
-    /**
-     * ИНН
-     */
-    private String tin;
-
-    /**
-     * Тип организации
-     */
-    private String typeOrg;
-
-    /**
-     * Почта
-     */
-    private String email;
 
     /**
      * Название автомойки

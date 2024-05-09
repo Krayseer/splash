@@ -1,7 +1,7 @@
 package ru.anykeyers.configurationservice.factory;
 
 import ru.anykeyers.commonsapi.domain.dto.BoxDTO;
-import ru.anykeyers.configurationservice.domain.BoxRequest;
+import ru.anykeyers.configurationservice.domain.dto.BoxRequest;
 import ru.anykeyers.configurationservice.domain.entity.Box;
 import ru.anykeyers.configurationservice.domain.entity.Configuration;
 

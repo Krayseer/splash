@@ -2,6 +2,7 @@ package ru.anykeyers.configurationservice.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ru.anykeyers.configurationservice.domain.TypeOrganization;
 
 import java.time.Instant;
 import java.util.List;
@@ -35,7 +36,8 @@ public class Configuration {
     /**
      * Тип организации
      */
-    private String typeOrg;
+    @Enumerated(EnumType.STRING)
+    private TypeOrganization typeOrganization;
 
     /**
      * Почта

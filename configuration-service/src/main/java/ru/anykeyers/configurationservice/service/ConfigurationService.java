@@ -1,7 +1,8 @@
 package ru.anykeyers.configurationservice.service;
 
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
-import ru.anykeyers.configurationservice.domain.ConfigurationRequest;
+import ru.anykeyers.configurationservice.domain.dto.ConfigurationRegisterRequest;
+import ru.anykeyers.configurationservice.domain.dto.ConfigurationRequest;
 
 import java.util.List;
 
@@ -30,11 +31,19 @@ public interface ConfigurationService {
     ConfigurationDTO getConfiguration(Long id);
 
     /**
-     * Сохранить автомойку
+     * Зарегистрировать автомойку
+     *
+     * @param username          имя пользователя хозяина автомойки
+     * @param registerRequest   данные для регистрации автомойки
+     */
+    void registerConfiguration(String username, ConfigurationRegisterRequest registerRequest);
+
+    /**
+     * Обновить данные об автомойке
      *
      * @param username              имя пользователя хозяина автомойки
-     * @param configurationRequest  данные для создания автомойки
+     * @param configurationRequest  данные об автомойке
      */
-    void saveConfiguration(String username, ConfigurationRequest configurationRequest);
+    void updateConfiguration(String username, ConfigurationRequest configurationRequest);
 
 }

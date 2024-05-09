@@ -14,4 +14,9 @@ public interface OrderService {
      */
     OrderDTO getOrder(Long id);
 
+    /**
+     * Обработать назначение работника заказу
+     */
+    void applyOrderEmployee(Long orderId);
+
 }

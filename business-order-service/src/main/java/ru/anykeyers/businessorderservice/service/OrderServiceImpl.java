@@ -1,10 +1,12 @@
 package ru.anykeyers.businessorderservice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.businessorderservice.BusinessOrderRepository;
 import ru.anykeyers.businessorderservice.domain.BusinessOrder;
 import ru.anykeyers.businessorderservice.domain.BusinessOrderRequest;
+import ru.anykeyers.commonsapi.MessageQueue;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.commonsapi.domain.dto.UserDTO;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
@@ -14,6 +16,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     private final RemoteUserService remoteUserService;
 
@@ -33,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
                 .employeeId(request.getEmployeeId())
                 .build();
         businessOrderRepository.save(businessOrder);
+        kafkaTemplate.send(MessageQueue.ORDER_EMPLOYEE_APPLY, String.valueOf(request.getOrderId()));
     }
 
 }

@@ -3,10 +3,11 @@ package ru.anykeyers.configurationservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.configurationservice.domain.dto.ConfigurationRegisterRequest;
 import ru.anykeyers.configurationservice.factory.ConfigurationFactory;
 import ru.anykeyers.configurationservice.repository.ConfigurationRepository;
 import ru.anykeyers.configurationservice.domain.entity.Configuration;
-import ru.anykeyers.configurationservice.domain.ConfigurationRequest;
+import ru.anykeyers.configurationservice.domain.dto.ConfigurationRequest;
 import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundException;
 import ru.anykeyers.configurationservice.exception.UserNotFoundConfigurationException;
 import ru.anykeyers.configurationservice.service.ConfigurationService;
@@ -49,8 +50,20 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     @Override
-    public void saveConfiguration(String username, ConfigurationRequest configurationRequest) {
-        Configuration configuration = configurationFactory.createConfiguration(username, configurationRequest);
+    public void registerConfiguration(String username, ConfigurationRegisterRequest registerRequest) {
+        Configuration configuration = configurationFactory.createConfiguration(username, registerRequest);
+        configurationRepository.save(configuration);
+    }
+
+    @Override
+    public void updateConfiguration(String username, ConfigurationRequest configurationRequest) {
+        Configuration configuration = configurationRepository.findByUsername(username).orElseThrow(
+                () -> new UserNotFoundConfigurationException(username)
+        );
+        configuration.setName(configurationRequest.getName());
+        configuration.setDescription(configurationRequest.getDescription());
+        configuration.setPhoneNumber(configurationRequest.getPhoneNumber());
+        configuration.setAddress(configurationRequest.getAddress());
         configurationRepository.save(configuration);
     }
 

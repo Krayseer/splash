@@ -31,7 +31,7 @@ public class ConfigurationDTO {
     /**
      * Тип организации
      */
-    private String typeOrg;
+    private String typeOrganization;
 
     /**
      * Почта
