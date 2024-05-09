@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
                 .email(userRequest.getEmail())
                 .phoneNumber(userRequest.getPhoneNumber())
                 .roleList(new ArrayList<>() {{ roleRepository.findByRoleCode("ROLE_USER"); }})
-                .photoUrl(userRequest.getPhotoUrl())
+                .photoUrl(null)
                 .createdAt(Instant.now())
                 .build();
         userRepository.save(user);

@@ -29,7 +29,7 @@ public class UserController {
         return userService.getUser(username);
     }
 
-    @GetMapping("/register")
+    @PostMapping
     public void saveUser(@RequestBody UserRequest userRequest) {
         userService.registerUser(userRequest);
     }

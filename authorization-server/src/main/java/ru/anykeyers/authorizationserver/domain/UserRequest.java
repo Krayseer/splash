@@ -44,9 +44,4 @@ public class UserRequest {
      */
     private String phoneNumber;
 
-    /**
-     * URL фотографии
-     */
-    private String photoUrl;
-
 }

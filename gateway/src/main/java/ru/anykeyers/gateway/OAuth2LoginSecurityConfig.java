@@ -2,6 +2,7 @@ package ru.anykeyers.gateway;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -21,8 +22,7 @@ public class OAuth2LoginSecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(authorize -> authorize
                         // Сервер авторизации
-                        .pathMatchers("/user").authenticated()
-                        .pathMatchers("/user/register").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/user").permitAll()
 
                         // Сервис конфигурирования автомоек
                         .pathMatchers("/configuration/**").permitAll()
