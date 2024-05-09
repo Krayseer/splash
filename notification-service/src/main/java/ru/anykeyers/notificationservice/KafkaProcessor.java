@@ -14,12 +14,14 @@ import ru.anykeyers.notificationservice.service.EmployeeService;
 import ru.anykeyers.notificationservice.service.OrderService;
 
 /**
- * Слушатель сообщений по Kafka
+ * Обработчик сообщений с Kafka
  */
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class KafkaMessageListener {
+public class KafkaProcessor {
+
+    private static final String GROUP_ID = "notification-group";
 
     private final ObjectMapper objectMapper;
 
@@ -31,14 +33,17 @@ public class KafkaMessageListener {
      * Слушатель создания заказов
      */
     @SneakyThrows
-    @KafkaListener(topics = MessageQueue.ORDER_CREATE, groupId = "account-group")
+    @KafkaListener(topics = MessageQueue.ORDER_CREATE, groupId = GROUP_ID)
     public void receiveOrderCreate(String orderMessage) {
         OrderDTO order = objectMapper.readValue(orderMessage, new TypeReference<>() {});
         orderService.notifyOrderCreate(order);
     }
 
+    /**
+     * Слушатель одобрения заявки работника
+     */
     @SneakyThrows
-    @KafkaListener(topics = MessageQueue.INVITATION_APPLY, groupId = "account-group")
+    @KafkaListener(topics = MessageQueue.INVITATION_APPLY, groupId = GROUP_ID)
     public void receiveApplyInvitation(String invitationMessage) {
         EmployeeDTO employee = objectMapper.readValue(invitationMessage, new TypeReference<>() {});
         employeeService.notifyEmployeeApply(employee);

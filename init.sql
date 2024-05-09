@@ -1,7 +1,11 @@
-CREATE DATABASE "configuration-db";
-CREATE DATABASE "order-db";
-CREATE DATABASE "service-db";
+CREATE DATABASE "configurations";
+CREATE DATABASE "orders";
+CREATE DATABASE "business-orders";
+CREATE DATABASE "services";
+CREATE DATABASE "statistics";
 
-GRANT ALL PRIVILEGES ON DATABASE "configuration-db" TO postgres;
-GRANT ALL PRIVILEGES ON DATABASE "order-db" TO postgres;
-GRANT ALL PRIVILEGES ON DATABASE "service-db" TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE "configurations" TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE "orders" TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE "business-orders" TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE "services" TO postgres;
+GRANT ALL PRIVILEGES ON DATABASE "statistics" TO postgres;

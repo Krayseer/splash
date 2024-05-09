@@ -33,6 +33,14 @@ spring:
           uri: http://localhost:${SERVICE_OF_SERVICES_PORT}
           predicates:
             Path=/service/**
+        - id: business-order-service
+          uri: http://localhost:${BUSINESS_ORDER_SERVICE_PORT}
+          predicates:
+            Path=/business-order/**
+        - id: statistics
+          uri: http://localhost:${STATISTICS_PORT}
+          predicates:
+            Path=/statistics/**
 
   security:
     oauth2:

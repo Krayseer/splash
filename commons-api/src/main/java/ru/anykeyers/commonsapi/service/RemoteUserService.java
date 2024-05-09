@@ -9,7 +9,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RemoteUserService {
 
-    private static final String URL = "http://localhost:8080/user";
+    private static final String URL = "http://localhost:8080";
 
     private final RestTemplate restTemplate;
 
@@ -29,7 +29,7 @@ public class RemoteUserService {
      * @param id идентификатор пользователя
      */
     public UserDTO getUser(Long id) {
-        String url = URL + "/id/" + id;
+        String url = URL + "user/id/" + id;
         return restTemplate.getForObject(url, UserDTO.class);
     }
 

@@ -7,6 +7,11 @@ import ru.anykeyers.commonsapi.domain.dto.EmployeeDTO;
  */
 public interface EmployeeService {
 
+    /**
+     * Создать уведомление о принятии работником пришглашения на работу
+     *
+     * @param employee работник
+     */
     void notifyEmployeeApply(EmployeeDTO employee);
 
 }

@@ -3,6 +3,7 @@ package ru.anykeyers.notificationservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,17 @@ public class SmtpEmailService implements EmailService {
 
     @Override
     public void sendMessage(EmailAddress emailAddress, EmailContent<?> emailContent) {
-        log.info("Send message to <{}> with content: {}", emailAddress, emailContent);
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(sender);
         message.setTo(emailAddress.getAddress());
         message.setSubject(emailContent.getSubject());
         message.setText((String) emailContent.getContent());
-        emailSender.send(message);
+        try {
+            emailSender.send(message);
+            log.info("Send message to <{}> with content: {}", emailAddress, emailContent);
+        } catch (MailAuthenticationException mailAuthenticationException) {
+            log.error("Failed to send message to <{}>", emailAddress);
+        }
     }
 
 }

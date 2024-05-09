@@ -1,4 +1,4 @@
-package ru.anykeyers.businessorderservice;
+package ru.anykeyers.businessorderservice.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

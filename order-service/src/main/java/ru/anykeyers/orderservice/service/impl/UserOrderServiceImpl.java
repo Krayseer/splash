@@ -3,6 +3,7 @@ package ru.anykeyers.orderservice.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.MessageQueue;
@@ -20,6 +21,7 @@ import ru.anykeyers.commonsapi.service.RemoteServicesService;
 import java.time.Instant;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserOrderServiceImpl implements UserOrderService {
@@ -54,6 +56,7 @@ public class UserOrderServiceImpl implements UserOrderService {
     @Override
     @SneakyThrows
     public OrderDTO saveOrder(String username, OrderRequest orderRequest) {
+        log.info("Processing order: {}", orderRequest);
         long duration = remoteServicesService.getServicesDuration(orderRequest.getServiceIds());
         if (orderRequest.getTime() == null) {
             orderRequest.setTime(Instant.now());
