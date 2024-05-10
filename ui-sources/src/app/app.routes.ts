@@ -6,6 +6,7 @@ import {MainPageComponent} from "./layout/main-page/main-page.component";
 import {OrderRegistrationComponent} from "./layout/order-registration/order-registration.component";
 import {AuthorizationComponent} from "./layout/authorization/authorization.component";
 import {CarWashRegistrationComponent} from "./layout/car-wash-registration/car-wash-registration.component";
+import {PartnerHeaderComponent} from "./partner-app/components/partner-header/partner-header.component";
 
 export const routes: Routes = [
   {path: 'header', component: HeaderComponent},
@@ -14,5 +15,6 @@ export const routes: Routes = [
   {path: 'main', component: MainPageComponent},
   {path: 'order', component: OrderRegistrationComponent},
   {path: 'auth', component: AuthorizationComponent},
-  {path: 'car-wash-reg', component: CarWashRegistrationComponent}
+  {path: 'car-wash-reg', component: CarWashRegistrationComponent},
+  {path: 'partner-header', component: PartnerHeaderComponent}
 ];

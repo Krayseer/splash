@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {HttpClient} from "@angular/common/http";
+import {RegisterUser} from "../../models/register-user";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-registration',
@@ -17,32 +20,47 @@ import {HttpClient} from "@angular/common/http";
 export class RegistrationComponent {
 
   registrationForm: FormGroup;
+  user!: RegisterUser;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar,
+              private router: Router) {
     this.registrationForm = this.fb.group({
       name: ['', Validators.required],
       surname: ['', Validators.required],
-      username: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', Validators.required],
-      password: ['', Validators.required]
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['', Validators.required]
     });
+  }
+
+  redirectToLogin() {
+    this.router.navigate(["/auth"]);
   }
 
   onSubmit() {
     if (this.registrationForm.valid) {
+      // Получаем данные из формы
       const userData = this.registrationForm.value;
-      this.http.post<any>('api/user/register', userData).subscribe(
-        response => {
-          console.log('Регистрация успешна!', response);
-          // Дополнительные действия после успешной регистрации, например, перенаправление на другую страницу
+
+      // Присваиваем полученные данные переменной user
+      this.user = userData;
+
+      // Отправляем запрос на сервер с данными пользователя
+      this.http.post('api/user', userData).subscribe(
+        (response: any) => {
+          if (response == null) {
+            this.snackBar.open('Пользователь с такими данными уже существует', 'Закрыть', {
+              duration: 3000,
+            });
+          }
         },
-        error => {
-          console.error('Ошибка регистрации:', error);
+        (error: any) => {
+          // Произошла ошибка при выполнении запроса
+          console.error('Ошибка запроса:', error);
           // Дополнительные действия в случае ошибки регистрации
         }
       );
-    } else {
-      console.log('Форма невалидна, данные не отправлены');
     }
   }
 }
