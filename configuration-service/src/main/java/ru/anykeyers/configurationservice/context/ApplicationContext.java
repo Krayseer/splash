@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
 import ru.anykeyers.commonsapi.service.RemoteServicesService;
+import ru.anykeyers.commonsapi.service.RemoteStorageService;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
 
 /**
@@ -32,6 +33,11 @@ public class ApplicationContext {
     @Bean
     public RemoteServicesService remoteServicesService(RestTemplate restTemplate) {
         return new RemoteServicesService(restTemplate);
+    }
+
+    @Bean
+    public RemoteStorageService remoteStorageService(RestTemplate restTemplate) {
+        return new RemoteStorageService(restTemplate);
     }
 
 }

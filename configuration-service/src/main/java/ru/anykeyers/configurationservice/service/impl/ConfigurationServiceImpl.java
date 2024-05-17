@@ -1,8 +1,12 @@
 package ru.anykeyers.configurationservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.commonsapi.service.RemoteStorageService;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationRegisterRequest;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationMapper;
 import ru.anykeyers.configurationservice.repository.ConfigurationRepository;
@@ -12,18 +16,22 @@ import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundExceptio
 import ru.anykeyers.configurationservice.exception.UserNotFoundConfigurationException;
 import ru.anykeyers.configurationservice.service.ConfigurationService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Реализация сервиса обработки конфигураций
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ConfigurationServiceImpl implements ConfigurationService {
 
-    private final ConfigurationRepository configurationRepository;
-
     private final ConfigurationMapper configurationMapper;
+
+    private final RemoteStorageService remoteStorageService;
+
+    private final ConfigurationRepository configurationRepository;
 
     @Override
     public List<ConfigurationDTO> getAllConfigurations() {
@@ -64,7 +72,24 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         configuration.setDescription(configurationUpdateRequest.getDescription());
         configuration.setPhoneNumber(configurationUpdateRequest.getPhoneNumber());
         configuration.setAddress(configurationUpdateRequest.getAddress());
+        if (configurationUpdateRequest.getPhotos() != null) {
+            configuration.addPhotoUrls(uploadPhotos(configurationUpdateRequest.getPhotos()));
+        }
         configurationRepository.save(configuration);
+    }
+
+    private List<String> uploadPhotos(List<MultipartFile> photos) {
+        List<String> photoUrls = new ArrayList<>();
+        ResponseEntity<List<String>> photoUrlsResponse = remoteStorageService.uploadPhotos(photos);
+        if (photoUrlsResponse.getStatusCode().is2xxSuccessful()) {
+            List<String> responseBody = photoUrlsResponse.getBody();
+            if (responseBody != null) {
+                photoUrls.addAll(responseBody);
+            }
+        } else {
+            log.error("Cannot upload photos. Upload service returned status {}", photoUrlsResponse.getStatusCode());
+        }
+        return photoUrls;
     }
 
 }

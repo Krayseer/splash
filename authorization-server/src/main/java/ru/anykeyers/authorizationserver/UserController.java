@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.authorizationserver.domain.UserRequest;
 import ru.anykeyers.authorizationserver.service.UserService;
 import ru.anykeyers.commonsapi.domain.dto.UserDTO;
@@ -47,6 +48,11 @@ public class UserController {
     @PostMapping("/roles")
     public void setUserRoles(@RequestParam("userId") Long userId, @RequestBody List<String> roles) {
         userService.setUserRoles(userId, roles);
+    }
+
+    @PostMapping("/photo")
+    public void addPhoto(@RequestParam("photo") MultipartFile photo, Principal principal) {
+        userService.addPhoto(principal.getName(), photo);
     }
 
 }

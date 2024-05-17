@@ -14,7 +14,12 @@ import org.springframework.stereotype.Service;
 import ru.anykeyers.storageservice.YandexStorageConfig;
 
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 /**
  * Сервис обработки фотографий Yandex Cloud
@@ -26,6 +31,8 @@ public class YandexPhotoService implements PhotoService {
 
     private final YandexStorageConfig storageConfig;
 
+    private final ExecutorService executorService;
+
     @Override
     @SneakyThrows
     public String uploadPhoto(byte[] photoBytes) {
@@ -36,8 +43,27 @@ public class YandexPhotoService implements PhotoService {
         metadata.setContentLength(photoBytes.length);
         ByteArrayInputStream photoInputStream = new ByteArrayInputStream(photoBytes);
         s3Client.putObject(bucketName, photoName, photoInputStream, metadata);
-        log.info("Upload Service. Added file: {} to bucket: {}", photoName, bucketName);
+        log.info("Upload photo: {} to bucket: {}", photoName, bucketName);
         return s3Client.getUrl(bucketName, photoName).toExternalForm();
+    }
+
+    @Override
+    public List<String> uploadPhotos(List<byte[]> photoBytesCollection) {
+        List<String> urls = new ArrayList<>();
+        List<Future<String>> futures = new ArrayList<>();
+        for (byte[] photoBytes : photoBytesCollection) {
+            futures.add(executorService.submit(() -> uploadPhoto(photoBytes)));
+        }
+        for (Future<String> future : futures) {
+            try {
+                String url = future.get();
+                urls.add(url);
+            } catch (InterruptedException | ExecutionException e) {
+                log.error("One of the thread ended with exception. Reason: {}", e.getMessage());
+                throw new RuntimeException(e);
+            }
+        }
+        return urls;
     }
 
     private AmazonS3 createAmazonS3Client(String accessKeyId, String secretAccessKey) {

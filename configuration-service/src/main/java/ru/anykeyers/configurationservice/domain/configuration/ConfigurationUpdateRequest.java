@@ -3,6 +3,9 @@ package ru.anykeyers.configurationservice.domain.configuration;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * Запрос с данными об автомойке
@@ -31,5 +34,10 @@ public class ConfigurationUpdateRequest {
      * Адрес
      */
     private String address;
+
+    /**
+     * Список фотографий
+     */
+    private List<MultipartFile> photos;
 
 }

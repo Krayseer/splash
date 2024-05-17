@@ -71,9 +71,21 @@ public class Configuration {
     @OneToMany(mappedBy = "configuration", cascade = CascadeType.ALL)
     private List<Box> boxes;
 
+    @ElementCollection
+    @CollectionTable(
+            name = "configuration_photo_urls",
+            joinColumns = @JoinColumn(name = "configuration_id")
+    )
+    @Column(name = "photo_url")
+    private List<String> photoUrls;
+
     /**
      * Время регистрации автомойки
      */
     private Instant createdAt;
+
+    public void addPhotoUrls(List<String> photoUrls) {
+        photoUrls.addAll(photoUrls);
+    }
 
 }
