@@ -1,16 +1,14 @@
-package ru.anykeyers.configurationservice.factory;
+package ru.anykeyers.configurationservice.domain.box;
 
 import ru.anykeyers.commonsapi.domain.dto.BoxDTO;
-import ru.anykeyers.configurationservice.domain.dto.BoxRequest;
-import ru.anykeyers.configurationservice.domain.entity.Box;
-import ru.anykeyers.configurationservice.domain.entity.Configuration;
+import ru.anykeyers.configurationservice.domain.configuration.Configuration;
 
 import java.util.List;
 
 /**
  * Фабрика по созданию боксов
  */
-public final class BoxFactory {
+public final class BoxMapper {
 
     /**
      * Создать бокс
@@ -31,7 +29,7 @@ public final class BoxFactory {
      * @param boxes список боксов
      */
     public static List<BoxDTO> createResponse(List<Box> boxes) {
-        return boxes.stream().map(BoxFactory::createResponse).toList();
+        return boxes.stream().map(BoxMapper::createResponse).toList();
     }
 
     /**

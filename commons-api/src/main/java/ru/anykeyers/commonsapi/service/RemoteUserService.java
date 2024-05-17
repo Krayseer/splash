@@ -6,10 +6,13 @@ import ru.anykeyers.commonsapi.domain.dto.UserDTO;
 
 import java.util.List;
 
+/**
+ * Удаленный сервис обработки пользователей
+ */
 @RequiredArgsConstructor
 public class RemoteUserService {
 
-    private static final String URL = "http://localhost:8080";
+    private static final String URL = "http://localhost:8080"; //TODO: В КОНСТРУКТОР
 
     private final RestTemplate restTemplate;
 
@@ -33,13 +36,7 @@ public class RemoteUserService {
         return restTemplate.getForObject(url, UserDTO.class);
     }
 
-    /**
-     * Получить информацию о пользователях
-     *
-     * @param userIds идентификаторы пользователей
-     */
-    public List<UserDTO> getUsers(List<Long> userIds) {
-        return null;
+    public List<UserDTO> getUsers(List<Long> employeesIds) {
+        return null; //TODO: РЕАЛИЗОВАТЬ
     }
-
 }

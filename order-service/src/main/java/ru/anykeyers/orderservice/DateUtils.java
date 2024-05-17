@@ -6,9 +6,9 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Маппер дат
+ * Утилитарный класс для обработки времени
  */
-public final class DateMapper {
+public final class DateUtils {
 
     /**
      * Форматировать дату вида "dd-MM-yyyy" в {@link Instant}

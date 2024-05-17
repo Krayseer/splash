@@ -1,12 +1,11 @@
-package ru.anykeyers.configurationservice.factory;
+package ru.anykeyers.configurationservice.domain.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 import ru.anykeyers.commonsapi.service.RemoteServicesService;
-import ru.anykeyers.configurationservice.domain.dto.ConfigurationRegisterRequest;
-import ru.anykeyers.configurationservice.domain.entity.Configuration;
+import ru.anykeyers.configurationservice.domain.box.BoxMapper;
 
 import java.time.Instant;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
  */
 @Component
 @RequiredArgsConstructor
-public class ConfigurationFactory {
+public class ConfigurationMapper {
 
     private final RemoteServicesService remoteServicesService;
 
@@ -53,7 +52,7 @@ public class ConfigurationFactory {
                 .phoneNumber(configuration.getPhoneNumber())
                 .address(configuration.getAddress())
                 .services(services)
-                .boxes(BoxFactory.createResponse(configuration.getBoxes()))
+                .boxes(BoxMapper.createResponse(configuration.getBoxes()))
                 .createdAt(configuration.getCreatedAt().toString())
                 .build();
     }
@@ -72,7 +71,7 @@ public class ConfigurationFactory {
                 .address(configuration.getAddress())
                 .description(configuration.getDescription())
                 .services(services)
-                .boxes(BoxFactory.createResponse(configuration.getBoxes()))
+                .boxes(BoxMapper.createResponse(configuration.getBoxes()))
                 .build();
     }
 

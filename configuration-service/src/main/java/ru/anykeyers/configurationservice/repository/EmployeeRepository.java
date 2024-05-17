@@ -2,8 +2,8 @@ package ru.anykeyers.configurationservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.anykeyers.configurationservice.domain.entity.Configuration;
-import ru.anykeyers.configurationservice.domain.entity.Employee;
+import ru.anykeyers.configurationservice.domain.configuration.Configuration;
+import ru.anykeyers.configurationservice.domain.Employee;
 
 import java.util.List;
 

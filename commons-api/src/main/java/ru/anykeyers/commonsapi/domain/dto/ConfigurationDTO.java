@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Данные о конфигурации автомойки
+ */
 @Data
 @Builder
 @NoArgsConstructor

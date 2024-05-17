@@ -1,9 +1,8 @@
-package ru.anykeyers.configurationservice.domain.dto;
+package ru.anykeyers.configurationservice.domain.configuration;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.anykeyers.configurationservice.domain.TypeOrganization;
 
 /**
  * Запрос с данными об автомойке
@@ -11,7 +10,7 @@ import ru.anykeyers.configurationservice.domain.TypeOrganization;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConfigurationRequest {
+public class ConfigurationUpdateRequest {
 
     /**
      * Название автомойки

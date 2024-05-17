@@ -2,7 +2,7 @@ package ru.anykeyers.serviceofservices.processor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.serviceofservices.ServiceFactory;
+import ru.anykeyers.serviceofservices.ServiceMapper;
 import ru.anykeyers.serviceofservices.ServiceRepository;
 import ru.anykeyers.serviceofservices.domain.ServiceEntity;
 import ru.anykeyers.serviceofservices.domain.ServiceRequest;
@@ -21,9 +21,7 @@ public class ServiceProcessorImpl implements ServiceProcessor {
 
     @Override
     public List<ServiceDTO> getServices(List<Long> serviceIds) {
-        return serviceRepository.findByIdIn(serviceIds).stream()
-                .map(ServiceFactory::createResponse)
-                .toList();
+        return serviceRepository.findByIdIn(serviceIds).stream().map(ServiceMapper::createDTO).toList();
     }
 
     @Override
@@ -34,14 +32,12 @@ public class ServiceProcessorImpl implements ServiceProcessor {
 
     @Override
     public List<ServiceDTO> getAllServices(Long carWashId) {
-        return serviceRepository.findByCarWashId(carWashId).stream()
-                .map(ServiceFactory::createResponse)
-                .toList();
+        return serviceRepository.findByCarWashId(carWashId).stream().map(ServiceMapper::createDTO).toList();
     }
 
     @Override
     public void saveService(Long carWashId, ServiceRequest serviceRequest) {
-        ServiceEntity service = ServiceFactory.createService(carWashId, serviceRequest);
+        ServiceEntity service = ServiceMapper.createService(carWashId, serviceRequest);
         serviceRepository.save(service);
     }
 

@@ -3,9 +3,8 @@ package ru.anykeyers.orderservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.orderservice.OrderRepository;
-import ru.anykeyers.orderservice.domain.Order;
+import ru.anykeyers.orderservice.domain.order.Order;
 import ru.anykeyers.orderservice.domain.TimeRange;
-import ru.anykeyers.orderservice.domain.dto.TimeRangeDTO;
 import ru.anykeyers.orderservice.service.BoxService;
 import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
 
@@ -44,15 +43,18 @@ public class BoxServiceImpl implements BoxService {
     }
 
     @Override
-    public List<TimeRangeDTO> getOrderFreeTimes(Long carWashId, Instant time) {
+    public List<TimeRange> getOrderFreeTimes(Long carWashId, Instant time) {
         List<Long> boxIds = remoteConfigurationService.getBoxIds(carWashId);
         Instant endTime = time.plus(1, ChronoUnit.DAYS);
         Map<Long, List<TimeRange>> orderDurations = getOrdersByBoxId(boxIds, time, endTime);
-        List<TimeRange> timeRanges = new ArrayList<>();
-        orderDurations.forEach((key, value) -> timeRanges.addAll(
-                findFreeTimeRanges(value, time, time.plusSeconds(24*60*60))
-        ));
-        return timeRanges.stream().map(TimeRangeDTO::new).toList();
+        return orderDurations.values().stream()
+                .flatMap(value -> findFreeTimeRanges(value, time, time.plusSeconds(24 * 60 * 60)).stream())
+                .collect(Collectors.toList()); // TODO: ПРОТЕСТИТЬ
+//        List<TimeRange> timeRanges = new ArrayList<>();
+//        orderDurations.forEach((key, value) -> timeRanges.addAll(
+//                findFreeTimeRanges(value, time, time.plusSeconds(24*60*60))
+//        ));
+//        return timeRanges;
     }
 
     private Map<Long, List<TimeRange>> getOrdersByBoxId(List<Long> boxIds, Instant start, Instant end) {
@@ -61,10 +63,7 @@ public class BoxServiceImpl implements BoxService {
                 .filter(o -> o.getEndTime().isBefore(end))
                 .toList();
         Map<Long, List<TimeRange>> ordersByBoxId = boxIds.stream()
-                .collect(Collectors.toMap(
-                        boxId -> boxId,
-                        orderList -> new ArrayList<>()
-                ));
+                .collect(Collectors.toMap(boxId -> boxId, orderList -> new ArrayList<>()));
         orders.forEach(order ->
                 ordersByBoxId.get(order.getBoxId()).add(new TimeRange(order.getStartTime(), order.getEndTime())));
         return ordersByBoxId;

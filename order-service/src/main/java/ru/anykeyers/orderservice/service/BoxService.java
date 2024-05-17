@@ -1,7 +1,6 @@
 package ru.anykeyers.orderservice.service;
 
 import ru.anykeyers.orderservice.domain.TimeRange;
-import ru.anykeyers.orderservice.domain.dto.TimeRangeDTO;
 
 import java.time.Instant;
 import java.util.List;
@@ -14,8 +13,8 @@ public interface BoxService {
     /**
      * Получить идентификатор бокса для заказа, в зависимости от периода заказа
      *
-     * @param carWashId     идентификатор автомойки
-     * @param timeRange    период заказа
+     * @param carWashId идентификатор автомойки
+     * @param timeRange период заказа
      */
     Long getBoxForOrder(Long carWashId, TimeRange timeRange);
 
@@ -25,5 +24,5 @@ public interface BoxService {
      * @param carWashId идентификатор автомойки
      * @param date      дата
      */
-    List<TimeRangeDTO> getOrderFreeTimes(Long carWashId, Instant date);
+    List<TimeRange> getOrderFreeTimes(Long carWashId, Instant date);
 }

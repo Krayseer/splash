@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.anykeyers.commonsapi.domain.PaymentType;
-import ru.anykeyers.commonsapi.domain.State;
+import ru.anykeyers.commonsapi.domain.OrderState;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class OrderDTO {
     /**
      * Статус
      */
-    private State status;
+    private OrderState status;
 
     /**
      * Список услуг

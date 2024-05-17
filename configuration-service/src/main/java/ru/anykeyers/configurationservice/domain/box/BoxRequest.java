@@ -1,4 +1,4 @@
-package ru.anykeyers.configurationservice.domain.dto;
+package ru.anykeyers.configurationservice.domain.box;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BoxRequest {
 
+    /**
+     * Название
+     */
     private String name;
 
 }

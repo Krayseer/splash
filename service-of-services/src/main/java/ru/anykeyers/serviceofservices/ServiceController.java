@@ -6,6 +6,7 @@ import ru.anykeyers.serviceofservices.domain.ServiceRequest;
 import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 import ru.anykeyers.serviceofservices.processor.ServiceProcessor;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,13 +20,13 @@ public class ServiceController {
     private final ServiceProcessor serviceProcessor;
 
     @GetMapping
-    public List<ServiceDTO> getServices(@RequestParam("ids") String serviceIds) {
-        return serviceProcessor.getServices(Mapper.parseFromString(serviceIds));
+    public List<ServiceDTO> getServices(@RequestParam("service-ids") Long[] serviceIds) {
+        return serviceProcessor.getServices(Arrays.asList(serviceIds));
     }
 
     @GetMapping("/duration")
-    public long getServicesDuration(@RequestParam("ids") String serviceIds) {
-        return serviceProcessor.getServicesDuration(Mapper.parseFromString(serviceIds));
+    public long getServicesDuration(@RequestParam("service-ids") Long[] serviceIds) {
+        return serviceProcessor.getServicesDuration(Arrays.asList(serviceIds));
     }
 
     @GetMapping("/{carWashId}")
@@ -34,8 +35,7 @@ public class ServiceController {
     }
 
     @PostMapping("/{carWashId}")
-    public void saveService(@PathVariable Long carWashId,
-                            @RequestBody ServiceRequest serviceRequest) {
+    public void saveService(@PathVariable Long carWashId, @RequestBody ServiceRequest serviceRequest) {
         serviceProcessor.saveService(carWashId, serviceRequest);
     }
 

@@ -10,6 +10,9 @@ import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
 import ru.anykeyers.commonsapi.service.RemoteServicesService;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Контекст приложения
  */
@@ -20,6 +23,11 @@ public class ApplicationContext {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    @Bean
+    public ExecutorService executorService() {
+        return Executors.newVirtualThreadPerTaskExecutor();
     }
 
     @Bean

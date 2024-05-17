@@ -1,10 +1,11 @@
-package ru.anykeyers.configurationservice.domain.entity;
+package ru.anykeyers.configurationservice.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ru.anykeyers.configurationservice.domain.configuration.Configuration;
 
 /**
- * Бокс
+ * Работник
  */
 @Getter
 @Setter
@@ -12,23 +13,23 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "BOX")
-public class Box {
+public class Employee {
 
     /**
      * Идентификатор
      */
     @Id
-    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
-     * Название
+     * Идентификатор пользователя
      */
-    @Column(name = "NAME")
-    private String name;
+    private Long userId;
 
+    /**
+     * Автомойка, которой принадлежнит работник
+     */
     @ManyToOne
     @JoinColumn(name = "CONFIGURATION_ID")
     private Configuration configuration;

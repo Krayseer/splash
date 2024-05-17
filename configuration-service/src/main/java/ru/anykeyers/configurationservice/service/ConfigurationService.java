@@ -1,8 +1,8 @@
 package ru.anykeyers.configurationservice.service;
 
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
-import ru.anykeyers.configurationservice.domain.dto.ConfigurationRegisterRequest;
-import ru.anykeyers.configurationservice.domain.dto.ConfigurationRequest;
+import ru.anykeyers.configurationservice.domain.configuration.ConfigurationRegisterRequest;
+import ru.anykeyers.configurationservice.domain.configuration.ConfigurationUpdateRequest;
 
 import java.util.List;
 
@@ -42,8 +42,8 @@ public interface ConfigurationService {
      * Обновить данные об автомойке
      *
      * @param username              имя пользователя хозяина автомойки
-     * @param configurationRequest  данные об автомойке
+     * @param configurationUpdateRequest  данные об автомойке
      */
-    void updateConfiguration(String username, ConfigurationRequest configurationRequest);
+    void updateConfiguration(String username, ConfigurationUpdateRequest configurationUpdateRequest);
 
 }

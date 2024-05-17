@@ -5,6 +5,7 @@ import org.springframework.web.client.RestTemplate;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RemoteConfigurationService {
 
-    private static final String URL = "http://localhost:8052/";
+    private static final String URL = "http://localhost:8052/"; //TODO: В КОНСТРУКТОР
 
     private final RestTemplate restTemplate;
 
@@ -33,7 +34,7 @@ public class RemoteConfigurationService {
      */
     public List<Long> getBoxIds(Long id) {
         Long[] ids = restTemplate.getForObject(URL + "box/" + id + "/ids", Long[].class);
-        assert ids != null;
-        return Arrays.stream(ids).toList();
+        return ids == null ? Collections.emptyList() : Arrays.stream(ids).toList();
     }
+
 }

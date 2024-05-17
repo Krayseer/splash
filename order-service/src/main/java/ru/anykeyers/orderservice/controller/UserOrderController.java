@@ -5,8 +5,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import ru.anykeyers.orderservice.domain.constant.ControllerName;
-import ru.anykeyers.orderservice.domain.dto.OrderRequest;
+import ru.anykeyers.orderservice.domain.ControllerName;
+import ru.anykeyers.orderservice.domain.order.OrderRequest;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.orderservice.service.UserOrderService;
 

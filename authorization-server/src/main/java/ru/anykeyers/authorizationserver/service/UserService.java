@@ -1,7 +1,6 @@
 package ru.anykeyers.authorizationserver.service;
 
 import ru.anykeyers.authorizationserver.domain.UserRequest;
-import ru.anykeyers.authorizationserver.domain.entity.Role;
 import ru.anykeyers.commonsapi.domain.dto.UserDTO;
 
 import java.util.List;

@@ -38,15 +38,13 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employee  работник
      */
     private void notifyOwner(UserDTO owner, UserDTO employee) {
-        EmailContent<String> content = new EmailContent<>(owner.getEmail(),
-                String.format("""
+        String message = String.format("""
                         У вас новый работник!
                         Имя: %s
                         Фамилия: %s
                         Роли: %s
-                        """, employee.getName(), employee.getUsername(), employee.getRoles())
-        );
-        emailService.sendMessage(new EmailAddress(owner.getEmail()), content);
+                        """, employee.getName(), employee.getUsername(), employee.getRoles());
+        emailService.sendMessage(new EmailAddress(owner.getEmail()), new EmailContent<>(owner.getEmail(), message));
     }
 
     /**
@@ -56,14 +54,14 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param configuration автомойка
      */
     private void notifyEmployee(UserDTO employee, ConfigurationDTO configuration) {
-        EmailContent<String> content = new EmailContent<>(employee.getEmail(),
-                String.format("""
+        String message = String.format("""
                         Поздравляем, вы стали работником автомойки!
                         Автомойка: %s
                         Адрес: %s
-                        """, configuration.getName(), configuration.getAddress())
+                        """, configuration.getName(), configuration.getAddress());
+        emailService.sendMessage(
+                new EmailAddress(employee.getEmail()), new EmailContent<>(employee.getEmail(), message)
         );
-        emailService.sendMessage(new EmailAddress(employee.getEmail()), content);
     }
 
 }

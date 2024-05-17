@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PostMapping("/set-roles")
+    @PostMapping("/roles")
     public void setUserRoles(@RequestParam("userId") Long userId, @RequestBody List<String> roles) {
         userService.setUserRoles(userId, roles);
     }

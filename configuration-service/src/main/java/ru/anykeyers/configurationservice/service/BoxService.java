@@ -1,7 +1,7 @@
 package ru.anykeyers.configurationservice.service;
 
 import ru.anykeyers.commonsapi.domain.dto.BoxDTO;
-import ru.anykeyers.configurationservice.domain.dto.BoxRequest;
+import ru.anykeyers.configurationservice.domain.box.BoxRequest;
 
 import java.util.List;
 
@@ -17,6 +17,11 @@ public interface BoxService {
      */
     List<BoxDTO> getCarWashBoxes(Long carWashId);
 
+    /**
+     * Получить список идентификаторов боксов автомойки
+     *
+     * @param carWashId идентификатор автомойки
+     */
     List<Long> getCarWashBoxesIds(Long carWashId);
 
     /**

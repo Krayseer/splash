@@ -29,15 +29,13 @@ public class OrderServiceImpl implements OrderService {
     public void notifyOrderCreate(OrderDTO order) {
         UserDTO user = remoteUserService.getUser(order.getUsername());
         ConfigurationDTO configurationDTO = remoteConfigurationService.getConfiguration(order.getCarWashId());
-        EmailContent<String> content = new EmailContent<>(user.getEmail(),
-                String.format("""
+        String message = String.format("""
                         Ваш заказ успешно принят.
                         Автомойка: %s
                         Бокс: %s
                         Время: %s
-                        """, configurationDTO.getName(), order.getBoxId(), order.getStartTime())
-        );
-        emailService.sendMessage(new EmailAddress(user.getEmail()), content);
+                        """, configurationDTO.getName(), order.getBoxId(), order.getStartTime());
+        emailService.sendMessage(new EmailAddress(user.getEmail()), new EmailContent<>(user.getEmail(), message));
     }
 
 }

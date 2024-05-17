@@ -4,8 +4,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-import ru.anykeyers.orderservice.domain.Order;
-import ru.anykeyers.commonsapi.domain.State;
+import ru.anykeyers.orderservice.domain.order.Order;
+import ru.anykeyers.commonsapi.domain.OrderState;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ public interface OrderRepository extends JpaRepository<Order, Long>, PagingAndSo
     /**
      * Получить список заказов по статусу
      *
-     * @param state     статус заказа
+     * @param orderState     статус заказа
      * @param pageable  настройка пагинации
      */
-    List<Order> findByStatus(State state, Pageable pageable);
+    List<Order> findByStatus(OrderState orderState, Pageable pageable);
 
     /**
      * Получить список заказов пользователя по статусу
@@ -29,15 +29,15 @@ public interface OrderRepository extends JpaRepository<Order, Long>, PagingAndSo
      * @param username  имя пользователя
      * @param status    статус заказа
      */
-    List<Order> findByUsernameAndStatus(String username, State status);
+    List<Order> findByUsernameAndStatus(String username, OrderState status);
 
     /**
      * Получить список заказов пользователя по списку статусов
      *
      * @param username  имя пользователя
-     * @param states    список состояний
+     * @param orderStates    список состояний
      */
-    List<Order> findByUsernameAndStatusIn(String username, List<State> states);
+    List<Order> findByUsernameAndStatusIn(String username, List<OrderState> orderStates);
 
     /**
      * Получить список заказов по идентификаторам боксов
@@ -52,5 +52,5 @@ public interface OrderRepository extends JpaRepository<Order, Long>, PagingAndSo
      * @param carWashId идентификатор автомойки
      * @param status    статус заказа
      */
-    int countByCarWashIdAndStatus(Long carWashId, State status);
+    int countByCarWashIdAndStatus(Long carWashId, OrderState status);
 }

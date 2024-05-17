@@ -9,8 +9,8 @@ import ru.anykeyers.commonsapi.MessageQueue;
 import ru.anykeyers.commonsapi.domain.dto.EmployeeDTO;
 import ru.anykeyers.commonsapi.domain.dto.UserDTO;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
-import ru.anykeyers.configurationservice.domain.entity.Configuration;
-import ru.anykeyers.configurationservice.domain.entity.Employee;
+import ru.anykeyers.configurationservice.domain.configuration.Configuration;
+import ru.anykeyers.configurationservice.domain.Employee;
 import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundException;
 import ru.anykeyers.configurationservice.repository.ConfigurationRepository;
 import ru.anykeyers.configurationservice.repository.EmployeeRepository;
@@ -18,6 +18,9 @@ import ru.anykeyers.configurationservice.service.EmployeeService;
 
 import java.util.List;
 
+/**
+ * Реализация сервиса обработки работников
+ */
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -54,11 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .configuration(configuration)
                 .build();
         employeeRepository.save(employee);
-        kafkaTemplate.send(MessageQueue.INVITATION_APPLY, objectMapper.writeValueAsString(createResponse(employee)));
+        EmployeeDTO employeeDTO = new EmployeeDTO(employee.getUserId(), employee.getConfiguration().getId());
+        kafkaTemplate.send(MessageQueue.INVITATION_APPLY, objectMapper.writeValueAsString(employeeDTO));
     }
-
-    private EmployeeDTO createResponse(Employee employee) {
-        return new EmployeeDTO(employee.getUserId(), employee.getConfiguration().getId());
-    }
-
 }

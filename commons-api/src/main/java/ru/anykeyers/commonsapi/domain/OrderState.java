@@ -1,9 +1,9 @@
 package ru.anykeyers.commonsapi.domain;
 
 /**
- * Статус
+ * Состояние заказа
  */
-public enum State {
+public enum OrderState {
 
     /**
      * Ожидает одобрения

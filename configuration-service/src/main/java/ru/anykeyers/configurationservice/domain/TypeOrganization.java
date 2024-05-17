@@ -5,6 +5,13 @@ package ru.anykeyers.configurationservice.domain;
  */
 public enum TypeOrganization {
 
-    OOO, IP
+    /**
+     * ООО
+     */
+    OOO,
+    /**
+     * ИП
+     */
+    IP
 
 }

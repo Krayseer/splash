@@ -2,9 +2,9 @@ package ru.anykeyers.orderservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.anykeyers.orderservice.DateMapper;
-import ru.anykeyers.orderservice.domain.dto.TimeRangeDTO;
-import ru.anykeyers.orderservice.domain.constant.ControllerName;
+import ru.anykeyers.orderservice.DateUtils;
+import ru.anykeyers.orderservice.domain.TimeRange;
+import ru.anykeyers.orderservice.domain.ControllerName;
 import ru.anykeyers.orderservice.service.BoxService;
 import ru.anykeyers.orderservice.service.CarWashOrderService;
 
@@ -20,9 +20,9 @@ public class CarWashOrderController {
     private final BoxService boxService;
 
     @GetMapping("/free-times")
-    public List<TimeRangeDTO> getOrderFreeTimes(@RequestParam("id") Long carWashId,
-                                                @RequestParam("date") String date) {
-        return boxService.getOrderFreeTimes(carWashId, DateMapper.formatDate(date));
+    public List<TimeRange> getOrderFreeTimes(@RequestParam("id") Long carWashId,
+                                             @RequestParam("date") String date) {
+        return boxService.getOrderFreeTimes(carWashId, DateUtils.formatDate(date));
     }
 
     @GetMapping("/active")

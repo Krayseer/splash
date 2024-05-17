@@ -19,7 +19,7 @@ import ru.anykeyers.notificationservice.service.OrderService;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class KafkaProcessor {
+public class KafkaProcessor { //TODO: УВЕДОМЛЕНИЯ ДОЛЖНЫ СОХРАНЯТЬСЯ В БД
 
     private static final String GROUP_ID = "notification-group";
 

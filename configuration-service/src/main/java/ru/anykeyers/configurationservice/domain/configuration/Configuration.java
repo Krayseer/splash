@@ -1,12 +1,16 @@
-package ru.anykeyers.configurationservice.domain.entity;
+package ru.anykeyers.configurationservice.domain.configuration;
 
 import jakarta.persistence.*;
 import lombok.*;
 import ru.anykeyers.configurationservice.domain.TypeOrganization;
+import ru.anykeyers.configurationservice.domain.box.Box;
 
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * Конфигурация автомойки
+ */
 @Getter
 @Setter
 @Entity

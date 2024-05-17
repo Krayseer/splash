@@ -1,9 +1,9 @@
-package ru.anykeyers.orderservice.domain;
+package ru.anykeyers.orderservice.domain.order;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ru.anykeyers.commonsapi.domain.OrderState;
 import ru.anykeyers.commonsapi.domain.PaymentType;
-import ru.anykeyers.commonsapi.domain.State;
 
 import java.time.Instant;
 import java.util.List;
@@ -46,7 +46,7 @@ public class Order {
      * Статус заказа
      */
     @Enumerated(EnumType.STRING)
-    private State status;
+    private OrderState status;
 
     /**
      * Список идентификаторов услуг

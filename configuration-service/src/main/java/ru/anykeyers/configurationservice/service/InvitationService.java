@@ -36,4 +36,5 @@ public interface InvitationService {
      * @param invitationId идентификатор приглашения
      */
     void applyInvitation(Long invitationId);
+
 }
