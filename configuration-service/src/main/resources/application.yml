@@ -21,10 +21,10 @@ spring:
           issuer-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}
           jwk-set-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}/oauth2/jwks
 
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://localhost:8761/eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:${REGISTRY_SERVICE_PORT}/eureka
 
 server:
   port: ${CONFIGURATION_SERVICE_PORT}

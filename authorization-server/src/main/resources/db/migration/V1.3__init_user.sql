@@ -12,6 +12,16 @@ CREATE TABLE `user`
     PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `user_setting`
+(
+    `id`            bigint      NOT NULL AUTO_INCREMENT,
+    `push_enabled`  tinyint(1)  NOT NULL DEFAULT 0,
+    `email_enabled` tinyint(1)  NOT NULL DEFAULT 0,
+    `user_id`       bigint,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `fk_user_setting_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+);
+
 CREATE TABLE `role`
 (
     `id`        bigint       NOT NULL AUTO_INCREMENT,
@@ -62,6 +72,7 @@ CREATE TABLE `role_mtm_permission`
 
 INSERT INTO `user` (`id`, `name`, `surname`, `username`, `password`, `phone_number`, `email`, `created_at`)
 VALUES (1, 'Главный', 'Администратор', 'admin', '{noop}password', '13523456789', '123456@163.com', '2024-05-09 00:45:32');
+INSERT INTO `user_setting` (`id`, `push_enabled`, `email_enabled`, `user_id`) VALUES (1, 1, 1, 1);
 
 INSERT INTO `role` (`id`, `role_code`) VALUES (1, 'ROLE_USER');
 INSERT INTO `role` (`id`, `role_code`) VALUES (2, 'ROLE_ADMIN');

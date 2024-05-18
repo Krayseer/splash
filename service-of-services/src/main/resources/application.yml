@@ -13,5 +13,10 @@ spring:
       ddl-auto: update
     database: postgresql
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:${REGISTRY_SERVICE_PORT}/eureka
+
 server:
   port: ${SERVICE_OF_SERVICES_PORT}

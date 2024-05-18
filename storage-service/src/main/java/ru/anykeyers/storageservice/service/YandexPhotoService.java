@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.storageservice.YandexStorageConfig;
+import ru.anykeyers.storageservice.config.YandexStorageConfig;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;

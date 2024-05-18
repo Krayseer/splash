@@ -45,5 +45,10 @@ spring:
       debug: true
     protocol: smtps
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:${REGISTRY_SERVICE_PORT}/eureka
+
 server:
   port: ${NOTIFICATION_SERVICE_PORT}

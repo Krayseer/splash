@@ -6,6 +6,9 @@ server:
         name: GATEWAY-CLIENT
 
 spring:
+  application:
+    name: api-gateway
+
   cloud:
     gateway:
       discovery:

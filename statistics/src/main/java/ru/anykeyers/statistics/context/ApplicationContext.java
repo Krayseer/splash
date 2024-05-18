@@ -1,4 +1,4 @@
-package ru.anykeyers.statistics;
+package ru.anykeyers.statistics.context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;

@@ -1,4 +1,4 @@
-package ru.anykeyers.storageservice;
+package ru.anykeyers.storageservice.config;
 
 import lombok.Getter;
 import lombok.Setter;
