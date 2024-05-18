@@ -25,7 +25,7 @@ public class KafkaProcessor {
      * Слушатель события назначения работника заказу
      */
     @SneakyThrows
-    @KafkaListener(topics = MessageQueue.ORDER_CREATE, groupId = GROUP_ID)
+    @KafkaListener(topics = MessageQueue.ORDER_EMPLOYEE_APPLY, groupId = GROUP_ID)
     public void receiveOrderApplyEmployee(String orderId) {
         orderService.applyOrderEmployee(Long.getLong(orderId));
     }

@@ -12,6 +12,7 @@ import ru.anykeyers.commonsapi.domain.dto.UserDTO;
 import ru.anykeyers.commonsapi.domain.dto.UserSettingDTO;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -26,9 +27,19 @@ public class UserController {
         return userService.getUser(principal.getName());
     }
 
+    @GetMapping("/id/{id}")
+    public UserDTO getUser(@PathVariable Long id) {
+        return userService.getUser(id);
+    }
+
     @GetMapping("/{username}")
     public UserDTO getUser(@PathVariable String username) {
         return userService.getUser(username);
+    }
+
+    @GetMapping("/collection")
+    public List<UserDTO> getUsers(@RequestParam("user-ids") Long[] userIds) {
+        return userService.getUsers(Arrays.asList(userIds));
     }
 
     @PostMapping

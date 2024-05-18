@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.anykeyers.authorizationserver.domain.user.UserMapper;
 import ru.anykeyers.authorizationserver.domain.user.UserRequest;
 import ru.anykeyers.authorizationserver.domain.entity.Role;
 import ru.anykeyers.authorizationserver.domain.user.User;
@@ -17,7 +18,6 @@ import ru.anykeyers.commonsapi.domain.dto.UserDTO;
 import ru.anykeyers.commonsapi.domain.dto.UserSettingDTO;
 import ru.anykeyers.commonsapi.service.RemoteStorageService;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -39,34 +39,26 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UsernameNotFoundException(username);
         }
-        return UserDTO.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .name(user.getName())
-                .surname(user.getSurname())
-                .email(user.getEmail())
-                .phoneNumber(user.getPhoneNumber())
-                .roles(user.getRoleList().stream().map(Role::getRoleCode).toList())
-                .createdAt(user.getCreatedAt().toString())
-                .userSettingDTO(
-                        new UserSettingDTO(user.getUserSetting().isPushEnabled(), user.getUserSetting().isEmailEnabled())
-                )
-                .build();
+        return UserMapper.toDTO(user);
+    }
+
+    @Override
+    public UserDTO getUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new UsernameNotFoundException(id.toString())
+        );
+        return UserMapper.toDTO(user);
+    }
+
+    @Override
+    public List<UserDTO> getUsers(List<Long> userIds) {
+        return userRepository.findAllById(userIds).stream().map(UserMapper::toDTO).toList();
     }
 
     @Override
     public void registerUser(UserRequest userRequest) {
-        User user = User.builder()
-                .name(userRequest.getName())
-                .surname(userRequest.getSurname())
-                .username(userRequest.getUsername())
-                .password("{noop}" + userRequest.getPassword())
-                .email(userRequest.getEmail())
-                .phoneNumber(userRequest.getPhoneNumber())
-                .roleList(new ArrayList<>() {{ roleRepository.findByRoleCode("ROLE_USER"); }})
-                .photoUrl(null)
-                .createdAt(Instant.now())
-                .build();
+        User user = UserMapper.toUser(userRequest);
+        user.setRoleList(new ArrayList<>() {{ roleRepository.findByRoleCode("ROLE_USER"); }});
         userRepository.save(user);
     }
 

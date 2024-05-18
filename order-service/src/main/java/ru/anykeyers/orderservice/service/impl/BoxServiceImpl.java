@@ -61,12 +61,7 @@ public class BoxServiceImpl implements BoxService {
         Map<Long, List<TimeRange>> orderDurations = getOrdersByBoxId(boxIds, startTime, endTime);
         return orderDurations.values().stream()
                 .flatMap(value -> findFreeTimeRanges(value, startTime, endTime).stream())
-                .collect(Collectors.toList()); // TODO: ПРОТЕСТИТЬ
-//        List<TimeRange> timeRanges = new ArrayList<>();
-//        orderDurations.forEach((key, value) -> timeRanges.addAll(
-//                findFreeTimeRanges(value, time, time.plusSeconds(24*60*60))
-//        ));
-//        return timeRanges;
+                .collect(Collectors.toList());
     }
 
     private Map<Long, List<TimeRange>> getOrdersByBoxId(List<Long> boxIds, Instant start, Instant end) {

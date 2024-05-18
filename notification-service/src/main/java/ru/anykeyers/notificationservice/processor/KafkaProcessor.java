@@ -17,7 +17,7 @@ import ru.anykeyers.commonsapi.MessageQueue;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class KafkaProcessor { //TODO: УВЕДОМЛЕНИЯ ДОЛЖНЫ СОХРАНЯТЬСЯ В БД
+public class KafkaProcessor {
 
     private static final String GROUP_ID = "notification-group";
 

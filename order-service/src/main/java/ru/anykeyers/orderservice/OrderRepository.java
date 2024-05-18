@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.orderservice.domain.order.Order;
 import ru.anykeyers.commonsapi.domain.OrderState;
 
@@ -45,6 +46,14 @@ public interface OrderRepository extends JpaRepository<Order, Long>, PagingAndSo
      * @param boxIds идентификаторы боксов
      */
     List<Order> findByBoxIdIn(List<Long> boxIds);
+
+    /**
+     * Получить список заказов у автомойки
+     *
+     * @param carWashId     идентификатор автомойки
+     * @param orderState    статус заказа
+     */
+    List<Order> findByCarWashIdAndStatus(Long carWashId, OrderState orderState);
 
     /**
      * Получить количество заказов у автомойки

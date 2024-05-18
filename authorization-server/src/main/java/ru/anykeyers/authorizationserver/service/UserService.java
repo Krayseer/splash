@@ -20,6 +20,20 @@ public interface UserService {
     UserDTO getUser(String username);
 
     /**
+     * Получить информацию о пользователе
+     *
+     * @param id идентификатор пользователя
+     */
+    UserDTO getUser(Long id);
+
+    /**
+     * Получить данные о пользователях
+     *
+     * @param userIds список идентификаторов пользователей
+     */
+    List<UserDTO> getUsers(List<Long> userIds);
+
+    /**
      * Зарегистрировать пользователя
      *
      * @param userRequest данные для регистрации пользователя

@@ -62,6 +62,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderDTO> getWaitConfirmOrders(Long carWashId) {
+        List<Order> orders = orderRepository.findByCarWashIdAndStatus(carWashId, OrderState.WAIT_CONFIRM);
+        return orderMapper.createDTO(orders);
+    }
+
+    @Override
+    public int getWaitConfirmOrdersCount(Long carWashId) {
+        return orderRepository.countByCarWashIdAndStatus(carWashId, OrderState.WAIT_CONFIRM);
+    }
+
+    @Override
     public int getActiveOrdersCount(Long carWashId) {
         return orderRepository.countByCarWashIdAndStatus(carWashId, OrderState.WAIT_PROCESS);
     }

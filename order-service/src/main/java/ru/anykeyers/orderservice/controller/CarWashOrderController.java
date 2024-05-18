@@ -2,6 +2,7 @@ package ru.anykeyers.orderservice.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.orderservice.DateUtils;
 import ru.anykeyers.orderservice.domain.time.TimeRange;
 import ru.anykeyers.orderservice.domain.ControllerName;
@@ -27,18 +28,28 @@ public class CarWashOrderController {
         return timeRanges.stream().map(TimeRangeMapper::toDTO).toList();
     }
 
-    @GetMapping("/active")
-    public int getActiveOrders(@RequestParam("carWashId") Long carWashId) {
+    @GetMapping("/active/count")
+    public int getActiveOrdersCount(@RequestParam("carWashId") Long carWashId) {
         return orderService.getActiveOrdersCount(carWashId);
     }
 
-    @GetMapping("/processing")
-    public int getProcessingOrders(@RequestParam("carWashId") Long carWashId) {
+    @GetMapping("/wait-confirm")
+    public List<OrderDTO> getWaitConfirmOrders(@RequestParam("carWashId") Long carWashId) {
+        return orderService.getWaitConfirmOrders(carWashId);
+    }
+
+    @GetMapping("/wait-confirm/count")
+    public int getWaitConfirmOrdersCount(@RequestParam("carWashId") Long carWashId) {
+        return orderService.getWaitConfirmOrdersCount(carWashId);
+    }
+
+    @GetMapping("/processing/count")
+    public int getProcessingOrdersCount(@RequestParam("carWashId") Long carWashId) {
         return orderService.getProcessingOrdersCount(carWashId);
     }
 
-    @GetMapping("/processed")
-    public int getProcessedOrders(@RequestParam("carWashId") Long carWashId) {
+    @GetMapping("/processed/count")
+    public int getProcessedOrdersCount(@RequestParam("carWashId") Long carWashId) {
         return orderService.getProcessedOrdersCount(carWashId);
     }
 
