@@ -1,8 +1,9 @@
 package ru.anykeyers.authorizationserver.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import ru.anykeyers.authorizationserver.domain.UserRequest;
+import ru.anykeyers.authorizationserver.domain.user.UserRequest;
 import ru.anykeyers.commonsapi.domain.dto.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.UserSettingDTO;
 
 import java.util.List;
 
@@ -40,4 +41,12 @@ public interface UserService {
      * @param photo     фотография
      */
     void addPhoto(String username, MultipartFile photo);
+
+    /**
+     * Установить настройки пользователю
+     *
+     * @param username      имя пользователя
+     * @param userSetting   настройки
+     */
+    void setUserSetting(String username, UserSettingDTO userSetting);
 }

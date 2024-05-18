@@ -1,4 +1,4 @@
-package ru.anykeyers.authorizationserver.domain;
+package ru.anykeyers.authorizationserver.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

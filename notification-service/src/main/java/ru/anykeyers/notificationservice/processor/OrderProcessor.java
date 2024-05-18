@@ -1,32 +1,32 @@
-package ru.anykeyers.notificationservice.service.impl;
+package ru.anykeyers.notificationservice.processor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.commonsapi.domain.dto.UserDTO;
-import ru.anykeyers.notificationservice.domain.EmailAddress;
-import ru.anykeyers.notificationservice.domain.EmailContent;
 import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
-import ru.anykeyers.notificationservice.service.EmailService;
-import ru.anykeyers.notificationservice.service.OrderService;
+import ru.anykeyers.notificationservice.domain.Notification;
+import ru.anykeyers.notificationservice.service.NotificationServiceCompound;
 
 /**
- * Реализация сервиса отправки уведомлений о создании заказа
+ * Сервис отправки уведомлений для заказов
  */
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl implements OrderService {
+public class OrderProcessor {
 
-    private final EmailService emailService;
+    private final NotificationServiceCompound notificationServiceCompound;
 
     private final RemoteUserService remoteUserService;
 
     private final RemoteConfigurationService remoteConfigurationService;
 
-    @Override
-    public void notifyOrderCreate(OrderDTO order) {
+    /**
+     * Уведомление, что был создан новый заказ
+     */
+    public void processOrderCreate(OrderDTO order) {
         UserDTO user = remoteUserService.getUser(order.getUsername());
         ConfigurationDTO configurationDTO = remoteConfigurationService.getConfiguration(order.getCarWashId());
         String message = String.format("""
@@ -35,7 +35,8 @@ public class OrderServiceImpl implements OrderService {
                         Бокс: %s
                         Время: %s
                         """, configurationDTO.getName(), order.getBoxId(), order.getStartTime());
-        emailService.sendMessage(new EmailAddress(user.getEmail()), new EmailContent<>(user.getEmail(), message));
+        Notification notification = new Notification("Новый заказ", message);
+        notificationServiceCompound.notify(user, notification);
     }
 
 }

@@ -7,9 +7,10 @@ import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.notificationservice.domain.EmailAddress;
-import ru.anykeyers.notificationservice.domain.EmailContent;
-import ru.anykeyers.notificationservice.service.EmailService;
+import ru.anykeyers.commonsapi.domain.dto.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.UserSettingDTO;
+import ru.anykeyers.notificationservice.domain.Notification;
+import ru.anykeyers.notificationservice.service.NotificationService;
 
 /**
  * Реализация сервиса отправки сообщений по протоколу SMTP
@@ -17,7 +18,7 @@ import ru.anykeyers.notificationservice.service.EmailService;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SmtpEmailService implements EmailService {
+public class SmtpEmailService implements NotificationService {
 
     private final JavaMailSender emailSender;
 
@@ -25,18 +26,22 @@ public class SmtpEmailService implements EmailService {
     private String sender;
 
     @Override
-    public void sendMessage(EmailAddress emailAddress, EmailContent<?> emailContent) {
+    public void notify(UserDTO user, Notification notification) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(sender);
-        message.setTo(emailAddress.getAddress());
-        message.setSubject(emailContent.getSubject());
-        message.setText((String) emailContent.getContent());
+        message.setTo(user.getEmail());
+        message.setSubject(notification.getSubject());
+        message.setText(notification.getMessage());
         try {
             emailSender.send(message);
-            log.info("Send message to <{}> with content: {}", emailAddress, emailContent);
+            log.info("Send message to ({}) with content: {}", user.getEmail(), notification.getMessage());
         } catch (MailAuthenticationException mailAuthenticationException) {
-            log.error("Failed to send message to <{}>", emailAddress);
+            log.error("Failed send message to: {}", user.getEmail());
         }
     }
 
+    @Override
+    public boolean supports(UserSettingDTO userSetting) {
+        return userSetting.isEmailEnabled();
+    }
 }

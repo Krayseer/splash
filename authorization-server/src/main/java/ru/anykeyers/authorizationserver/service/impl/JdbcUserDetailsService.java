@@ -24,7 +24,7 @@ public class JdbcUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ru.anykeyers.authorizationserver.domain.entity.User user = userRepository.findUserByUsername(username);
+        ru.anykeyers.authorizationserver.domain.user.User user = userRepository.findUserByUsername(username);
         if (ObjectUtils.isEmpty(user)) {
             throw new UsernameNotFoundException("user is not found");
         }

@@ -18,9 +18,7 @@ import ru.anykeyers.orderservice.domain.order.OrderRequest;
 import ru.anykeyers.orderservice.exception.BoxFreeNotFoundException;
 import ru.anykeyers.orderservice.exception.OrderNotFoundException;
 import ru.anykeyers.orderservice.service.BoxService;
-import ru.anykeyers.orderservice.service.CarWashOrderService;
 import ru.anykeyers.orderservice.service.OrderService;
-import ru.anykeyers.orderservice.service.UserOrderService;
 
 import java.time.Instant;
 import java.util.List;
@@ -31,7 +29,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OrderServiceImpl implements OrderService, CarWashOrderService, UserOrderService {
+public class OrderServiceImpl implements OrderService {
 
     private final BoxService boxService;
 

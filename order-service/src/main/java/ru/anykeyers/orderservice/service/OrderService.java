@@ -5,7 +5,7 @@ import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 /**
  * Сервис обработки заказов
  */
-public interface OrderService {
+public interface OrderService extends UserOrderService, CarWashOrderService {
 
     /**
      * Получить информацию о заказе

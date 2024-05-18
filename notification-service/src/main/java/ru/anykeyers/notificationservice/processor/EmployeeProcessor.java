@@ -1,4 +1,4 @@
-package ru.anykeyers.notificationservice.service.impl;
+package ru.anykeyers.notificationservice.processor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,25 +7,30 @@ import ru.anykeyers.commonsapi.domain.dto.EmployeeDTO;
 import ru.anykeyers.commonsapi.domain.dto.UserDTO;
 import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
-import ru.anykeyers.notificationservice.domain.EmailAddress;
-import ru.anykeyers.notificationservice.domain.EmailContent;
-import ru.anykeyers.notificationservice.service.EmailService;
-import ru.anykeyers.notificationservice.service.EmployeeService;
+import ru.anykeyers.notificationservice.domain.Notification;
+import ru.anykeyers.notificationservice.service.NotificationServiceCompound;
 
+/**
+ * Обработчик сообщений по работникам
+ */
 @Service
 @RequiredArgsConstructor
-public class EmployeeServiceImpl implements EmployeeService {
-
-    private final EmailService emailService;
+public class EmployeeProcessor {
 
     private final RemoteUserService remoteUserService;
 
     private final RemoteConfigurationService remoteConfigurationService;
 
-    @Override
-    public void notifyEmployeeApply(EmployeeDTO employee) {
-        UserDTO employeeUser = remoteUserService.getUser(employee.getUserId());
+    private final NotificationServiceCompound notificationServiceCompound;
+
+    /**
+     * Создать уведомление о принятии работником пришглашения на работу
+     *
+     * @param employee работник
+     */
+    public void processEmployeeApply(EmployeeDTO employee) {
         ConfigurationDTO configurationDTO = remoteConfigurationService.getConfiguration(employee.getCarWashId());
+        UserDTO employeeUser = remoteUserService.getUser(employee.getUserId());
         UserDTO carWashOwner = remoteUserService.getUser(configurationDTO.getUsername());
         notifyOwner(carWashOwner, employeeUser);
         notifyEmployee(employeeUser, configurationDTO);
@@ -44,7 +49,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                         Фамилия: %s
                         Роли: %s
                         """, employee.getName(), employee.getUsername(), employee.getRoles());
-        emailService.sendMessage(new EmailAddress(owner.getEmail()), new EmailContent<>(owner.getEmail(), message));
+        Notification notification = new Notification("Новый работник", message);
+        notificationServiceCompound.notify(owner, notification);
     }
 
     /**
@@ -59,9 +65,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                         Автомойка: %s
                         Адрес: %s
                         """, configuration.getName(), configuration.getAddress());
-        emailService.sendMessage(
-                new EmailAddress(employee.getEmail()), new EmailContent<>(employee.getEmail(), message)
-        );
+        Notification notification = new Notification("Вы приняты на работу", message);
+        notificationServiceCompound.notify(employee, notification);
     }
 
 }

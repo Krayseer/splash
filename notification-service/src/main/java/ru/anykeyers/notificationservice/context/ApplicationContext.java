@@ -1,4 +1,4 @@
-package ru.anykeyers.notificationservice;
+package ru.anykeyers.notificationservice.context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Контекст приложения
@@ -17,6 +20,11 @@ public class ApplicationContext {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    @Bean
+    public ExecutorService executorService() {
+        return Executors.newVirtualThreadPerTaskExecutor();
     }
 
     @Bean

@@ -6,7 +6,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import ru.anykeyers.authorizationserver.domain.entity.Role;
-import ru.anykeyers.authorizationserver.domain.entity.User;
+import ru.anykeyers.authorizationserver.domain.user.User;
 import ru.anykeyers.authorizationserver.repository.RoleRepository;
 import ru.anykeyers.authorizationserver.repository.UserRepository;
 

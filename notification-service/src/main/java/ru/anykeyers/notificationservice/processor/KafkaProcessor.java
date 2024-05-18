@@ -1,4 +1,4 @@
-package ru.anykeyers.notificationservice;
+package ru.anykeyers.notificationservice.processor;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 import ru.anykeyers.commonsapi.domain.dto.EmployeeDTO;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.commonsapi.MessageQueue;
-import ru.anykeyers.notificationservice.service.EmployeeService;
-import ru.anykeyers.notificationservice.service.OrderService;
 
 /**
  * Обработчик сообщений с Kafka
@@ -25,9 +23,9 @@ public class KafkaProcessor { //TODO: УВЕДОМЛЕНИЯ ДОЛЖНЫ СОХ
 
     private final ObjectMapper objectMapper;
 
-    private final OrderService orderService;
+    private final OrderProcessor orderProcessor;
 
-    private final EmployeeService employeeService;
+    private final EmployeeProcessor employeeProcessor;
 
     /**
      * Слушатель создания заказов
@@ -36,7 +34,7 @@ public class KafkaProcessor { //TODO: УВЕДОМЛЕНИЯ ДОЛЖНЫ СОХ
     @KafkaListener(topics = MessageQueue.ORDER_CREATE, groupId = GROUP_ID)
     public void receiveOrderCreate(String orderMessage) {
         OrderDTO order = objectMapper.readValue(orderMessage, new TypeReference<>() {});
-        orderService.notifyOrderCreate(order);
+        orderProcessor.processOrderCreate(order);
     }
 
     /**
@@ -46,7 +44,7 @@ public class KafkaProcessor { //TODO: УВЕДОМЛЕНИЯ ДОЛЖНЫ СОХ
     @KafkaListener(topics = MessageQueue.INVITATION_APPLY, groupId = GROUP_ID)
     public void receiveApplyInvitation(String invitationMessage) {
         EmployeeDTO employee = objectMapper.readValue(invitationMessage, new TypeReference<>() {});
-        employeeService.notifyEmployeeApply(employee);
+        employeeProcessor.processEmployeeApply(employee);
     }
 
 }

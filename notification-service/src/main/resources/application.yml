@@ -2,6 +2,25 @@ spring:
   application:
     name: notification-service
 
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${CONFIGURATION_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    generate-ddl: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}
+          jwk-set-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}/oauth2/jwks
+
   kafka:
     bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
     consumer:
@@ -25,3 +44,6 @@ spring:
             enable: true
       debug: true
     protocol: smtps
+
+server:
+  port: ${NOTIFICATION_SERVICE_PORT}

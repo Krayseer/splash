@@ -6,13 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.anykeyers.authorizationserver.domain.UserRequest;
+import ru.anykeyers.authorizationserver.domain.user.UserRequest;
 import ru.anykeyers.authorizationserver.domain.entity.Role;
-import ru.anykeyers.authorizationserver.domain.entity.User;
+import ru.anykeyers.authorizationserver.domain.user.User;
+import ru.anykeyers.authorizationserver.domain.user.UserSetting;
 import ru.anykeyers.authorizationserver.repository.RoleRepository;
 import ru.anykeyers.authorizationserver.repository.UserRepository;
 import ru.anykeyers.authorizationserver.service.UserService;
 import ru.anykeyers.commonsapi.domain.dto.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.UserSettingDTO;
 import ru.anykeyers.commonsapi.service.RemoteStorageService;
 
 import java.time.Instant;
@@ -46,6 +48,9 @@ public class UserServiceImpl implements UserService {
                 .phoneNumber(user.getPhoneNumber())
                 .roles(user.getRoleList().stream().map(Role::getRoleCode).toList())
                 .createdAt(user.getCreatedAt().toString())
+                .userSettingDTO(
+                        new UserSettingDTO(user.getUserSetting().isPushEnabled(), user.getUserSetting().isEmailEnabled())
+                )
                 .build();
     }
 
@@ -86,6 +91,16 @@ public class UserServiceImpl implements UserService {
         }
         User user = userRepository.findUserByUsername(username);
         user.setPhotoUrl(photoUrlResponse.getBody());
+        userRepository.save(user);
+    }
+
+    @Override
+    public void setUserSetting(String username, UserSettingDTO userSetting) {
+        User user = userRepository.findUserByUsername(username);
+        UserSetting setting = user.getUserSetting() == null ? new UserSetting() : user.getUserSetting();
+        setting.setEmailEnabled(userSetting.isEmailEnabled());
+        setting.setPushEnabled(userSetting.isPushEnabled());
+        user.setUserSetting(setting);
         userRepository.save(user);
     }
 

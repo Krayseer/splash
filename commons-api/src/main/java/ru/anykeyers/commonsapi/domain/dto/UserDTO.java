@@ -56,4 +56,9 @@ public class UserDTO {
      */
     private List<String> roles;
 
+    /**
+     * Настройки пользователя
+     */
+    private UserSettingDTO userSettingDTO;
+
 }

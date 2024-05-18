@@ -1,10 +1,11 @@
-package ru.anykeyers.authorizationserver.domain.entity;
+package ru.anykeyers.authorizationserver.domain.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.anykeyers.authorizationserver.domain.entity.Role;
 
 import java.time.Instant;
 import java.util.List;
@@ -81,6 +82,12 @@ public class User {
             }
     )
     private List<Role> roleList;
+
+    /**
+     * Настройки пользователя
+     */
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserSetting userSetting;
 
     /**
      * Время создания аккаунта

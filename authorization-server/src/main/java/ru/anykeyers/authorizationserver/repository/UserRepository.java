@@ -1,7 +1,7 @@
 package ru.anykeyers.authorizationserver.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.anykeyers.authorizationserver.domain.entity.User;
+import ru.anykeyers.authorizationserver.domain.user.User;
 
 /**
  * DAO для работы с пользователями

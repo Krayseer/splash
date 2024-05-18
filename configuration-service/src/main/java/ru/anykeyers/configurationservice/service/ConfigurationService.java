@@ -41,8 +41,8 @@ public interface ConfigurationService {
     /**
      * Обновить данные об автомойке
      *
-     * @param username              имя пользователя хозяина автомойки
-     * @param configurationUpdateRequest  данные об автомойке
+     * @param username                      имя пользователя хозяина автомойки
+     * @param configurationUpdateRequest    данные об автомойке
      */
     void updateConfiguration(String username, ConfigurationUpdateRequest configurationUpdateRequest);
 

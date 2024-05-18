@@ -4,17 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Данные об адресе для сообщения
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmailAddress {
+public class Notification {
 
-    /**
-     * Адрес
-     */
-    private String address;
+    private String subject;
+
+    private String message;
 
 }
