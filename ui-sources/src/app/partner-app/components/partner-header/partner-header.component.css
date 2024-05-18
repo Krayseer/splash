@@ -4,13 +4,20 @@
   padding: 0 15px;
   display: flex;
   box-sizing: border-box;
+  flex-direction: column;
 }
 
-.header .container {
+.header-container {
   background-color: #F4F6FA;
   border-radius: 19px;
   padding: 8px 40px;
   border: 1px solid #B5B8C3;
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.tabs-container {
+  padding-left: 40px;
 }
 
 .header-button {
@@ -56,4 +63,27 @@
 
 .notification {
   margin-right: 25px;
+}
+
+.tabs {
+  display: flex;
+}
+
+.tab {
+  padding: 5px 15px;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: background-color 0.3s, border-color 0.3s;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
+.tab:last-child {
+  margin-right: 0;
+}
+
+.tab.active {
+  background-color: #CFDBFC;
 }

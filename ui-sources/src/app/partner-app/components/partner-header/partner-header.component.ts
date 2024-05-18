@@ -12,6 +12,7 @@ import {User} from "../../../models/user";
 export class PartnerHeaderComponent {
 
   user: User | null = null;
+  activeTab: string = 'tab1';
 
   constructor(private http: HttpClient) {
     this.http.get<User>("auth/user").subscribe(
@@ -24,6 +25,10 @@ export class PartnerHeaderComponent {
         console.error('Error fetching user data:', error);
       }
     );
+  }
+
+  setActiveTab(tab: string) {
+    this.activeTab = tab;
   }
 
 }

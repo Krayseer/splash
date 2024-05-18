@@ -1,24 +1,32 @@
 <header class="header">
   <div class="container">
-    <div class="header-logo">
-      <a>
-        <img src="assets/images/logo.svg" alt="Logo"/>
-      </a>
+    <div class="header-container">
+      <div class="header-logo">
+        <a>
+          <img src="assets/images/logo.svg" alt="Logo"/>
+        </a>
+      </div>
+      <div class="user-info">
+        <div class="user-group">
+          <img class="user-img" style="margin-right: 6px" src="assets/images/user.svg"/>
+          <label style="font-weight: 700; font-size: 15px;">Михаил</label>
+        </div>
+        <div class="notification">
+          <img src="assets/images/notification.svg"/>
+        </div>
+        <div class="messages">
+          <img src="assets/images/messages.svg"/>
+        </div>
+      </div>
     </div>
-    <div class="user-info">
-      <div class="user-group">
-        <img class="user-img" style="margin-right: 6px" src="assets/images/user.svg"/>
-        <label style="font-weight: 700; font-size: 15px;">Михаил</label>
-      </div>
-      <div class="notification">
-        <img src="assets/images/notification.svg"/>
-      </div>
-      <div class="messages">
-        <img src="assets/images/messages.svg"/>
+    <div class="tabs-container">
+      <div class="tabs">
+        <button class="Inter tab" [class.active]="activeTab === 'tab1'" (click)="setActiveTab('tab1')">Главная</button>
+        <button class="Inter tab" [class.active]="activeTab === 'tab2'" (click)="setActiveTab('tab2')">Услуги</button>
+        <button class="Inter tab" [class.active]="activeTab === 'tab3'" (click)="setActiveTab('tab3')">Заказы</button>
+        <button class="Inter tab" [class.active]="activeTab === 'tab4'" (click)="setActiveTab('tab4')">Аналитика</button>
+        <button class="Inter tab" [class.active]="activeTab === 'tab5'" (click)="setActiveTab('tab5')">Отзывы</button>
       </div>
     </div>
-  </div>
-  <div>
-
   </div>
 </header>

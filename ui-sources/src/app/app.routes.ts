@@ -7,6 +7,13 @@ import {OrderRegistrationComponent} from "./layout/order-registration/order-regi
 import {AuthorizationComponent} from "./layout/authorization/authorization.component";
 import {CarWashRegistrationComponent} from "./layout/car-wash-registration/car-wash-registration.component";
 import {PartnerHeaderComponent} from "./partner-app/components/partner-header/partner-header.component";
+import {PartnerSettingsComponent} from "./partner-app/components/partner-settings/partner-settings.component";
+import {
+  NotificationSettingsComponent
+} from "./partner-app/layout/notification-settings/notification-settings.component";
+import {SwitchComponent} from "./partner-app/components/switch/switch.component";
+import {CompanyInformationComponent} from "./partner-app/layout/company-information/company-information.component";
+import {EmployeesComponent} from "./partner-app/layout/employees/employees.component";
 
 export const routes: Routes = [
   {path: 'header', component: HeaderComponent},
@@ -16,5 +23,10 @@ export const routes: Routes = [
   {path: 'order', component: OrderRegistrationComponent},
   {path: 'auth', component: AuthorizationComponent},
   {path: 'car-wash-reg', component: CarWashRegistrationComponent},
-  {path: 'partner-header', component: PartnerHeaderComponent}
+  {path: 'partner-header', component: PartnerHeaderComponent},
+  {path: 'partner-settings', component: PartnerSettingsComponent},
+  {path: 'notification-settings', component: NotificationSettingsComponent},
+  {path: 'switch', component: SwitchComponent},
+  {path: 'comp-information', component: CompanyInformationComponent},
+  {path: 'employees', component: EmployeesComponent}
 ];
