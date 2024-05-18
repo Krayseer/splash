@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.MessageQueue;
 import ru.anykeyers.commonsapi.domain.OrderState;
 import ru.anykeyers.commonsapi.service.RemoteServicesService;
-import ru.anykeyers.orderservice.domain.TimeRange;
+import ru.anykeyers.orderservice.domain.time.TimeRange;
 import ru.anykeyers.orderservice.domain.order.OrderMapper;
 import ru.anykeyers.orderservice.OrderRepository;
 import ru.anykeyers.orderservice.domain.order.Order;

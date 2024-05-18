@@ -46,7 +46,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         Configuration configuration = configurationRepository.findByUsername(username).orElseThrow(
                 () -> new UserNotFoundConfigurationException(username)
         );
-        return configurationMapper.createResponse(configuration);
+        return configurationMapper.createDTO(configuration);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         Configuration configuration = configurationRepository.findById(id).orElseThrow(
                 () -> new ConfigurationNotFoundException(id)
         );
-        return configurationMapper.createResponse(configuration);
+        return configurationMapper.createDTO(configuration);
     }
 
     @Override
@@ -72,6 +72,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         configuration.setDescription(configurationUpdateRequest.getDescription());
         configuration.setPhoneNumber(configurationUpdateRequest.getPhoneNumber());
         configuration.setAddress(configurationUpdateRequest.getAddress());
+        configuration.setOpenTime(configurationUpdateRequest.getOpenTime());
+        configuration.setCloseTime(configurationUpdateRequest.getCloseTime());
         if (configurationUpdateRequest.getPhotos() != null) {
             configuration.addPhotoUrls(uploadPhotos(configurationUpdateRequest.getPhotos()));
         }

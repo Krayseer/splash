@@ -1,6 +1,6 @@
 package ru.anykeyers.orderservice.service;
 
-import ru.anykeyers.orderservice.domain.TimeRange;
+import ru.anykeyers.orderservice.domain.time.TimeRange;
 
 import java.time.Instant;
 import java.util.List;

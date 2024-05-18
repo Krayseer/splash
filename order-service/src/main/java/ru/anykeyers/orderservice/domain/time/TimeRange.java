@@ -1,4 +1,4 @@
-package ru.anykeyers.orderservice.domain;
+package ru.anykeyers.orderservice.domain.time;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

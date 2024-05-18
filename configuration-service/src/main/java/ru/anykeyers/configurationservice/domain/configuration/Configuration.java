@@ -68,6 +68,16 @@ public class Configuration {
      */
     private String address;
 
+    /**
+     * Время открытия
+     */
+    private String openTime;
+
+    /**
+     * Время закрытия
+     */
+    private String closeTime;
+
     @OneToMany(mappedBy = "configuration", cascade = CascadeType.ALL)
     private List<Box> boxes;
 
@@ -85,7 +95,7 @@ public class Configuration {
     private Instant createdAt;
 
     public void addPhotoUrls(List<String> photoUrls) {
-        photoUrls.addAll(photoUrls);
+        this.photoUrls.addAll(photoUrls);
     }
 
 }

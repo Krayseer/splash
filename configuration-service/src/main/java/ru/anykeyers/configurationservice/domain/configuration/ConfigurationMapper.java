@@ -39,7 +39,7 @@ public class ConfigurationMapper {
      *
      * @param configuration конфигурация автомойки
      */
-    public ConfigurationDTO createResponse(Configuration configuration) {
+    public ConfigurationDTO createDTO(Configuration configuration) {
         List<ServiceDTO> services = remoteServicesService.getServices(configuration.getId());
         return ConfigurationDTO.builder()
                 .id(configuration.getId())
@@ -51,6 +51,8 @@ public class ConfigurationMapper {
                 .description(configuration.getDescription())
                 .phoneNumber(configuration.getPhoneNumber())
                 .address(configuration.getAddress())
+                .openTime(configuration.getOpenTime())
+                .closeTime(configuration.getCloseTime())
                 .services(services)
                 .boxes(BoxMapper.createResponse(configuration.getBoxes()))
                 .createdAt(configuration.getCreatedAt().toString())

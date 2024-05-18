@@ -2,9 +2,12 @@ package ru.anykeyers.orderservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.anykeyers.commonsapi.domain.dto.BoxDTO;
+import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.orderservice.DateUtils;
 import ru.anykeyers.orderservice.OrderRepository;
 import ru.anykeyers.orderservice.domain.order.Order;
-import ru.anykeyers.orderservice.domain.TimeRange;
+import ru.anykeyers.orderservice.domain.time.TimeRange;
 import ru.anykeyers.orderservice.service.BoxService;
 import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
 
@@ -44,11 +47,20 @@ public class BoxServiceImpl implements BoxService {
 
     @Override
     public List<TimeRange> getOrderFreeTimes(Long carWashId, Instant time) {
-        List<Long> boxIds = remoteConfigurationService.getBoxIds(carWashId);
-        Instant endTime = time.plus(1, ChronoUnit.DAYS);
-        Map<Long, List<TimeRange>> orderDurations = getOrdersByBoxId(boxIds, time, endTime);
+        ConfigurationDTO configuration = remoteConfigurationService.getConfiguration(carWashId);
+        List<Long> boxIds = configuration.getBoxes().stream().map(BoxDTO::getId).collect(Collectors.toList());
+        Instant startTime;
+        Instant endTime;
+        if (configuration.getOpenTime() == null || configuration.getCloseTime() == null) {
+            startTime = time;
+            endTime = time.plus(1, ChronoUnit.DAYS);
+        } else {
+            startTime = DateUtils.addTimeToInstant(time, configuration.getOpenTime());
+            endTime = DateUtils.addTimeToInstant(time, configuration.getCloseTime());
+        }
+        Map<Long, List<TimeRange>> orderDurations = getOrdersByBoxId(boxIds, startTime, endTime);
         return orderDurations.values().stream()
-                .flatMap(value -> findFreeTimeRanges(value, time, time.plusSeconds(24 * 60 * 60)).stream())
+                .flatMap(value -> findFreeTimeRanges(value, startTime, endTime).stream())
                 .collect(Collectors.toList()); // TODO: ПРОТЕСТИТЬ
 //        List<TimeRange> timeRanges = new ArrayList<>();
 //        orderDurations.forEach((key, value) -> timeRanges.addAll(

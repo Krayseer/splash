@@ -62,6 +62,16 @@ public class ConfigurationDTO {
     private String address;
 
     /**
+     * Время открытия
+     */
+    private String openTime;
+
+    /**
+     * Время закрытия
+     */
+    private String closeTime;
+
+    /**
      * Список услуг
      */
     private List<ServiceDTO> services;

@@ -36,6 +36,16 @@ public class ConfigurationUpdateRequest {
     private String address;
 
     /**
+     * Время открытия
+     */
+    private String openTime;
+
+    /**
+     * Время закрытия
+     */
+    private String closeTime;
+
+    /**
      * Список фотографий
      */
     private List<MultipartFile> photos;
