@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.anykeyers.authorizationserver.domain.ControllerName;
 import ru.anykeyers.authorizationserver.domain.user.UserRequest;
 import ru.anykeyers.authorizationserver.service.UserService;
 import ru.anykeyers.commonsapi.domain.dto.UserDTO;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping(ControllerName.USER_URL)
 public class UserController {
 
     private final UserService userService;
@@ -30,6 +31,11 @@ public class UserController {
     @GetMapping("/id/{id}")
     public UserDTO getUser(@PathVariable Long id) {
         return userService.getUser(id);
+    }
+
+    @GetMapping("/all")
+    public List<UserDTO> getAllUsers() {
+        return userService.getUsers();
     }
 
     @GetMapping("/{username}")

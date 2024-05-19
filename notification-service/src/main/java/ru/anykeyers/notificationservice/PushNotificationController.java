@@ -6,14 +6,15 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.anykeyers.notificationservice.domain.PushNotificationDTO;
+import ru.anykeyers.notificationservice.domain.ControllerName;
+import ru.anykeyers.notificationservice.domain.push.PushNotificationDTO;
 import ru.anykeyers.notificationservice.service.impl.PushNotificationService;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/notification")
+@RequestMapping(ControllerName.PUSH_NAME)
 public class PushNotificationController {
 
     private final PushNotificationService pushNotificationService;

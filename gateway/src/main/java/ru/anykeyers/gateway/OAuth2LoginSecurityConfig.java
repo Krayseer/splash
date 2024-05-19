@@ -22,7 +22,6 @@ public class OAuth2LoginSecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(authorize -> authorize
                         .pathMatchers(HttpMethod.POST, "/user").permitAll()
-                        .pathMatchers("/configuration/**").permitAll()
                         .pathMatchers("/service/**").permitAll()
                         .anyExchange().authenticated()
                 )

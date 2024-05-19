@@ -5,6 +5,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.configurationservice.domain.ControllerName;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationRegisterRequest;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationUpdateRequest;
 import ru.anykeyers.configurationservice.service.ConfigurationService;
@@ -16,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/configuration")
+@RequestMapping(ControllerName.CONFIGURATION_NAME)
 public class ConfigurationController {
 
     private final ConfigurationService configurationService;

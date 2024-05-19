@@ -59,6 +59,6 @@ public class UserDTO {
     /**
      * Настройки пользователя
      */
-    private UserSettingDTO userSettingDTO;
+    private UserSettingDTO userSetting;
 
 }

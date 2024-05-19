@@ -16,7 +16,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:${REGISTRY_SERVICE_PORT}/eureka
+      defaultZone: http://${REGISTRY_SERVICE_HOST}:${REGISTRY_SERVICE_PORT}/eureka
 
 server:
   port: ${SERVICE_OF_SERVICES_PORT}

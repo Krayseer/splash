@@ -3,13 +3,14 @@ package ru.anykeyers.configurationservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.commonsapi.domain.dto.UserDTO;
+import ru.anykeyers.configurationservice.domain.ControllerName;
 import ru.anykeyers.configurationservice.service.EmployeeService;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/configuration/employee")
+@RequestMapping(ControllerName.EMPLOYEE_NAME)
 public class EmployeeController {
 
     private final EmployeeService employeeService;

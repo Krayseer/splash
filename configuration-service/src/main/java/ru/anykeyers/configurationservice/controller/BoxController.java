@@ -3,6 +3,7 @@ package ru.anykeyers.configurationservice.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.commonsapi.domain.dto.BoxDTO;
+import ru.anykeyers.configurationservice.domain.ControllerName;
 import ru.anykeyers.configurationservice.domain.box.BoxRequest;
 import ru.anykeyers.configurationservice.service.BoxService;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/box")
+@RequestMapping(ControllerName.BOX_NAME)
 public class BoxController {
 
     private final BoxService boxService;

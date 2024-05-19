@@ -1,11 +1,11 @@
 package ru.anykeyers.commonsapi.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import ru.anykeyers.commonsapi.domain.RemoteConfiguration;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -14,12 +14,17 @@ import java.util.List;
 /**
  * Удаленный сервис хранилища
  */
-@RequiredArgsConstructor
 public class RemoteStorageService {
 
-    private static final String URL = "http://localhost:8056/photo"; //TODO: В КОНСТРУКТОР
+    private final String URL;
 
     private final RestTemplate restTemplate;
+
+    public RemoteStorageService(RestTemplate restTemplate,
+                                RemoteConfiguration remoteConfiguration) {
+        this.restTemplate = restTemplate;
+        this.URL = remoteConfiguration.getStorageServiceUrl() + "/storage/";
+    }
 
     /**
      * Загрузить фото в хранилище
@@ -34,7 +39,7 @@ public class RemoteStorageService {
         HttpEntity<byte[]> requestEntity = new HttpEntity<>(photo.getBytes(), headers);
         try {
             ResponseEntity<String> response = restTemplate.exchange(
-                    URL, HttpMethod.POST, requestEntity, new ParameterizedTypeReference<>() {}
+                    URL + "photo", HttpMethod.POST, requestEntity, new ParameterizedTypeReference<>() {}
             );
             if (response.getStatusCode().is2xxSuccessful()) {
                 return response;
@@ -62,7 +67,7 @@ public class RemoteStorageService {
         HttpEntity<List<byte[]>> requestEntity = new HttpEntity<>(getPhotosBytes(photos), headers);
         try {
             ResponseEntity<List<String>> response = restTemplate.exchange(
-                    URL + "/collection", HttpMethod.POST, requestEntity, new ParameterizedTypeReference<>() {}
+                    URL + "photo/collection", HttpMethod.POST, requestEntity, new ParameterizedTypeReference<>() {}
             );
             if (response.getStatusCode().is2xxSuccessful()) {
                 return response;

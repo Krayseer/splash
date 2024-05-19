@@ -1,7 +1,7 @@
 package ru.anykeyers.commonsapi.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestTemplate;
+import ru.anykeyers.commonsapi.domain.RemoteConfiguration;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
 
 import java.util.Arrays;
@@ -11,12 +11,17 @@ import java.util.List;
 /**
  * Удаленный сервис конфигурации автомоек
  */
-@RequiredArgsConstructor
 public class RemoteConfigurationService {
 
-    private static final String URL = "http://localhost:8052/"; //TODO: В КОНСТРУКТОР
+    private final String URL;
 
     private final RestTemplate restTemplate;
+
+    public RemoteConfigurationService(RestTemplate restTemplate,
+                                      RemoteConfiguration remoteConfiguration) {
+        this.restTemplate = restTemplate;
+        this.URL = remoteConfiguration.getConfigurationServiceUrl() + "/car-wash/";
+    }
 
     /**
      * Получить информацию о конфигурации автомойки

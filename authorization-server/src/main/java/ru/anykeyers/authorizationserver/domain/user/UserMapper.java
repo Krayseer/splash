@@ -44,7 +44,7 @@ public class UserMapper {
                 .phoneNumber(user.getPhoneNumber())
                 .roles(user.getRoleList().stream().map(Role::getRoleCode).toList())
                 .createdAt(user.getCreatedAt().toString())
-                .userSettingDTO(
+                .userSetting(
                         new UserSettingDTO(user.getUserSetting().isPushEnabled(), user.getUserSetting().isEmailEnabled())
                 )
                 .build();

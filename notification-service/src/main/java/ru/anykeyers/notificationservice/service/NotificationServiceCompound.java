@@ -29,7 +29,7 @@ public class NotificationServiceCompound {
      * @param notification  уведомление
      */
     public void notify(UserDTO user, Notification notification) {
-        for (NotificationService service : getServices(user.getUserSettingDTO())) {
+        for (NotificationService service : getServices(user.getUserSetting())) {
             executorService.execute(() -> service.notify(user, notification));
         }
     }

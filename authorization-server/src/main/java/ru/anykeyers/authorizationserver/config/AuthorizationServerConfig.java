@@ -4,6 +4,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -65,7 +66,11 @@ public class AuthorizationServerConfig {
      * Постоянный OAuth2 клиент
      */
     @Bean
-    public RegisteredClientRepository registeredClientRepository(JdbcTemplate jdbcTemplate) {
+    public RegisteredClientRepository registeredClientRepository(
+            @Value("${APPLICATION_HOST}") String gatewayHost,
+            @Value("${GATEWAY_PORT}") String gatewayPort,
+            JdbcTemplate jdbcTemplate
+    ) {
         RegisteredClient registeredClient = RegisteredClient.withId("relive-messaging-oidc")
                 .clientId("relive-client")
                 .clientSecret("{noop}relive-client")
@@ -75,7 +80,7 @@ public class AuthorizationServerConfig {
                 })
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://localhost:8070/login/oauth2/code/messaging-gateway-oidc")
+                .redirectUri("http://" + gatewayHost + ":" + gatewayPort + "/login/oauth2/code/messaging-gateway-oidc")
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .scope(OidcScopes.EMAIL)
@@ -119,8 +124,11 @@ public class AuthorizationServerConfig {
      * Настройки сервера авторизации
      */
     @Bean
-    public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder().issuer("http://localhost:8080").build();
+    public AuthorizationServerSettings authorizationServerSettings(
+            @Value("${AUTHORIZATION_SERVER_HOST}") String host,
+            @Value("${AUTHORIZATION_SERVER_PORT}") String port
+    ) {
+        return AuthorizationServerSettings.builder().issuer("http://" + host + ":" + port).build();
     }
 
     /**

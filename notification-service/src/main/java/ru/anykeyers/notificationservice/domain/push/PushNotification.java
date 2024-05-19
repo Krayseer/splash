@@ -1,4 +1,4 @@
-package ru.anykeyers.notificationservice.domain;
+package ru.anykeyers.notificationservice.domain.push;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -18,13 +18,19 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}
-          jwk-set-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}/oauth2/jwks
+          issuer-uri: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}
+          jwk-set-uri: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}/oauth2/jwks
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:${REGISTRY_SERVICE_PORT}/eureka
+      defaultZone: http://${REGISTRY_SERVICE_HOST}:${REGISTRY_SERVICE_PORT}/eureka
 
 server:
   port: ${CONFIGURATION_SERVICE_PORT}
+
+remote-configuration:
+  configuration-service-url: http://${CONFIGURATION_SERVICE_HOST}:${CONFIGURATION_SERVICE_PORT}
+  user-service-url: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}
+  service-of-services-url: http://${SERVICE_OF_SERVICES_HOST}:${SERVICE_OF_SERVICES_PORT}
+  storage-service-url: http://${STORAGE_SERVICE_HOST}:${STORAGE_SERVICE_PORT}

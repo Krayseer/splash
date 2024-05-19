@@ -27,6 +27,11 @@ public interface UserService {
     UserDTO getUser(Long id);
 
     /**
+     * Получить данные обо всех пользователях
+     */
+    List<UserDTO> getUsers();
+
+    /**
      * Получить данные о пользователях
      *
      * @param userIds список идентификаторов пользователей

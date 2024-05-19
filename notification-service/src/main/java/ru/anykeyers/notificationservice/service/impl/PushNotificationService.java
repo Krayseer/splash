@@ -7,8 +7,8 @@ import ru.anykeyers.commonsapi.domain.dto.UserDTO;
 import ru.anykeyers.commonsapi.domain.dto.UserSettingDTO;
 import ru.anykeyers.notificationservice.domain.Notification;
 import ru.anykeyers.notificationservice.NotificationRepository;
-import ru.anykeyers.notificationservice.domain.PushNotification;
-import ru.anykeyers.notificationservice.domain.PushNotificationDTO;
+import ru.anykeyers.notificationservice.domain.push.PushNotification;
+import ru.anykeyers.notificationservice.domain.push.PushNotificationDTO;
 import ru.anykeyers.notificationservice.service.NotificationService;
 
 import java.time.Instant;

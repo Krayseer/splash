@@ -12,7 +12,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/photo")
+@RequestMapping(ControllerName.PHOTO_URL)
 public class PhotoController {
 
     private final PhotoService photoService;

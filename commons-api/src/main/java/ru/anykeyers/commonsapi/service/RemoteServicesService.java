@@ -1,8 +1,8 @@
 package ru.anykeyers.commonsapi.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import ru.anykeyers.commonsapi.domain.RemoteConfiguration;
 import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 
 import java.util.Arrays;
@@ -12,12 +12,17 @@ import java.util.List;
 /**
  * Удаленный сервис обработки услуг
  */
-@RequiredArgsConstructor
 public class RemoteServicesService {
 
-    private static final String URL = "http://localhost:8053/service"; //TODO: В КОНСТРУКТОР
+    private final String URL;
 
     private final RestTemplate restTemplate;
+
+    public RemoteServicesService(RestTemplate restTemplate,
+                                 RemoteConfiguration remoteConfiguration) {
+        this.restTemplate = restTemplate;
+        this.URL = remoteConfiguration.getServiceOfServicesUrl() + "/service/";
+    }
 
     /**
      * Получить список услуг автомойки
@@ -25,7 +30,7 @@ public class RemoteServicesService {
      * @param carWashId идентификатор автомойки
      */
     public List<ServiceDTO> getServices(Long carWashId) {
-        ServiceDTO[] services = restTemplate.getForObject(URL + "/" + carWashId, ServiceDTO[].class);
+        ServiceDTO[] services = restTemplate.getForObject(URL + carWashId, ServiceDTO[].class);
         return services == null ? Collections.emptyList() : Arrays.stream(services).toList();
     }
 
@@ -51,7 +56,7 @@ public class RemoteServicesService {
      */
     public long getServicesDuration(List<Long> serviceIds) {
         String url = UriComponentsBuilder
-                .fromHttpUrl(URL + "/duration")
+                .fromHttpUrl(URL + "duration")
                 .queryParam("service-ids", serviceIds.toArray())
                 .encode()
                 .toUriString();

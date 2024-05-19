@@ -1,11 +1,111 @@
 version: '3.1'
 
 services:
+  authorization-server:
+    build:
+      context: authorization-server/
+#    image: krayseer/authorization-server
+    container_name: authorization-server
+    ports:
+      - '${AUTHORIZATION_SERVER_PORT}:${AUTHORIZATION_SERVER_PORT}'
+    env_file:
+      - .env.prod
+
+  business-order-service:
+    build:
+      context: business-order-service/
+#    image: krayseer/business-order-service
+    container_name: business-order-service
+    ports:
+      - '${BUSINESS_ORDER_SERVICE_PORT}:${BUSINESS_ORDER_SERVICE_PORT}'
+    env_file:
+      - .env.prod
+
+  configuration-service:
+    build:
+      context: configuration-service/
+#    image: krayseer/configuration-service
+    container_name: configuration-service
+    ports:
+      - '${CONFIGURATION_SERVICE_PORT}:${CONFIGURATION_SERVICE_PORT}'
+    env_file:
+      - .env.prod
+
+  gateway:
+    build:
+      context: gateway/
+#    image: krayseer/gateway
+    container_name: gateway
+    ports:
+      - '${GATEWAY_PORT}:${GATEWAY_PORT}'
+    env_file:
+      - .env.prod
+
+  notification-service:
+    build:
+      context: notification-service/
+#    image: krayseer/notification-service
+    container_name: notification-service
+    ports:
+      - '${NOTIFICATION_SERVICE_PORT}:${NOTIFICATION_SERVICE_PORT}'
+    env_file:
+      - .env.prod
+
+  order-service:
+    build:
+      context: order-service/
+#    image: krayseer/order-service
+    container_name: order-service
+    ports:
+      - '${ORDER_SERVICE_PORT}:${ORDER_SERVICE_PORT}'
+    env_file:
+      - .env.prod
+
+  registry-service:
+    build:
+      context: registry-service/
+#    image: krayseer/registry-service
+    container_name: registry-service
+    ports:
+      - '${REGISTRY_SERVICE_PORT}:${REGISTRY_SERVICE_PORT}'
+    env_file:
+      - .env.prod
+
+  service-of-services:
+    build:
+      context: service-of-services/
+#    image: krayseer/service-of-services
+    container_name: service-of-services
+    ports:
+      - '${SERVICE_OF_SERVICES_PORT}:${SERVICE_OF_SERVICES_PORT}'
+    env_file:
+      - .env.prod
+
+  statistics:
+    build:
+      context: statistics/
+#    image: krayseer/statistics
+    container_name: statistics
+    ports:
+      - '${STATISTICS_PORT}:${STATISTICS_PORT}'
+    env_file:
+      - .env.prod
+
+  storage-service:
+    build:
+      context: storage-service/
+#    image: krayseer/storage-service
+    container_name: storage-service
+    ports:
+      - '${STORAGE_SERVICE_PORT}:${STORAGE_SERVICE_PORT}'
+    env_file:
+      - .env.prod
+
   mysql:
     image: 'mysql'
     container_name: mysql
     env_file:
-      - .env
+      - .env.prod
     ports:
       - '${MYSQL_PORT}:3306'
     environment:
@@ -17,7 +117,7 @@ services:
     ports:
       - '${POSTGRES_PORT}:5432'
     env_file:
-      - .env
+      - .env.prod
     environment:
       - POSTGRES_USERNAME=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -28,7 +128,7 @@ services:
     image: 'redis'
     container_name: redis
     env_file:
-      - .env
+      - .env.prod
     ports:
       - '${REDIS_PORT}:6379'
 
@@ -45,12 +145,11 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:7.3.2
-    hostname: kafka
     container_name: kafka
     ports:
       - "${KAFKA_PORT}:9092"
     environment:
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:19092,EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092,DOCKER://host.docker.internal:29092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:19092,EXTERNAL://${DOCKER_HOST_IP:-kafka}:9092,DOCKER://host.docker.internal:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,DOCKER:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
@@ -60,7 +159,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_JMX_PORT: 9999
-      KAFKA_JMX_HOSTNAME: ${DOCKER_HOST_IP:-127.0.0.1}
+      KAFKA_JMX_HOSTNAME: ${DOCKER_HOST_IP:-kafka}
       KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
     depends_on:

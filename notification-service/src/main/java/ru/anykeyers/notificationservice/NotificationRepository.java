@@ -2,8 +2,7 @@ package ru.anykeyers.notificationservice;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.anykeyers.notificationservice.domain.Notification;
-import ru.anykeyers.notificationservice.domain.PushNotification;
+import ru.anykeyers.notificationservice.domain.push.PushNotification;
 
 import java.util.List;
 

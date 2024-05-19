@@ -13,17 +13,31 @@ spring:
       ddl-auto: update
     database: postgresql
 
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
+    consumer:
+      group-id: orders-group
+      auto-offset-reset: earliest
+    template:
+      default-topic: topic
+
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}
-          jwk-set-uri: http://localhost:${AUTHORIZATION_SERVER_PORT}/oauth2/jwks
+          issuer-uri: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}
+          jwk-set-uri: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}/oauth2/jwks
+
+remote-configuration:
+  configuration-service-url: http://${CONFIGURATION_SERVICE_HOST}:${CONFIGURATION_SERVICE_PORT}
+  user-service-url: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}
+  service-of-services-url: http://${SERVICE_OF_SERVICES_HOST}:${SERVICE_OF_SERVICES_PORT}
+  storage-service-url: http://${STORAGE_SERVICE_HOST}:${STORAGE_SERVICE_PORT}
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:${REGISTRY_SERVICE_PORT}/eureka
+      defaultZone: http://${REGISTRY_SERVICE_HOST}:${REGISTRY_SERVICE_PORT}/eureka
 
 server:
   port: ${ORDER_SERVICE_PORT}

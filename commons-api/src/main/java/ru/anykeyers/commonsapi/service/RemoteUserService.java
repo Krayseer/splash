@@ -1,8 +1,8 @@
 package ru.anykeyers.commonsapi.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import ru.anykeyers.commonsapi.domain.RemoteConfiguration;
 import ru.anykeyers.commonsapi.domain.dto.UserDTO;
 
 import java.util.Arrays;
@@ -12,12 +12,17 @@ import java.util.List;
 /**
  * Удаленный сервис обработки пользователей
  */
-@RequiredArgsConstructor
 public class RemoteUserService {
 
-    private static final String URL = "http://localhost:8080/user"; //TODO: В КОНСТРУКТОР
+    private final String URL;
 
     private final RestTemplate restTemplate;
+
+    public RemoteUserService(RestTemplate restTemplate,
+                             RemoteConfiguration remoteConfiguration) {
+        this.restTemplate = restTemplate;
+        this.URL = remoteConfiguration.getUserServiceUrl() + "/user";
+    }
 
     /**
      * Получить информацию о пользователе

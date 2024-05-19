@@ -1,17 +1,3 @@
-application:
-  auth-provider:
-    client-name: ${VK_CLIENT_NAME}
-    client-id: ${VK_CLIENT_ID}
-    client-secret: ${VK_CLIENT_SECRET}
-    authorization-uri: "https://oauth.vk.com/authorize"
-    token-uri: "https://oauth.vk.com/access_token"
-    redirect-uri: "http://localhost/login/oauth2/code/vk"
-    user-info-uri: "https://api.vk.com/method/users.get"
-    registration-id: vk
-
-server:
-  port: ${AUTHORIZATION_SERVER_PORT}
-
 spring:
   application:
     name: authorization-server
@@ -29,3 +15,28 @@ spring:
     locations: classpath:db/migration
     validate-on-migrate: true
     fail-on-missing-locations: true
+
+application:
+  auth-provider:
+    client-name: ${VK_CLIENT_NAME}
+    client-id: ${VK_CLIENT_ID}
+    client-secret: ${VK_CLIENT_SECRET}
+    authorization-uri: "https://oauth.vk.com/authorize"
+    token-uri: "https://oauth.vk.com/access_token"
+    redirect-uri: "http://localhost/login/oauth2/code/vk"
+    user-info-uri: "https://api.vk.com/method/users.get"
+    registration-id: vk
+
+server:
+  port: ${AUTHORIZATION_SERVER_PORT}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${REGISTRY_SERVICE_HOST}:${REGISTRY_SERVICE_PORT}/eureka
+
+remote-configuration:
+  configuration-service-url: http://${CONFIGURATION_SERVICE_HOST}:${CONFIGURATION_SERVICE_PORT}
+  user-service-url: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}
+  service-of-services-url: http://${SERVICE_OF_SERVICES_HOST}:${SERVICE_OF_SERVICES_PORT}
+  storage-service-url: http://${STORAGE_SERVICE_HOST}:${STORAGE_SERVICE_PORT}

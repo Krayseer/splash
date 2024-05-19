@@ -5,6 +5,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.commonsapi.domain.dto.InvitationDTO;
+import ru.anykeyers.configurationservice.domain.ControllerName;
 import ru.anykeyers.configurationservice.service.InvitationService;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/invitation")
+@RequestMapping(ControllerName.INVITATION_NAME)
 public class InvitationController {
 
     private final InvitationService invitationService;
