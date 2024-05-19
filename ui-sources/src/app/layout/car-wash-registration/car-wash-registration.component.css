@@ -50,7 +50,8 @@
 .input-div {
   width: 100%;
   box-sizing: border-box;
-  margin-bottom: 16px;
+  margin-bottom: 30px;
+  position: relative;
 }
 
 .input-name {
@@ -88,4 +89,28 @@
   font-size: 16px;
   font-weight: 600;
   line-height: 24px;
+}
+
+.has-error .input {
+  border: 2px solid red;
+}
+
+.error-tooltip {
+  display: none;
+  position: absolute;
+  background-color: red;
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  top: -25px;
+  left: 0;
+  white-space: nowrap;
+}
+
+.has-error .error-tooltip {
+  display: block;
+}
+
+.has-error:hover .error-tooltip {
+  display: block;
 }

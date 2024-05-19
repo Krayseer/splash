@@ -168,3 +168,38 @@ textarea:-ms-input-placeholder {
   line-height: 24px;
   color: #B1B4BE;
 }
+
+.spinner-value {
+  border: 2px solid #B1B4BE;
+  border-radius: 10px;
+  padding: 4px 20px;
+  gap: 10px;
+  background-color: white;
+  max-width: 360px;
+  height: 48px;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+}
+
+.photo-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+}
+
+.photo-item img {
+  border: 2px solid #B1B4BE;
+  border-radius: 10px;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.photo-item {
+  width: calc(33.33% - 20px); /* Делим ширину на три части и убираем отступ */
+  margin-right: 20px;
+}
+
+.photo-item:nth-child(3n) {
+  margin-right: 0; /* Убираем отступ у каждого третьего элемента */
+}

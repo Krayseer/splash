@@ -6,17 +6,27 @@
   </div>
   <div class="registration-container">
     <h1 class="Inter registration-title">Регистрация мойки</h1>
-    <form class="form">
-      <div class="input-div">
-        <input placeholder="ИНН" class="input" type="text" id="INN" name="email" ngModel required email>
+    <form class="form" #registrationForm="ngForm" (ngSubmit)="onSubmit(registrationForm)">
+      <div class="input-div" [ngClass]="{'has-error': tin.invalid && (tin.dirty || tin.touched)}">
+        <input placeholder="ИНН" class="input" type="text" id="INN" name="tin" ngModel #tin="ngModel" required>
+        <div *ngIf="tin.invalid && (tin.dirty || tin.touched)" class="error-tooltip">
+          ИНН обязателен
+        </div>
       </div>
-      <div class="input-div">
-        <input placeholder="Тип организации" class="input" type="email" id="text" name="email" ngModel required email>
+      <div class="input-div" [ngClass]="{'has-error': typeOrganization.invalid && (typeOrganization.dirty || typeOrganization.touched)}">
+        <input placeholder="Тип организации" class="input" type="text" id="typeOrganization" name="typeOrganization" ngModel #typeOrganization="ngModel" required>
+        <div *ngIf="typeOrganization.invalid && (typeOrganization.dirty || typeOrganization.touched)" class="error-tooltip">
+          Тип организации обязателен
+        </div>
       </div>
-      <div style="margin-bottom: 40px" class="input-div">
-        <input placeholder="Подтвердите пароль" class="input" type="password" id="confirmPassword" name="confirmPassword" ngModel required>
+      <div style="margin-bottom: 40px" class="input-div" [ngClass]="{'has-error': email.invalid && (email.dirty || email.touched)}">
+        <input placeholder="Почта" class="input" type="email" id="email" name="email" ngModel #email="ngModel" required email>
+        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-tooltip">
+          Введите правильный email
+        </div>
       </div>
       <button type="submit" class="submit-button">Зарегистрировать</button>
     </form>
+
   </div>
 </div>

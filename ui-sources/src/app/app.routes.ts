@@ -14,6 +14,8 @@ import {
 import {SwitchComponent} from "./partner-app/components/switch/switch.component";
 import {CompanyInformationComponent} from "./partner-app/layout/company-information/company-information.component";
 import {EmployeesComponent} from "./partner-app/layout/employees/employees.component";
+import {OrdersScheduleComponent} from "./partner-app/layout/orders-schedule/orders-schedule.component";
+import {ServicesAndBoxesComponent} from "./partner-app/layout/services-and-boxes/services-and-boxes.component";
 
 export const routes: Routes = [
   {path: 'header', component: HeaderComponent},
@@ -28,5 +30,7 @@ export const routes: Routes = [
   {path: 'notification-settings', component: NotificationSettingsComponent},
   {path: 'switch', component: SwitchComponent},
   {path: 'comp-information', component: CompanyInformationComponent},
-  {path: 'employees', component: EmployeesComponent}
+  {path: 'employees', component: EmployeesComponent},
+  {path: 'orders-schedule', component: OrdersScheduleComponent},
+  {path: 'services-and-boxes', component: ServicesAndBoxesComponent}
 ];

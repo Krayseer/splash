@@ -1,7 +1,10 @@
+@import "@fortawesome/fontawesome-free/css/all.css";
+
 @font-face {
   font-family: Inter;
   src: url("assets/fonts/Inter-Regular.ttf") format("truetype");
 }
+
 
 .body {
   font-family: Inter, sans-serif;
@@ -18,6 +21,10 @@
 
 .Inter {
   font-family: Inter, serif;
+}
+
+.mat-mdc-dialog-surface {
+  border-radius: 30px !important;
 }
 
 html, body { height: 100%; }

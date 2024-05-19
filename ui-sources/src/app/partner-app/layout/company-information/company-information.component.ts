@@ -11,6 +11,9 @@ import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/m
 import {NgxMaterialTimepickerModule} from "ngx-material-timepicker";
 import {MatButton} from "@angular/material/button";
 import {PartnerFooterComponent} from "../../components/partner-footer/partner-footer.component";
+import {HttpClient} from "@angular/common/http";
+import {Configuration} from "../../../models/wash-config";
+import {NgForOf, NgIf} from "@angular/common";
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -38,17 +41,33 @@ bootstrapApplication(AppComponent, {
     MatDatepicker,
     NgxMaterialTimepickerModule,
     MatButton,
-    PartnerFooterComponent
+    PartnerFooterComponent,
+    NgForOf,
+    NgIf
   ],
   providers: [provideNgxMask()]
 })
-export class CompanyInformationComponent {
+export class CompanyInformationComponent implements OnInit {
 
   selectedStartTime: string = '';
   selectedEndTime: string = '';
   blockedTimes: string[] = ['14:00-16:00'];
+  configuration!: Configuration;
+  photos: (string | ArrayBuffer | null)[] = [];
+  selectedFiles: File[] = [];
 
-  constructor() {}
+  constructor(private http: HttpClient) {
+    this.http.get<Configuration>("api/car-wash/configuration").subscribe(
+      (data) => {
+        this.configuration = data;
+        console.log('Данные успешно загружены:', this.configuration);
+      }
+    );
+  }
+
+  ngOnInit(): void {
+    this.loadExistingPhotos();
+    }
 
   isTimeDisabled(time: string): boolean {
     return this.blockedTimes.some(blockedTime => {
@@ -63,5 +82,50 @@ export class CompanyInformationComponent {
 
   onTimeEndChange(time: string) {
     console.log('End time:', time);
+  }
+
+  loadExistingPhotos(): void {
+    this.http.get<string[]>(`api/existing-photos`).subscribe(
+      (data) => {
+        this.photos = data;
+      },
+      (error) => {
+        console.error('Ошибка при загрузке существующих фотографий:', error);
+      }
+    );
+  }
+
+  onFileSelected(event: any): void {
+    const files = event.target.files;
+    if (files && files.length) {
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.photos.push(e.target.result);
+        };
+        this.selectedFiles.push(files[i]);
+        reader.readAsDataURL(files[i]);
+      }
+    }
+  }
+
+  triggerFileInput(): void {
+    document.getElementById('fileInput')!.click();
+  }
+
+  uploadPhotos(): void {
+    const formData = new FormData();
+    for (let file of this.selectedFiles) {
+      formData.append('files', file, file.name);
+    }
+
+    this.http.post(`api/upload`, formData).subscribe(
+      (response) => {
+        console.log('Upload success:', response);
+      },
+      (error) => {
+        console.error('Upload error:', error);
+      }
+    );
   }
 }

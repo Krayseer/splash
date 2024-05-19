@@ -28,8 +28,14 @@
     />
     <h3 class="Inter company-descr">Описание</h3>
     <textarea placeholder="Введите текст" class="Inter company-descr-text"></textarea>
-    <div class="button-container">
-      <button class="Inter upload-photo">Загрузить</button>
+    <div class="button-container" style="margin-bottom: 16px;">
+      <button class="Inter upload-photo" (click)="triggerFileInput()">Загрузить</button>
+      <input type="file" id="fileInput" (change)="onFileSelected($event)" multiple style="display: none;">
+    </div>
+    <div class="photo-list">
+      <div *ngFor="let photo of photos" class="photo-item">
+        <img *ngIf="photo" [src]="photo" alt="Uploaded Photo">
+      </div>
     </div>
   </div>
 </div>

@@ -1,0 +1,14 @@
+<app-partner-header></app-partner-header>
+<div class="schedule-container">
+  <h3 class="schedule-title">Расписание заказов</h3>
+  <div class="schedule-grid">
+    <div class="time-header" *ngFor="let time of timeSlots">{{ time }}</div>
+    <div class="box-name" *ngFor="let box of boxes">{{ box.name }}</div>
+    <div
+      class="time-slot"
+      *ngFor="let time of timeSlots; let j = index"
+      [class.booked]="isBooked(boxes[1], time)"
+    ></div>
+  </div>
+</div>
+<app-partner-footer></app-partner-footer>

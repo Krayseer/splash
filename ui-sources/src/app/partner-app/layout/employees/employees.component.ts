@@ -3,6 +3,8 @@ import {PartnerHeaderComponent} from "../../components/partner-header/partner-he
 import {PartnerSettingsComponent} from "../../components/partner-settings/partner-settings.component";
 import {PartnerFooterComponent} from "../../components/partner-footer/partner-footer.component";
 import {NgForOf, NgIf} from "@angular/common";
+import {MatDialog} from "@angular/material/dialog";
+import {InvitationModalComponent} from "../../modals/invitation-modal/invitation-modal.component";
 
 interface Employee {
   name: string;
@@ -33,7 +35,20 @@ export class EmployeesComponent {
     { name: 'Сергей Сергеев', status: 'Активный', roles: ['Менеджер', 'Системный администратор'], email: 'sergeev@example.com' },
   ];
 
+  constructor(public dialog: MatDialog) {}
+
   setActiveTab(tab: string) {
     this.activeTab = tab;
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(InvitationModalComponent, {
+      panelClass: 'invitation-modal'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Модальное окно закрыто');
+      // Логика после закрытия модального окна, если необходимо
+    });
   }
 }

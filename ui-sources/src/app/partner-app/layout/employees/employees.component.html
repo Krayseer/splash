@@ -12,7 +12,7 @@
       <div *ngIf="activeTab === 'tab1'">
         <div class="invitation">
           <input type="text" placeholder="Название компании" class="company-input"/>
-          <button class="invitation-button">Пригласить</button>
+          <button class="invitation-button" (click)="openDialog()">Пригласить</button>
         </div>
         <div class="table-container">
           <table>
