@@ -78,6 +78,10 @@
   transition: background-color 0.3s, border-color 0.3s;
   border-radius: 10px;
   margin-right: 10px;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 24px;
+  color: #1D1D2D;
 }
 
 .tab:last-child {

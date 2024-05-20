@@ -33,7 +33,7 @@ export class CarWashRegistrationComponent {
         email: form.value.email
       };
 
-      this.http.post<any>(`api/car-wash/configuration`, registrationData).subscribe(
+      this.http.post(`api/car-wash/configuration`, registrationData).subscribe(
         response => {
           console.log('Registration successful:', response);
         },

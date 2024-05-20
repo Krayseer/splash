@@ -57,15 +57,20 @@ export class CompanyInformationComponent implements OnInit {
   selectedFiles: File[] = [];
 
   constructor(private http: HttpClient) {
-    this.http.get<Configuration>("api/car-wash/configuration").subscribe(
-      (data) => {
-        this.configuration = data;
-        console.log('Данные успешно загружены:', this.configuration);
+  }
+
+  getConfigs() {
+    this.http.get("api/car-wash/configuration").subscribe(
+      data => {
+        console.log(data);
+      }, error => {
+        console.log('Ошибка в конфигурации', error);
       }
     );
   }
 
   ngOnInit(): void {
+    this.getConfigs();
     this.loadExistingPhotos();
     }
 
