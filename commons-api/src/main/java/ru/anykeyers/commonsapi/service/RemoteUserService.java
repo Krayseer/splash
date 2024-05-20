@@ -21,7 +21,7 @@ public class RemoteUserService {
     public RemoteUserService(RestTemplate restTemplate,
                              RemoteConfiguration remoteConfiguration) {
         this.restTemplate = restTemplate;
-        this.URL = remoteConfiguration.getUserServiceUrl() + "/user";
+        this.URL = remoteConfiguration.getUserServiceUrl() + "/auth-server/user";
     }
 
     /**

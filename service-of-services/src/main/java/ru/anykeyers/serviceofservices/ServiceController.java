@@ -19,7 +19,7 @@ public class ServiceController {
 
     private final ServiceProcessor serviceProcessor;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<ServiceDTO> getServices(@RequestParam("service-ids") Long[] serviceIds) {
         return serviceProcessor.getServices(Arrays.asList(serviceIds));
     }

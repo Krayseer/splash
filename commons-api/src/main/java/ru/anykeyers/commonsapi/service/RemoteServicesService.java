@@ -41,7 +41,7 @@ public class RemoteServicesService {
      */
     public List<ServiceDTO> getServices(List<Long> serviceIds) {
         String url = UriComponentsBuilder
-                .fromHttpUrl(URL)
+                .fromHttpUrl(URL + "list")
                 .queryParam("service-ids", serviceIds.toArray())
                 .encode()
                 .toUriString();
