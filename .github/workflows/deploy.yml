@@ -1,0 +1,57 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Build and push Docker images
+        run: |
+          docker buildx build --push --tag krayseer/authorization-server:${{ github.sha }} .
+          docker buildx build --push --tag krayseer/business-order-service:${{ github.sha }} .
+          docker buildx build --push --tag krayseer/configuration-service:${{ github.sha }} .
+          docker buildx build --push --tag krayseer/gateway:${{ github.sha }} .
+          docker buildx build --push --tag krayseer/notification-service:${{ github.sha }} .
+          docker buildx build --push --tag krayseer/order-service:${{ github.sha }} .
+          docker buildx build --push --tag krayseer/registry-service:${{ github.sha }} .
+          docker buildx build --push --tag krayseer/service-of-services:${{ github.sha }} .
+          docker buildx build --push --tag krayseer/statistics:${{ github.sha }} .
+          docker buildx build --push --tag krayseer/storage-service:${{ github.sha }} .
+
+      - name: SSH and Deploy to VM
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USERNAME }}
+          key: ${{ secrets.VM_KEY }}
+          script: |
+            docker service update --image krayseer/authorization-server:${{ github.sha }} splash_authorization-server
+            docker service update --image krayseer/business-order-service:${{ github.sha }} splash_business-order-service
+            docker service update --image krayseer/configuration-service:${{ github.sha }} splash_configuration-service
+            docker service update --image krayseer/gateway:${{ github.sha }} splash_gateway
+            docker service update --image krayseer/notification-service:${{ github.sha }} splash_notification-service
+            docker service update --image krayseer/order-service:${{ github.sha }} splash_order-service
+            docker service update --image krayseer/registry-service:${{ github.sha }} splash_registry-service
+            docker service update --image krayseer/service-of-services:${{ github.sha }} splash_service-of-services
+            docker service update --image krayseer/statistics:${{ github.sha }} splash_statistics
+            docker service update --image krayseer/storage-service:${{ github.sha }} splash_storage-service

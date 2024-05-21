@@ -6,7 +6,6 @@ target/
 .env
 .env.prod
 deploy
-.github
 
 ### IntelliJ IDEA ###
 .idea
