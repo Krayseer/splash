@@ -31,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void processOrder(BusinessOrderRequest request) {
+    public void appointOrderEmployee(BusinessOrderRequest request) {
         BusinessOrder businessOrder = BusinessOrder.builder()
                 .orderId(request.getOrderId())
                 .employeeId(request.getEmployeeId())

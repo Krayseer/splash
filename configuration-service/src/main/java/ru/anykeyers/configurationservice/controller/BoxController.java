@@ -1,5 +1,7 @@
 package ru.anykeyers.configurationservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.commonsapi.domain.dto.BoxDTO;
@@ -12,20 +14,24 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(ControllerName.BOX_NAME)
+@Tag(name = "Обработка боксов автомоек")
 public class BoxController {
 
     private final BoxService boxService;
 
+    @Operation(summary = "Получить все боксы автомойки")
     @GetMapping("/{carWashId}")
     public List<BoxDTO> getAllBoxes(@PathVariable Long carWashId) {
         return boxService.getCarWashBoxes(carWashId);
     }
 
+    @Operation(summary = "Получить идентификаторы боксов автомойки")
     @GetMapping("/{carWashId}/ids")
     public List<Long> getAllBoxesIds(@PathVariable Long carWashId) {
         return boxService.getCarWashBoxesIds(carWashId);
     }
 
+    @Operation(summary = "Добавить бокс автомойке")
     @PostMapping("/{carWashId}")
     public BoxDTO addBox(@PathVariable Long carWashId, @RequestBody BoxRequest boxRequest) {
         return boxService.addBox(carWashId, boxRequest);

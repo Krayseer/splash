@@ -1,5 +1,8 @@
 package ru.anykeyers.orderservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
@@ -16,40 +19,60 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(ControllerName.CAR_WASH_ORDER_NAME)
+@Tag(name = "Обработка заказов автомойки")
 public class CarWashOrderController {
 
     private final CarWashOrderService orderService;
 
     private final BoxService boxService;
 
+    @Operation(summary = "Получить список свободных отрезков времени в конкретный день")
     @GetMapping("/free-times")
-    public List<TimeRangeDTO> getOrderFreeTimes(@RequestParam("id") Long carWashId, @RequestParam("date") String date) {
+    public List<TimeRangeDTO> getOrderFreeTimes(
+            @Parameter(description = "Идентификатор автомойки") @RequestParam("id") Long carWashId,
+            @Parameter(description = "Дата для получения свободных отрезков") @RequestParam("date") String date
+    ) {
         List<TimeRange> timeRanges = boxService.getOrderFreeTimes(carWashId, DateUtils.formatDate(date));
         return timeRanges.stream().map(TimeRangeMapper::toDTO).toList();
     }
 
+    @Operation(summary = "Получить количество активных заказов автомойки")
     @GetMapping("/active/count")
-    public int getActiveOrdersCount(@RequestParam("carWashId") Long carWashId) {
+    public int getActiveOrdersCount(
+            @Parameter(description = "Идентификатор автомойки") @RequestParam("carWashId") Long carWashId
+    ) {
         return orderService.getActiveOrdersCount(carWashId);
     }
 
+    @Operation(summary = "Получить список заказов, ожидающих одобрения")
     @GetMapping("/wait-confirm")
-    public List<OrderDTO> getWaitConfirmOrders(@RequestParam("carWashId") Long carWashId) {
+    public List<OrderDTO> getWaitConfirmOrders(
+            @Parameter(description = "Идентификатор автомойки") @RequestParam("carWashId") Long carWashId
+    ) {
         return orderService.getWaitConfirmOrders(carWashId);
     }
 
+    @Operation(summary = "Получить количество заказов, ожидающих одобрения")
     @GetMapping("/wait-confirm/count")
-    public int getWaitConfirmOrdersCount(@RequestParam("carWashId") Long carWashId) {
+    public int getWaitConfirmOrdersCount(
+            @Parameter(description = "Идентификатор автомойки") @RequestParam("carWashId") Long carWashId
+    ) {
         return orderService.getWaitConfirmOrdersCount(carWashId);
     }
 
+    @Operation(summary = "Получить количество заказов, находящихся в обработке")
     @GetMapping("/processing/count")
-    public int getProcessingOrdersCount(@RequestParam("carWashId") Long carWashId) {
+    public int getProcessingOrdersCount(
+            @Parameter(description = "Идентификатор автомойки") @RequestParam("carWashId") Long carWashId
+    ) {
         return orderService.getProcessingOrdersCount(carWashId);
     }
 
+    @Operation(summary = "Получить количество обработанных заказов")
     @GetMapping("/processed/count")
-    public int getProcessedOrdersCount(@RequestParam("carWashId") Long carWashId) {
+    public int getProcessedOrdersCount(
+            @Parameter(description = "Идентификатор автомойки") @RequestParam("carWashId") Long carWashId
+    ) {
         return orderService.getProcessedOrdersCount(carWashId);
     }
 

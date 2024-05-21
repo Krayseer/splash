@@ -13,6 +13,12 @@ spring:
       ddl-auto: update
     database: postgresql
 
+springdoc:
+  api-docs:
+    path: /service/v3/api-docs
+  swagger-ui:
+    path: /service/swagger-ui.html
+
 eureka:
   client:
     service-url:

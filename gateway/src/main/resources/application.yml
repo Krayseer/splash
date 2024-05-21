@@ -44,11 +44,15 @@ spring:
           uri: http://${BUSINESS_ORDER_SERVICE_HOST}:${BUSINESS_ORDER_SERVICE_PORT}
           predicates:
             Path=/business-order/**
+          filters:
+            - TokenRelay
 
-        - id: statistics
+        - id: statistics-service
           uri: http://${STATISTICS_HOST}:${STATISTICS_PORT}
           predicates:
             Path=/statistics/**
+          filters:
+            - TokenRelay
 
         - id: notification-service
           uri: http://${NOTIFICATION_SERVICE_HOST}:${NOTIFICATION_SERVICE_PORT}
@@ -88,6 +92,27 @@ spring:
     redis:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /order/v3/api-docs
+        name: Order service
+      - url: /car-wash/v3/api-docs
+        name: Car wash service
+      - url: /business-order/v3/api-docs
+        name: Business order service
+      - url: /statistics/v3/api-docs
+        name: Statistics
+      - url: /notification/v3/api-docs
+        name: Notification service
+      - url: /service/v3/api-docs
+        name: Service of services
 
 eureka:
   client:

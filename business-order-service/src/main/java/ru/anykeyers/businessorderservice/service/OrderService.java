@@ -20,6 +20,6 @@ public interface OrderService {
      *
      * @param order данные о заказе
      */
-    void processOrder(BusinessOrderRequest order);
+    void appointOrderEmployee(BusinessOrderRequest order);
 
 }

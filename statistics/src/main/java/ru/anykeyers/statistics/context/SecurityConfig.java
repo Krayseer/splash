@@ -1,4 +1,4 @@
-package ru.anykeyers.businessorderservice.context;
+package ru.anykeyers.statistics.context;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

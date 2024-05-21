@@ -34,6 +34,12 @@ remote-configuration:
   service-of-services-url: http://${SERVICE_OF_SERVICES_HOST}:${SERVICE_OF_SERVICES_PORT}
   storage-service-url: http://${STORAGE_SERVICE_HOST}:${STORAGE_SERVICE_PORT}
 
+springdoc:
+  api-docs:
+    path: /order/v3/api-docs
+  swagger-ui:
+    path: /order/swagger-ui.html
+
 eureka:
   client:
     service-url:

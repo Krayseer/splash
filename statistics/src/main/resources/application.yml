@@ -1,6 +1,6 @@
 spring:
   application:
-    name: statistics
+    name: statistics-service
 
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${STATISTICS_DB}
@@ -27,6 +27,12 @@ spring:
       auto-offset-reset: earliest
     template:
       default-topic: topic
+
+springdoc:
+  api-docs:
+    path: /statistics/v3/api-docs
+  swagger-ui:
+    path: /statistics/swagger-ui.html
 
 eureka:
   client:

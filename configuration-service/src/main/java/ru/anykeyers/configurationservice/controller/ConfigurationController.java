@@ -1,5 +1,7 @@
 package ru.anykeyers.configurationservice.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -18,31 +20,37 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(ControllerName.CONFIGURATION_NAME)
+@Tag(name = "Обработка конфигураций автомоек")
 public class ConfigurationController {
 
     private final ConfigurationService configurationService;
 
+    @Operation(summary = "Получить конфигурацию автомойки авторизованного пользователя")
     @GetMapping
     public ConfigurationDTO getConfiguration(@AuthenticationPrincipal Jwt jwt) {
         return configurationService.getConfiguration(jwt.getSubject());
     }
 
+    @Operation(summary = "Получить конфигурацию автомойки по идентификатору")
     @GetMapping("/{id}")
     public ConfigurationDTO getConfigurationById(@PathVariable Long id) {
         return configurationService.getConfiguration(id);
     }
 
+    @Operation(summary = "Получить список всех автомоек")
     @GetMapping("/all")
     public List<ConfigurationDTO> getAllConfigurations() {
         return configurationService.getAllConfigurations();
     }
 
+    @Operation(summary = "Сохранить конфигурацию автомойки")
     @PostMapping
     public void saveConfiguration(@AuthenticationPrincipal Jwt jwt,
                                   @RequestBody ConfigurationRegisterRequest registerRequest) {
         configurationService.registerConfiguration(jwt.getSubject(), registerRequest);
     }
 
+    @Operation(summary = "Обновить конфигурацию автомойки")
     @PutMapping
     public void updateConfiguration(@AuthenticationPrincipal Jwt jwt,
                                     @RequestBody ConfigurationUpdateRequest configurationUpdateRequest) {
