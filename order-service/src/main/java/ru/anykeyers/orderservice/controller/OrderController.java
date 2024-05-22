@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
 import ru.anykeyers.orderservice.domain.ControllerName;
-import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.orderservice.service.OrderService;
 
 @RestController
@@ -21,7 +21,7 @@ public class OrderController {
 
     @Operation(summary = "Получить заказ по идентификатору")
     @GetMapping("/{id}")
-    public OrderDTO getOrderById(@PathVariable Long id) {
+    public FullOrderDTO getOrderById(@PathVariable Long id) {
         return orderService.getOrder(id);
     }
 

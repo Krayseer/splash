@@ -46,7 +46,7 @@ public class OrderDTO {
     /**
      * Список услуг
      */
-    private List<ServiceDTO> services;
+    private List<Long> serviceIds;
 
     /**
      * Время начала заказа

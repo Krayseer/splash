@@ -27,7 +27,7 @@ public class OrderProcessor {
      * Размер страницы с заказами
      */
     @Value("${order.processor.page-size:100}")
-    private int PAGE_SIZE;
+    private int PAGE_SIZE = 100;
 
     /**
      * Периодичность выполнения обработки

@@ -16,6 +16,7 @@
     <java.version>21</java.version>
     <kafka.version>3.1.2</kafka.version>
     <mysql.version>8.0.28</mysql.version>
+    <junit.version>4.13.2</junit.version>
     <swagger.version>2.5.0</swagger.version>
     <lombok.version>1.18.32</lombok.version>
     <amazon.version>1.12.429</amazon.version>
@@ -60,6 +61,12 @@
         <version>${spring-cloud.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.springdoc</groupId>

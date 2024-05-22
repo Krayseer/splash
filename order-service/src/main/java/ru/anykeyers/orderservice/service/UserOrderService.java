@@ -1,5 +1,6 @@
 package ru.anykeyers.orderservice.service;
 
+import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
 import ru.anykeyers.orderservice.domain.order.OrderRequest;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 
@@ -15,14 +16,14 @@ public interface UserOrderService {
      *
      * @param username имя пользователя
      */
-    List<OrderDTO> getActiveOrders(String username);
+    List<FullOrderDTO> getActiveOrders(String username);
 
     /**
      * Получить список завершенных заказов
      *
      * @param username имя пользователя
      */
-    List<OrderDTO> getProcessedOrders(String username);
+    List<FullOrderDTO> getProcessedOrders(String username);
 
     /**
      * Создать заказ

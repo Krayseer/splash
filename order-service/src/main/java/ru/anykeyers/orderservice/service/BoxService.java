@@ -4,6 +4,7 @@ import ru.anykeyers.orderservice.domain.time.TimeRange;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Сервис по обработке боксов
@@ -16,7 +17,7 @@ public interface BoxService {
      * @param carWashId идентификатор автомойки
      * @param timeRange период заказа
      */
-    Long getBoxForOrder(Long carWashId, TimeRange timeRange);
+    Optional<Long> getBoxForOrder(Long carWashId, TimeRange timeRange);
 
     /**
      * Получить список свободных отрезков для заказов
@@ -25,4 +26,5 @@ public interface BoxService {
      * @param date      дата
      */
     List<TimeRange> getOrderFreeTimes(Long carWashId, Instant date);
+
 }

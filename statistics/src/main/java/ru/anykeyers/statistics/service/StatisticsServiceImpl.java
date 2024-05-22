@@ -4,10 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
+import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
+import ru.anykeyers.commonsapi.service.RemoteServicesService;
 import ru.anykeyers.statistics.ServicesRepository;
 import ru.anykeyers.statistics.domain.ServiceMetric;
 import ru.anykeyers.statistics.domain.StatisticsDTO;
 import ru.anykeyers.statistics.processor.ServiceBatchProcessor;
+
+import java.util.List;
 
 /**
  * Реализация сервиса статистики
@@ -21,6 +25,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     private final ServicesRepository servicesRepository;
 
+    private final RemoteServicesService remoteServicesService;
+
     @Override
     public StatisticsDTO getStatistics(Long carWashId) {
         serviceBatchProcessor.forceUpdate();
@@ -31,7 +37,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     @Override
     public void processOrder(OrderDTO orderDTO) {
         log.info("Processing order {}", orderDTO);
-        serviceBatchProcessor.addServicesMetric(orderDTO.getCarWashId(), orderDTO.getServices());
+        List<ServiceDTO> services = remoteServicesService.getServices(orderDTO.getServiceIds());
+        serviceBatchProcessor.addServicesMetric(orderDTO.getCarWashId(), services);
     }
 
 }

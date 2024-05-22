@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.MessageQueue;
+import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
 import ru.anykeyers.commonsapi.domain.OrderState;
 import ru.anykeyers.commonsapi.service.RemoteServicesService;
 import ru.anykeyers.orderservice.domain.time.TimeRange;
@@ -18,6 +19,7 @@ import ru.anykeyers.orderservice.domain.order.OrderRequest;
 import ru.anykeyers.orderservice.exception.BoxFreeNotFoundException;
 import ru.anykeyers.orderservice.exception.OrderNotFoundException;
 import ru.anykeyers.orderservice.service.BoxService;
+import ru.anykeyers.orderservice.service.EventService;
 import ru.anykeyers.orderservice.service.OrderService;
 
 import java.time.Instant;
@@ -33,22 +35,20 @@ public class OrderServiceImpl implements OrderService {
 
     private final BoxService boxService;
 
-    private final OrderMapper orderMapper;
-
-    private final ObjectMapper objectMapper;
+    private final EventService eventService;
 
     private final OrderRepository orderRepository;
 
     private final RemoteServicesService remoteServicesService;
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
-
     @Override
-    public OrderDTO getOrder(Long id) {
+    public FullOrderDTO getOrder(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(
                 () -> new OrderNotFoundException(id)
         );
-        return orderMapper.createDTO(order);
+        return new FullOrderDTO(
+                OrderMapper.createDTO(order), remoteServicesService.getServices(order.getServiceIds())
+        );
     }
 
     @Override
@@ -62,9 +62,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> getWaitConfirmOrders(Long carWashId) {
+    public List<FullOrderDTO> getWaitConfirmOrders(Long carWashId) {
         List<Order> orders = orderRepository.findByCarWashIdAndStatus(carWashId, OrderState.WAIT_CONFIRM);
-        return orderMapper.createDTO(orders);
+        return getOrderDTOs(orders);
     }
 
     @Override
@@ -88,39 +88,56 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> getActiveOrders(String username) {
+    public List<FullOrderDTO> getActiveOrders(String username) {
         List<OrderState> activeOrderStates = List.of(OrderState.WAIT_CONFIRM, OrderState.WAIT_PROCESS, OrderState.PROCESSING);
         List<Order> orders = orderRepository.findByUsernameAndStatusIn(username, activeOrderStates);
-        return orderMapper.createDTO(orders);
+        return getOrderDTOs(orders);
     }
 
     @Override
-    public List<OrderDTO> getProcessedOrders(String username) {
+    public List<FullOrderDTO> getProcessedOrders(String username) {
         List<Order> orders = orderRepository.findByUsernameAndStatus(username, OrderState.PROCESSED);
-        return orderMapper.createDTO(orders);
+        return getOrderDTOs(orders);
     }
 
     @Override
     @SneakyThrows
     public OrderDTO saveOrder(String username, OrderRequest orderRequest) {
         log.info("Processing order: {}", orderRequest);
-        long duration = remoteServicesService.getServicesDuration(orderRequest.getServiceIds());
-        if (orderRequest.getTime() == null) {
-            orderRequest.setTime(Instant.now());
-        }
-        Instant endTime = orderRequest.getTime().plusMillis(duration);
-        Long boxId = boxService.getBoxForOrder(
-                orderRequest.getCarWashId(), new TimeRange(orderRequest.getTime(), endTime)
-        );
-        if (boxId == null) {
-            throw new BoxFreeNotFoundException();
-        }
-        Order order = orderMapper.createOrder(username, orderRequest);
+        Order order = OrderMapper.createOrder(username, orderRequest);
+        Instant endTime = calculateEndTime(orderRequest.getTime(), orderRequest.getServiceIds());
+        Long boxId = boxService
+                .getBoxForOrder(orderRequest.getCarWashId(), new TimeRange(orderRequest.getTime(), endTime))
+                .orElseThrow(BoxFreeNotFoundException::new);
         order.setEndTime(endTime);
         order.setBoxId(boxId);
-        OrderDTO orderDTO = orderMapper.createDTO(orderRepository.save(order));
-        kafkaTemplate.send(MessageQueue.ORDER_CREATE, objectMapper.writeValueAsString(orderDTO));
+        Order savedOrder = orderRepository.save(order);
+        OrderDTO orderDTO = OrderMapper.createDTO(savedOrder);
+        eventService.sendOrderCreatedEvent(orderDTO);
         return orderDTO;
+    }
+
+    /**
+     * Рассчитать время окончания заказа
+     *
+     * @param startTime     время начала заказа
+     * @param serviceIds    идентификаторы услуг
+     */
+    private Instant calculateEndTime(Instant startTime, List<Long> serviceIds) {
+        long duration = remoteServicesService.getServicesDuration(serviceIds);
+        return startTime.plusMillis(duration);
+    }
+
+    /**
+     * Создать список данных для отправки о заказах
+     *
+     * @param orders список заказов
+     */
+    private List<FullOrderDTO> getOrderDTOs(List<Order> orders) {
+        return orders.stream()
+                .map(order -> new FullOrderDTO(
+                        OrderMapper.createDTO(order), remoteServicesService.getServices(order.getServiceIds())))
+                .toList();
     }
 
 }

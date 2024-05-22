@@ -3,8 +3,6 @@ package ru.anykeyers.statistics.service;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.statistics.domain.StatisticsDTO;
 
-import java.util.List;
-
 /**
  * Сервис статистики
  */

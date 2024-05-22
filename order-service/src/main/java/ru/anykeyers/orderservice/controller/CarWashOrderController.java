@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.orderservice.DateUtils;
+import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
 import ru.anykeyers.orderservice.domain.time.TimeRange;
 import ru.anykeyers.orderservice.domain.ControllerName;
 import ru.anykeyers.orderservice.domain.time.TimeRangeDTO;
@@ -22,9 +23,9 @@ import java.util.List;
 @Tag(name = "Обработка заказов автомойки")
 public class CarWashOrderController {
 
-    private final CarWashOrderService orderService;
-
     private final BoxService boxService;
+
+    private final CarWashOrderService orderService;
 
     @Operation(summary = "Получить список свободных отрезков времени в конкретный день")
     @GetMapping("/free-times")
@@ -46,7 +47,7 @@ public class CarWashOrderController {
 
     @Operation(summary = "Получить список заказов, ожидающих одобрения")
     @GetMapping("/wait-confirm")
-    public List<OrderDTO> getWaitConfirmOrders(
+    public List<FullOrderDTO> getWaitConfirmOrders(
             @Parameter(description = "Идентификатор автомойки") @RequestParam("carWashId") Long carWashId
     ) {
         return orderService.getWaitConfirmOrders(carWashId);

@@ -1,6 +1,6 @@
 package ru.anykeyers.orderservice.service;
 
-import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
+import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
 
 /**
  * Сервис обработки заказов
@@ -12,7 +12,7 @@ public interface OrderService extends UserOrderService, CarWashOrderService {
      *
      * @param id идентификатор заказа
      */
-    OrderDTO getOrder(Long id);
+    FullOrderDTO getOrder(Long id);
 
     /**
      * Обработать назначение работника заказу

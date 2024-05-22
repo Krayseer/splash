@@ -28,52 +28,52 @@ public class BoxServiceImpl implements BoxService {
     private final RemoteConfigurationService remoteConfigurationService;
 
     @Override
-    public Long getBoxForOrder(Long carWashId, TimeRange timeRange) {
+    public Optional<Long> getBoxForOrder(Long carWashId, TimeRange timeRange) {
         List<Long> boxIds = remoteConfigurationService.getBoxIds(carWashId);
-        Map<Long, List<TimeRange>> orderDurations = getOrdersByBoxId(boxIds, timeRange.getStart(), timeRange.getEnd());
-        for(Map.Entry<Long, List<TimeRange>> entry : orderDurations.entrySet()) {
-            boolean isInRange = false;
-            for (TimeRange range : entry.getValue()) {
-                if (range.isInRange(timeRange.getStart()) || range.isInRange(timeRange.getEnd())) {
-                    isInRange = true;
-                }
-            }
-            if (!isInRange) {
-                return entry.getKey();
-            }
-        }
-        return boxIds.getFirst();
+        Map<Long, List<TimeRange>> orderDurations = getOrdersByBoxId(boxIds);
+        return orderDurations.entrySet().stream()
+                .filter(entry -> entry.getValue().stream()
+                        .noneMatch(range -> timeRange.isInRange(range.getStart()) || timeRange.isInRange(range.getEnd())))
+                .map(Map.Entry::getKey)
+                .findFirst();
     }
 
     @Override
     public List<TimeRange> getOrderFreeTimes(Long carWashId, Instant time) {
         ConfigurationDTO configuration = remoteConfigurationService.getConfiguration(carWashId);
         List<Long> boxIds = configuration.getBoxes().stream().map(BoxDTO::getId).collect(Collectors.toList());
-        Instant startTime;
-        Instant endTime;
-        if (configuration.getOpenTime() == null || configuration.getCloseTime() == null) {
-            startTime = time;
-            endTime = time.plus(1, ChronoUnit.DAYS);
-        } else {
-            startTime = DateUtils.addTimeToInstant(time, configuration.getOpenTime());
-            endTime = DateUtils.addTimeToInstant(time, configuration.getCloseTime());
-        }
-        Map<Long, List<TimeRange>> orderDurations = getOrdersByBoxId(boxIds, startTime, endTime);
-        return orderDurations.values().stream()
-                .flatMap(value -> findFreeTimeRanges(value, startTime, endTime).stream())
+        Instant startTime = Optional.ofNullable(configuration.getOpenTime())
+                .map(openTime -> DateUtils.addTimeToInstant(time, openTime))
+                .orElse(time);
+        Instant endTime = Optional.ofNullable(configuration.getCloseTime())
+                .map(closeTime -> DateUtils.addTimeToInstant(time, closeTime))
+                .orElse(time.plus(1, ChronoUnit.DAYS));
+        return getOrdersByBoxIdFiltered(boxIds, startTime, endTime).values().stream()
+                .flatMap(busyTimeRanges -> findFreeTimeRanges(busyTimeRanges, startTime, endTime).stream())
                 .collect(Collectors.toList());
     }
 
-    private Map<Long, List<TimeRange>> getOrdersByBoxId(List<Long> boxIds, Instant start, Instant end) {
+    private Map<Long, List<TimeRange>> getOrdersByBoxId(List<Long> boxIds) {
+        List<Order> orders = orderRepository.findByBoxIdIn(boxIds);
+        return getOrdersByBoxId(boxIds, orders);
+    }
+
+    private Map<Long, List<TimeRange>> getOrdersByBoxIdFiltered(List<Long> boxIds, Instant start, Instant end) {
         List<Order> orders = orderRepository.findByBoxIdIn(boxIds).stream()
-                .filter(o -> o.getStartTime().isAfter(start))
-                .filter(o -> o.getEndTime().isBefore(end))
+                .filter(o -> o.getStartTime().equals(start) || o.getStartTime().isAfter(start))
+                .filter(o -> o.getEndTime().equals(end) || o.getEndTime().isBefore(end))
                 .toList();
-        Map<Long, List<TimeRange>> ordersByBoxId = boxIds.stream()
-                .collect(Collectors.toMap(boxId -> boxId, orderList -> new ArrayList<>()));
-        orders.forEach(order ->
-                ordersByBoxId.get(order.getBoxId()).add(new TimeRange(order.getStartTime(), order.getEndTime())));
-        return ordersByBoxId;
+        return getOrdersByBoxId(boxIds, orders);
+    }
+
+    private Map<Long, List<TimeRange>> getOrdersByBoxId(List<Long> boxIds, List<Order> orders) {
+        return boxIds.stream()
+                .collect(Collectors.toMap(
+                        boxId -> boxId,
+                        boxId -> orders.stream()
+                                .filter(order -> Objects.equals(order.getBoxId(), boxId))
+                                .map(order -> new TimeRange(order.getStartTime(), order.getEndTime()))
+                                .collect(Collectors.toList())));
     }
 
     private List<TimeRange> findFreeTimeRanges(List<TimeRange> busyTimeRanges, Instant startDateTime, Instant endDateTime) {

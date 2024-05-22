@@ -1,6 +1,7 @@
 package ru.anykeyers.orderservice.service;
 
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
+import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface CarWashOrderService {
      *
      * @param carWashId идентификатор автомойки
      */
-    List<OrderDTO> getWaitConfirmOrders(Long carWashId);
+    List<FullOrderDTO> getWaitConfirmOrders(Long carWashId);
 
     /**
      * Получить количество заказов ожидающих обработки
@@ -43,4 +44,5 @@ public interface CarWashOrderService {
      * @param carWashId идентификатор автомойки
      */
     int getProcessedOrdersCount(Long carWashId);
+
 }

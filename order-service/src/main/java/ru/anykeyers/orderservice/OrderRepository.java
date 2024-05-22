@@ -4,7 +4,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.orderservice.domain.order.Order;
 import ru.anykeyers.commonsapi.domain.OrderState;
 
@@ -19,8 +18,8 @@ public interface OrderRepository extends JpaRepository<Order, Long>, PagingAndSo
     /**
      * Получить список заказов по статусу
      *
-     * @param orderState     статус заказа
-     * @param pageable  настройка пагинации
+     * @param orderState    статус заказа
+     * @param pageable      настройка пагинации
      */
     List<Order> findByStatus(OrderState orderState, Pageable pageable);
 
@@ -35,8 +34,8 @@ public interface OrderRepository extends JpaRepository<Order, Long>, PagingAndSo
     /**
      * Получить список заказов пользователя по списку статусов
      *
-     * @param username  имя пользователя
-     * @param orderStates    список состояний
+     * @param username      имя пользователя
+     * @param orderStates   список состояний
      */
     List<Order> findByUsernameAndStatusIn(String username, List<OrderState> orderStates);
 
@@ -62,4 +61,5 @@ public interface OrderRepository extends JpaRepository<Order, Long>, PagingAndSo
      * @param status    статус заказа
      */
     int countByCarWashIdAndStatus(Long carWashId, OrderState status);
+
 }

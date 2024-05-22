@@ -1,23 +1,14 @@
 package ru.anykeyers.orderservice.domain.order;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import ru.anykeyers.commonsapi.domain.OrderState;
-import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
-import ru.anykeyers.commonsapi.service.RemoteServicesService;
 
 import java.time.Instant;
-import java.util.List;
 
 /**
  * Фабрика создания заказов
  */
-@Component
-@RequiredArgsConstructor
 public final class OrderMapper {
-
-    private final RemoteServicesService remoteServicesService;
 
     /**
      * Создать заказ
@@ -25,7 +16,7 @@ public final class OrderMapper {
      * @param username      имя пользователя создателя заказа
      * @param orderRequest  данные для создания заказа
      */
-    public Order createOrder(String username, OrderRequest orderRequest) {
+    public static Order createOrder(String username, OrderRequest orderRequest) {
         return Order.builder()
                 .username(username)
                 .carWashId(orderRequest.getCarWashId())
@@ -38,21 +29,11 @@ public final class OrderMapper {
     }
 
     /**
-     * Создать список данных для отправки о заказах
-     *
-     * @param orders список заказов
-     */
-    public List<OrderDTO> createDTO(List<Order> orders) {
-        return orders.stream().map(this::createDTO).toList();
-    }
-
-    /**
      * Создать данные для отправки о заказе
      *
      * @param order заказ
      */
-    public OrderDTO createDTO(Order order) {
-        List<ServiceDTO> services = remoteServicesService.getServices(order.getServiceIds());
+    public static OrderDTO createDTO(Order order) {
         return OrderDTO.builder()
                 .id(order.getId())
                 .username(order.getUsername())
@@ -60,8 +41,8 @@ public final class OrderMapper {
                 .boxId(order.getBoxId())
                 .status(order.getStatus())
                 .startTime(order.getStartTime().toString())
+                .serviceIds(order.getServiceIds())
                 .endTime(order.getEndTime().toString())
-                .services(services)
                 .typePayment(order.getTypePayment())
                 .createdAt(order.getCreatedAt().toString())
                 .build();
