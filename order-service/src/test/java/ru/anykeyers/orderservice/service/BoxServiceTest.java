@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ru.anykeyers.commonsapi.domain.dto.BoxDTO;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
 import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
-import ru.anykeyers.orderservice.DateUtils;
+import ru.anykeyers.commonsapi.DateUtils;
 import ru.anykeyers.orderservice.OrderRepository;
 import ru.anykeyers.orderservice.domain.order.Order;
 import ru.anykeyers.orderservice.domain.time.TimeRange;
@@ -98,7 +98,7 @@ class BoxServiceTest {
                 ))
                 .build();
         Mockito.when(remoteConfigurationService.getConfiguration(carWashId)).thenReturn(configuration);
-        Instant date = DateUtils.formatDate("16-03-2024");
+        Instant date = DateUtils.toInstant("16-03-2024");
         Mockito.when(orderRepository.findByBoxIdIn(List.of(2L, 3L))).thenReturn(Collections.emptyList());
         List<TimeRange> actualTimeRanges = boxService.getOrderFreeTimes(carWashId, date);
         List<TimeRange> expectedTimeRanges = List.of(
@@ -124,7 +124,7 @@ class BoxServiceTest {
                 ))
                 .build();
         Mockito.when(remoteConfigurationService.getConfiguration(carWashId)).thenReturn(configuration);
-        Instant date = DateUtils.formatDate("16-03-2024");
+        Instant date = DateUtils.toInstant("16-03-2024");
         Order firstBoxOrder = Order.builder()
                 .startTime(DateUtils.addTimeToInstant(date, "09:00"))
                 .endTime(DateUtils.addTimeToInstant(date, "10:00"))
@@ -159,7 +159,7 @@ class BoxServiceTest {
                 .boxes(List.of(new BoxDTO(2L, "Box 1", carWashId)))
                 .build();
         Mockito.when(remoteConfigurationService.getConfiguration(carWashId)).thenReturn(configuration);
-        Instant date = DateUtils.formatDate("16-03-2024");
+        Instant date = DateUtils.toInstant("16-03-2024");
         Order firstBoxOrder = Order.builder()
                 .startTime(DateUtils.addTimeToInstant(date, "08:00"))
                 .endTime(DateUtils.addTimeToInstant(date, "15:00"))

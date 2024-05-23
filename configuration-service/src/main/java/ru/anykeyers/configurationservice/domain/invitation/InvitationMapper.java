@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Фабрика по созданию приглашений
  */
-public final class InvitationFactory {
+public final class InvitationMapper {
 
     /**
      * Создать приглашение
@@ -27,7 +27,7 @@ public final class InvitationFactory {
      *
      * @param invitation приглашение
      */
-    public static InvitationDTO createResponse(Invitation invitation) {
+    public static InvitationDTO createDTO(Invitation invitation) {
         return new InvitationDTO(invitation.getUsername(), invitation.getCarWashId(), invitation.getRoles());
     }
 
@@ -36,8 +36,8 @@ public final class InvitationFactory {
      *
      * @param invitations список приглашений
      */
-    public static List<InvitationDTO> createResponse(List<Invitation> invitations) {
-        return invitations.stream().map(InvitationFactory::createResponse).toList();
+    public static List<InvitationDTO> createDTO(List<Invitation> invitations) {
+        return invitations.stream().map(InvitationMapper::createDTO).toList();
     }
 
 }

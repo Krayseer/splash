@@ -86,4 +86,9 @@ public class ConfigurationDTO {
      */
     private String createdAt;
 
+    /**
+     * Включен ли режим обработки заказов менеджерами
+     */
+    private boolean managementProcessOrders;
+
 }

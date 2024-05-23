@@ -12,7 +12,6 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class BusinessOrder {
@@ -33,5 +32,10 @@ public class BusinessOrder {
      * Идентификатор работника
      */
     private Long employeeId;
+
+    public BusinessOrder(Long orderId, Long employeeId) {
+        this.orderId = orderId;
+        this.employeeId = employeeId;
+    }
 
 }

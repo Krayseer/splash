@@ -3,6 +3,7 @@ package ru.anykeyers.commonsapi.service;
 import org.springframework.web.client.RestTemplate;
 import ru.anykeyers.commonsapi.domain.RemoteConfiguration;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.dto.UserDTO;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,6 +41,16 @@ public class RemoteConfigurationService {
     public List<Long> getBoxIds(Long id) {
         Long[] ids = restTemplate.getForObject(URL + "box/" + id + "/ids", Long[].class);
         return ids == null ? Collections.emptyList() : Arrays.stream(ids).toList();
+    }
+
+    /**
+     * Получить список работников автомойки
+     *
+     * @param id идентификатор автомойки
+     */
+    public List<UserDTO> getEmployees(Long id) {
+        UserDTO[] users = restTemplate.getForObject(URL + "employee?id=" + id, UserDTO[].class);
+        return users == null ? Collections.emptyList() : Arrays.stream(users).toList();
     }
 
 }

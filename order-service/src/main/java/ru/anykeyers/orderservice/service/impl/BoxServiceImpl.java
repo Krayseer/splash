@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.domain.dto.BoxDTO;
 import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
-import ru.anykeyers.orderservice.DateUtils;
+import ru.anykeyers.commonsapi.DateUtils;
 import ru.anykeyers.orderservice.OrderRepository;
 import ru.anykeyers.orderservice.domain.order.Order;
 import ru.anykeyers.orderservice.domain.time.TimeRange;

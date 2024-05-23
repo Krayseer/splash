@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import ru.anykeyers.commonsapi.domain.RemoteConfiguration;
+import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
+import ru.anykeyers.commonsapi.service.RemoteOrderService;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
 
 /**
@@ -29,6 +31,18 @@ public class ApplicationContext {
     public RemoteUserService remoteUserService(RestTemplate restTemplate,
                                                RemoteConfiguration remoteConfiguration) {
         return new RemoteUserService(restTemplate, remoteConfiguration);
+    }
+
+    @Bean
+    public RemoteConfigurationService remoteConfigurationService(RestTemplate restTemplate,
+                                                                 RemoteConfiguration remoteConfiguration) {
+        return new RemoteConfigurationService(restTemplate, remoteConfiguration);
+    }
+
+    @Bean
+    public RemoteOrderService remoteOrderService(RestTemplate restTemplate,
+                                                 RemoteConfiguration remoteConfiguration) {
+        return new RemoteOrderService(restTemplate, remoteConfiguration);
     }
 
 }

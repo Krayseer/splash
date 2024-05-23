@@ -23,10 +23,17 @@ public class KafkaProcessor {
     /**
      * Слушатель события назначения работника заказу
      */
-    @SneakyThrows
     @KafkaListener(topics = MessageQueue.ORDER_EMPLOYEE_APPLY, groupId = GROUP_ID)
     public void receiveOrderApplyEmployee(String orderId) {
         orderService.applyOrderEmployee(Long.getLong(orderId));
+    }
+
+    /**
+     * Слушатель события об удалении заказа
+     */
+    @KafkaListener(topics = MessageQueue.ORDER_DELETE, groupId = GROUP_ID)
+    public void receiveOrderDelete(String orderId) {
+        orderService.deleteOrder(orderId);
     }
 
 }

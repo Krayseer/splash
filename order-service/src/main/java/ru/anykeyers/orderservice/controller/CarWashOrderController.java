@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.anykeyers.commonsapi.DateUtils;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
-import ru.anykeyers.orderservice.DateUtils;
 import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
 import ru.anykeyers.orderservice.domain.time.TimeRange;
 import ru.anykeyers.orderservice.domain.ControllerName;
@@ -33,8 +33,17 @@ public class CarWashOrderController {
             @Parameter(description = "Идентификатор автомойки") @RequestParam("id") Long carWashId,
             @Parameter(description = "Дата для получения свободных отрезков") @RequestParam("date") String date
     ) {
-        List<TimeRange> timeRanges = boxService.getOrderFreeTimes(carWashId, DateUtils.formatDate(date));
+        List<TimeRange> timeRanges = boxService.getOrderFreeTimes(carWashId, DateUtils.toInstant(date));
         return timeRanges.stream().map(TimeRangeMapper::toDTO).toList();
+    }
+
+    @Operation(summary = "Получить список заказов автомойки в конкретный день")
+    @GetMapping("/by-date")
+    public List<OrderDTO> getOrdersByDate(
+            @Parameter(description = "Идентификатор автомойки") @RequestParam("id") Long carWashId,
+            @Parameter(description = "Дата для получения заказов") @RequestParam("date") String date
+    ) {
+        return orderService.getOrders(carWashId, DateUtils.toInstant(date));
     }
 
     @Operation(summary = "Получить количество активных заказов автомойки")

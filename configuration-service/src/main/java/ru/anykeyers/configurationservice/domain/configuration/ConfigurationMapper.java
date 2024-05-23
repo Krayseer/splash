@@ -55,6 +55,7 @@ public class ConfigurationMapper {
                 .closeTime(configuration.getCloseTime())
                 .services(services)
                 .boxes(BoxMapper.createResponse(configuration.getBoxes()))
+                .managementProcessOrders(configuration.isManagementProcessOrders())
                 .createdAt(configuration.getCreatedAt().toString())
                 .build();
     }

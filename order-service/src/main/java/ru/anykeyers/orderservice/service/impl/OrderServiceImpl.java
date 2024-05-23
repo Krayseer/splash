@@ -1,12 +1,9 @@
 package ru.anykeyers.orderservice.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.MessageQueue;
 import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
 import ru.anykeyers.commonsapi.domain.OrderState;
 import ru.anykeyers.commonsapi.service.RemoteServicesService;
@@ -23,6 +20,7 @@ import ru.anykeyers.orderservice.service.EventService;
 import ru.anykeyers.orderservice.service.OrderService;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -52,6 +50,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void deleteOrder(String orderId) {
+        orderRepository.deleteById(Long.getLong(orderId));
+    }
+
+    @Override
     public void applyOrderEmployee(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(
                 () -> new OrderNotFoundException(orderId)
@@ -62,9 +65,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderDTO> getOrders(Long carWashId, Instant date) {
+        List<Order> orders = orderRepository.findByCarWashIdAndStatusIn(
+                carWashId, List.of(OrderState.WAIT_CONFIRM, OrderState.WAIT_PROCESS, OrderState.PROCESSING)
+        );
+        Instant endTime = date.plus(1, ChronoUnit.DAYS);
+        return getOrderDTOList(
+                orders.stream()
+                .filter(order -> order.getStartTime().equals(date)
+                        || (order.getStartTime().isAfter(date) && order.getEndTime().isBefore(endTime)
+                ))
+                .toList()
+        );
+    }
+
+    @Override
     public List<FullOrderDTO> getWaitConfirmOrders(Long carWashId) {
         List<Order> orders = orderRepository.findByCarWashIdAndStatus(carWashId, OrderState.WAIT_CONFIRM);
-        return getOrderDTOs(orders);
+        return getFullOrderDTOList(orders);
     }
 
     @Override
@@ -91,13 +109,13 @@ public class OrderServiceImpl implements OrderService {
     public List<FullOrderDTO> getActiveOrders(String username) {
         List<OrderState> activeOrderStates = List.of(OrderState.WAIT_CONFIRM, OrderState.WAIT_PROCESS, OrderState.PROCESSING);
         List<Order> orders = orderRepository.findByUsernameAndStatusIn(username, activeOrderStates);
-        return getOrderDTOs(orders);
+        return getFullOrderDTOList(orders);
     }
 
     @Override
     public List<FullOrderDTO> getProcessedOrders(String username) {
         List<Order> orders = orderRepository.findByUsernameAndStatus(username, OrderState.PROCESSED);
-        return getOrderDTOs(orders);
+        return getFullOrderDTOList(orders);
     }
 
     @Override
@@ -133,11 +151,20 @@ public class OrderServiceImpl implements OrderService {
      *
      * @param orders список заказов
      */
-    private List<FullOrderDTO> getOrderDTOs(List<Order> orders) {
+    private List<FullOrderDTO> getFullOrderDTOList(List<Order> orders) {
         return orders.stream()
                 .map(order -> new FullOrderDTO(
                         OrderMapper.createDTO(order), remoteServicesService.getServices(order.getServiceIds())))
                 .toList();
+    }
+
+    /**
+     * Создать список данных для отправки о заказах
+     *
+     * @param orders список заказов
+     */
+    private List<OrderDTO> getOrderDTOList(List<Order> orders) {
+        return orders.stream().map(OrderMapper::createDTO).toList();
     }
 
 }

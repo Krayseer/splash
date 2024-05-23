@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.domain.dto.InvitationDTO;
 import ru.anykeyers.configurationservice.domain.invitation.Invitation;
 import ru.anykeyers.configurationservice.exception.InvitationNotFoundException;
-import ru.anykeyers.configurationservice.domain.invitation.InvitationFactory;
+import ru.anykeyers.configurationservice.domain.invitation.InvitationMapper;
 import ru.anykeyers.configurationservice.repository.InvitationRepository;
 import ru.anykeyers.configurationservice.service.EmployeeService;
 import ru.anykeyers.configurationservice.service.InvitationService;
@@ -26,17 +26,17 @@ public class InvitationServiceImpl implements InvitationService {
 
     @Override
     public List<InvitationDTO> getInvitations(String username) {
-        return InvitationFactory.createResponse(invitationRepository.findByUsername(username));
+        return InvitationMapper.createDTO(invitationRepository.findByUsername(username));
     }
 
     @Override
     public List<InvitationDTO> getInvitations(Long carWashId) {
-        return InvitationFactory.createResponse(invitationRepository.findByCarWashId(carWashId));
+        return InvitationMapper.createDTO(invitationRepository.findByCarWashId(carWashId));
     }
 
     @Override
     public void addInvitation(InvitationDTO invitationDTO) {
-        Invitation invitation = InvitationFactory.createInvitation(invitationDTO);
+        Invitation invitation = InvitationMapper.createInvitation(invitationDTO);
         invitationRepository.save(invitation);
     }
 

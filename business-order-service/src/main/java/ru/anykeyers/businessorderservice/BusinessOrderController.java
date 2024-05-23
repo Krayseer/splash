@@ -36,7 +36,7 @@ public class BusinessOrderController {
     @Operation(summary = "Назначить работника на заказ")
     @PostMapping("/appoint")
     public void appointOrderEmployee(@RequestBody BusinessOrderRequest request) {
-        orderService.appointOrderEmployee(request);
+        orderService.appointOrderEmployee(request.getOrderId(), request.getEmployeeId());
     }
 
 }

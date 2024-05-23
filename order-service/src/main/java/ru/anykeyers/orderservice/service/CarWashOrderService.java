@@ -3,12 +3,21 @@ package ru.anykeyers.orderservice.service;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
 
+import java.time.Instant;
 import java.util.List;
 
 /**
  * Сервис обработки заказов автомойки
  */
 public interface CarWashOrderService {
+
+    /**
+     * Получить список заказов
+     *
+     * @param carWashId идентификатор автомойки
+     * @param date      дата, за которую нужно получить список заказов
+     */
+    List<OrderDTO> getOrders(Long carWashId, Instant date);
 
     /**
      * Получить список заказов, ожидающих обработки

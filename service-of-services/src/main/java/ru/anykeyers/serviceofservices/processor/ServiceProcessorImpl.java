@@ -2,7 +2,7 @@ package ru.anykeyers.serviceofservices.processor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.serviceofservices.ServiceMapper;
+import ru.anykeyers.serviceofservices.domain.ServiceMapper;
 import ru.anykeyers.serviceofservices.ServiceRepository;
 import ru.anykeyers.serviceofservices.domain.ServiceEntity;
 import ru.anykeyers.serviceofservices.domain.ServiceRequest;

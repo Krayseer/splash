@@ -50,4 +50,9 @@ public class ConfigurationUpdateRequest {
      */
     private List<MultipartFile> photos;
 
+    /**
+     * Включен ли режим обработки заказов менеджерами
+     */
+    private boolean managementProcessOrders;
+
 }

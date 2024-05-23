@@ -35,4 +35,5 @@ public interface ServiceProcessor {
      * @param serviceRequest даннные об услуге
      */
     void saveService(Long carWashId, ServiceRequest serviceRequest);
+
 }

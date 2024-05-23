@@ -62,4 +62,12 @@ public interface OrderRepository extends JpaRepository<Order, Long>, PagingAndSo
      */
     int countByCarWashIdAndStatus(Long carWashId, OrderState status);
 
+    /**
+     * Получить список заказов по идентификатору автомойки и списку статусов
+     *
+     * @param carWashId     идентификатор автомойки
+     * @param waitConfirm   список состояний
+     */
+    List<Order> findByCarWashIdAndStatusIn(Long carWashId, List<OrderState> waitConfirm);
+
 }

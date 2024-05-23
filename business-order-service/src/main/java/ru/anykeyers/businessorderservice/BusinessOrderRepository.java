@@ -19,4 +19,11 @@ public interface BusinessOrderRepository extends JpaRepository<BusinessOrder, Lo
      */
     List<BusinessOrder> findByEmployeeId(Long employeeId);
 
+    /**
+     * Получить бизнес заказ
+     *
+     * @param id идентификатор оригинального заказа
+     */
+    BusinessOrder findByOrderId(Long id);
+
 }

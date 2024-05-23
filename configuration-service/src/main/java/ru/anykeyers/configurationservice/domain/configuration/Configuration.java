@@ -94,6 +94,11 @@ public class Configuration {
      */
     private Instant createdAt;
 
+    /**
+     * Включен ли режим обработки заказов менеджерами
+     */
+    private boolean managementProcessOrders;
+
     public void addPhotoUrls(List<String> photoUrls) {
         this.photoUrls.addAll(photoUrls);
     }

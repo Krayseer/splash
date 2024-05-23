@@ -1,11 +1,7 @@
-package ru.anykeyers.serviceofservices;
+package ru.anykeyers.serviceofservices.domain;
 
-import ru.anykeyers.serviceofservices.domain.ServiceEntity;
-import ru.anykeyers.serviceofservices.domain.ServiceRequest;
+import ru.anykeyers.commonsapi.DateUtils;
 import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Фабрика по созданию услуг
@@ -35,15 +31,9 @@ public final class ServiceMapper {
         return ServiceDTO.builder()
                 .id(serviceEntity.getId())
                 .name(serviceEntity.getName())
-                .duration(formatDate(serviceEntity.getDuration()))
+                .duration(DateUtils.toDate(serviceEntity.getDuration()))
                 .price(serviceEntity.getPrice())
                 .build();
-    }
-
-    private static String formatDate(long duration) {
-        Date date = new Date(duration);
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        return formatter.format(date);
     }
 
 }

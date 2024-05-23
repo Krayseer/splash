@@ -74,6 +74,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         configuration.setAddress(configurationUpdateRequest.getAddress());
         configuration.setOpenTime(configurationUpdateRequest.getOpenTime());
         configuration.setCloseTime(configurationUpdateRequest.getCloseTime());
+        configuration.setManagementProcessOrders(configurationUpdateRequest.isManagementProcessOrders());
         if (configurationUpdateRequest.getPhotos() != null) {
             configuration.addPhotoUrls(uploadPhotos(configurationUpdateRequest.getPhotos()));
         }

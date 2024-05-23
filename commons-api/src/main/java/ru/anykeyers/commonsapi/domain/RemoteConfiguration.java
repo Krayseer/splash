@@ -30,4 +30,9 @@ public class RemoteConfiguration {
      */
     public String storageServiceUrl;
 
+    /**
+     * URL сервиса обработки заказов
+     */
+    public String orderServiceUrl;
+
 }
