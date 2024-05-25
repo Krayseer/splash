@@ -30,6 +30,6 @@ public interface BoxService {
      * @param carWashId     идентификатор автомойки
      * @param boxRequest    запрос с данными о боксе
      */
-    BoxDTO addBox(Long carWashId, BoxRequest boxRequest);
+    void addBox(Long carWashId, BoxRequest boxRequest);
 
 }

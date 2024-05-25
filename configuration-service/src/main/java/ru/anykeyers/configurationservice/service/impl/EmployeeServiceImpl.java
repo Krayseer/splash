@@ -60,4 +60,5 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmployeeDTO employeeDTO = new EmployeeDTO(employee.getUserId(), employee.getConfiguration().getId());
         kafkaTemplate.send(MessageQueue.INVITATION_APPLY, objectMapper.writeValueAsString(employeeDTO));
     }
+
 }

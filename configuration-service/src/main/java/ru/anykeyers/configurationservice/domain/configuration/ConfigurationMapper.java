@@ -24,7 +24,7 @@ public class ConfigurationMapper {
      *
      * @param registerRequest запрос с данными конфигурации
      */
-    public Configuration createConfiguration(String username, ConfigurationRegisterRequest registerRequest) {
+    public static Configuration createConfiguration(String username, ConfigurationRegisterRequest registerRequest) {
         return Configuration.builder()
                 .username(username)
                 .tin(registerRequest.getTin())
@@ -54,7 +54,7 @@ public class ConfigurationMapper {
                 .openTime(configuration.getOpenTime())
                 .closeTime(configuration.getCloseTime())
                 .services(services)
-                .boxes(BoxMapper.createResponse(configuration.getBoxes()))
+                .boxes(BoxMapper.createDTO(configuration.getBoxes()))
                 .managementProcessOrders(configuration.isManagementProcessOrders())
                 .createdAt(configuration.getCreatedAt().toString())
                 .build();
@@ -74,7 +74,7 @@ public class ConfigurationMapper {
                 .address(configuration.getAddress())
                 .description(configuration.getDescription())
                 .services(services)
-                .boxes(BoxMapper.createResponse(configuration.getBoxes()))
+                .boxes(BoxMapper.createDTO(configuration.getBoxes()))
                 .build();
     }
 

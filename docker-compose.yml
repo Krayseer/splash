@@ -8,8 +8,6 @@ services:
     container_name: authorization-server
     ports:
       - '${AUTHORIZATION_SERVER_PORT}:${AUTHORIZATION_SERVER_PORT}'
-    env_file:
-      - .env.prod
 
   business-order-service:
     build:
@@ -18,8 +16,6 @@ services:
     container_name: business-order-service
     ports:
       - '${BUSINESS_ORDER_SERVICE_PORT}:${BUSINESS_ORDER_SERVICE_PORT}'
-    env_file:
-      - .env.prod
 
   configuration-service:
     build:
@@ -28,8 +24,6 @@ services:
     container_name: configuration-service
     ports:
       - '${CONFIGURATION_SERVICE_PORT}:${CONFIGURATION_SERVICE_PORT}'
-    env_file:
-      - .env.prod
 
   gateway:
     build:
@@ -38,8 +32,6 @@ services:
     container_name: gateway
     ports:
       - '${GATEWAY_PORT}:${GATEWAY_PORT}'
-    env_file:
-      - .env.prod
 
   notification-service:
     build:
@@ -48,8 +40,6 @@ services:
     container_name: notification-service
     ports:
       - '${NOTIFICATION_SERVICE_PORT}:${NOTIFICATION_SERVICE_PORT}'
-    env_file:
-      - .env.prod
 
   order-service:
     build:
@@ -58,8 +48,6 @@ services:
     container_name: order-service
     ports:
       - '${ORDER_SERVICE_PORT}:${ORDER_SERVICE_PORT}'
-    env_file:
-      - .env.prod
 
   registry-service:
     build:
@@ -68,8 +56,6 @@ services:
     container_name: registry-service
     ports:
       - '${REGISTRY_SERVICE_PORT}:${REGISTRY_SERVICE_PORT}'
-    env_file:
-      - .env.prod
 
   service-of-services:
     build:
@@ -78,8 +64,6 @@ services:
     container_name: service-of-services
     ports:
       - '${SERVICE_OF_SERVICES_PORT}:${SERVICE_OF_SERVICES_PORT}'
-    env_file:
-      - .env.prod
 
   statistics:
     build:
@@ -88,8 +72,6 @@ services:
     container_name: statistics
     ports:
       - '${STATISTICS_PORT}:${STATISTICS_PORT}'
-    env_file:
-      - .env.prod
 
   storage-service:
     build:
@@ -98,8 +80,6 @@ services:
     container_name: storage-service
     ports:
       - '${STORAGE_SERVICE_PORT}:${STORAGE_SERVICE_PORT}'
-    env_file:
-      - .env.prod
 
   mysql:
     image: 'mysql'
@@ -127,8 +107,6 @@ services:
   redis:
     image: 'redis'
     container_name: redis
-    env_file:
-      - .env.prod
     ports:
       - '${REDIS_PORT}:6379'
 

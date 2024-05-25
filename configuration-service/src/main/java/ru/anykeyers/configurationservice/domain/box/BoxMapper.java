@@ -28,8 +28,8 @@ public final class BoxMapper {
      *
      * @param boxes список боксов
      */
-    public static List<BoxDTO> createResponse(List<Box> boxes) {
-        return boxes.stream().map(BoxMapper::createResponse).toList();
+    public static List<BoxDTO> createDTO(List<Box> boxes) {
+        return boxes.stream().map(BoxMapper::createDTO).toList();
     }
 
     /**
@@ -37,7 +37,7 @@ public final class BoxMapper {
      *
      * @param box бокс
      */
-    public static BoxDTO createResponse(Box box) {
+    public static BoxDTO createDTO(Box box) {
         return new BoxDTO(box.getId(), box.getName(), box.getConfiguration().getId());
     }
 

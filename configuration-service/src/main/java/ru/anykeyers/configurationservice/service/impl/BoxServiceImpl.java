@@ -31,7 +31,7 @@ public class BoxServiceImpl implements BoxService {
                 () -> new ConfigurationNotFoundException(carWashId)
         );
         List<Box> boxes = boxRepository.findByConfiguration(configuration);
-        return BoxMapper.createResponse(boxes);
+        return BoxMapper.createDTO(boxes);
     }
 
     @Override
@@ -44,12 +44,11 @@ public class BoxServiceImpl implements BoxService {
     }
 
     @Override
-    public BoxDTO addBox(Long carWashId, BoxRequest boxRequest) {
+    public void addBox(Long carWashId, BoxRequest boxRequest) {
         Configuration configuration = configurationRepository.findById(carWashId).orElseThrow(
                 () -> new ConfigurationNotFoundException(carWashId)
         );
-        Box box = boxRepository.save(BoxMapper.createBox(configuration, boxRequest));
-        return BoxMapper.createResponse(box);
+        boxRepository.save(BoxMapper.createBox(configuration, boxRequest));
     }
 
 }

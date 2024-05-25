@@ -33,8 +33,8 @@ public class BoxController {
 
     @Operation(summary = "Добавить бокс автомойке")
     @PostMapping("/{carWashId}")
-    public BoxDTO addBox(@PathVariable Long carWashId, @RequestBody BoxRequest boxRequest) {
-        return boxService.addBox(carWashId, boxRequest);
+    public void addBox(@PathVariable Long carWashId, @RequestBody BoxRequest boxRequest) {
+        boxService.addBox(carWashId, boxRequest);
     }
 
 }

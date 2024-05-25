@@ -46,7 +46,7 @@ public class InvitationServiceImpl implements InvitationService {
         Invitation invitation = invitationRepository.findById(invitationId).orElseThrow(
                 () -> new InvitationNotFoundException(invitationId)
         );
-        employeeService.addCarWashEmployee(invitation.getCarWashId(), invitationId);
+        employeeService.addCarWashEmployee(invitation.getCarWashId(), invitationId); //TODO invitationId -> userId
     }
 
 }
