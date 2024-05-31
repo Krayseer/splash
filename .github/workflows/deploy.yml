@@ -103,6 +103,13 @@ jobs:
           push: true
           tags: krayseer/storage-service:${{ github.sha }}
 
+      - name: Build and push frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./ui-sources
+          push: true
+          tags: krayseer/splash-frontend:${{ github.sha }}
+
       - name: SSH and Deploy to VM
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -120,3 +127,4 @@ jobs:
             sudo docker service update --image krayseer/service-of-services:${{ github.sha }} splash_service-of-services
             sudo docker service update --image krayseer/statistics:${{ github.sha }} splash_statistics
             sudo docker service update --image krayseer/storage-service:${{ github.sha }} splash_storage-service
+            sudo docker service update --image krayseer/splash-frontend:${{ github.sha }} splash_frontend
