@@ -4,8 +4,8 @@ target/
 !**/src/test/**/target/
 
 .env
-.env.prod
 deploy
+images
 
 ### IntelliJ IDEA ###
 .idea
