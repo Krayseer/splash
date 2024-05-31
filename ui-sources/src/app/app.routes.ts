@@ -18,6 +18,7 @@ import {OrdersScheduleComponent} from "./partner-app/layout/orders-schedule/orde
 import {ServicesAndBoxesComponent} from "./partner-app/layout/services-and-boxes/services-and-boxes.component";
 
 export const routes: Routes = [
+  {path: '', redirectTo: 'main', pathMatch: 'full'},
   {path: 'header', component: HeaderComponent},
   {path: 'footer', component: FooterComponent},
   {path: 'registration', component: RegistrationComponent},
