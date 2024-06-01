@@ -4,21 +4,21 @@
   <div class="company-information-container">
     <h2 class="Inter company-information-title">Информация о компании</h2>
     <h3 class="Inter company-name">Название компании</h3>
-    <input class="Inter company-name-input" placeholder="Название компании"/>
+    <input [(ngModel)]="name" class="Inter company-name-input" placeholder="Название компании"/>
     <h3 class="Inter company-clocks">Время работы</h3>
     <div style="margin-bottom: 40px;">
       <mat-form-field appearance="fill" style="border-radius: 10px; margin-right: 30px;">
-        <input matInput [ngxTimepicker]="startPicker" [format]="24" placeholder="Открытие" readonly [(ngModel)]="selectedStartTime">
-        <ngx-material-timepicker #startPicker [minutesGap]="5" (closed)="onTimeStartChange(selectedStartTime)">
+        <input matInput [ngxTimepicker]="startPicker" [format]="24" placeholder="Открытие" readonly [(ngModel)]="openTime">
+        <ngx-material-timepicker #startPicker [minutesGap]="5" (closed)="onTimeStartChange(openTime)">
         </ngx-material-timepicker>
       </mat-form-field>
       <mat-form-field appearance="fill" style="border-radius: 10px;">
-        <input matInput [ngxTimepicker]="endPicker" [format]="24" placeholder="Закрытие" readonly [(ngModel)]="selectedEndTime">
-        <ngx-material-timepicker #endPicker [minutesGap]="5" (closed)="onTimeEndChange(selectedEndTime)"></ngx-material-timepicker>
+        <input matInput [ngxTimepicker]="endPicker" [format]="24" placeholder="Закрытие" readonly [(ngModel)]="closeTime">
+        <ngx-material-timepicker #endPicker [minutesGap]="5" (closed)="onTimeEndChange(closeTime)"></ngx-material-timepicker>
       </mat-form-field>
     </div>
     <h3 class="Inter company-phone-title">Телефон</h3>
-    <input class="company-phone"
+    <input class="company-phone" [(ngModel)]="phoneNumber"
            style="margin-bottom: 40px;"
            type="tel"
            prefix="+7"
@@ -27,7 +27,7 @@
            [dropSpecialCharacters]="true"
     />
     <h3 class="Inter company-descr">Описание</h3>
-    <textarea placeholder="Введите текст" class="Inter company-descr-text"></textarea>
+    <textarea [(ngModel)]="description" placeholder="Введите текст" class="Inter company-descr-text"></textarea>
     <div class="button-container" style="margin-bottom: 16px;">
       <button class="Inter upload-photo" (click)="triggerFileInput()">Загрузить</button>
       <input type="file" id="fileInput" (change)="onFileSelected($event)" multiple style="display: none;">
@@ -37,6 +37,7 @@
         <img *ngIf="photo" [src]="photo" alt="Uploaded Photo">
       </div>
     </div>
+    <button (click)="onSave()" class="Inter upload-photo" style="background-color: #134EF2; color: white;">Сохранить</button>
   </div>
 </div>
 <app-partner-footer></app-partner-footer>

@@ -8,10 +8,10 @@
     </div>
   </div>
   <label class="Inter modal-inf-label">Ваш сотрудник получит уведомление с приглашением</label>
-  <input type="email" class="Inter email-input" placeholder="Почта"/>
-  <select class="Inter role-select">
+  <input [(ngModel)]="username" type="text" class="Inter email-input" placeholder="Имя пользователя"/>
+  <select (change)="onRoleSelect($event)" class="Inter role-select">
     <option>Мойщик</option>
     <option>Стажер</option>
   </select>
-  <button class="Inter invite-button">Пригласить</button>
+  <button (click)="submit()" class="Inter invite-button">Пригласить</button>
 </div>

@@ -4,7 +4,10 @@ import {PartnerSettingsComponent} from "../../components/partner-settings/partne
 import {PartnerFooterComponent} from "../../components/partner-footer/partner-footer.component";
 import {NgForOf, NgIf} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
-import {InvitationModalComponent} from "../../modals/invitation-modal/invitation-modal.component";
+import {InvitationDTO, InvitationModalComponent} from "../../modals/invitation-modal/invitation-modal.component";
+import {HttpClient} from "@angular/common/http";
+import {Configuration} from "../../../models/wash-config";
+import {switchMap} from "rxjs";
 
 interface Employee {
   name: string;
@@ -30,12 +33,31 @@ export class EmployeesComponent {
 
   activeTab: string = 'tab1';
   employees: Employee[] = [
-    { name: 'Иван Иванов', status: 'Активный', roles: ['Разработчик', 'Аналитик'], email: 'ivanov@example.com' },
-    { name: 'Петр Петров', status: 'Неактивный', roles: ['Тестировщик'], email: 'petrov@example.com' },
-    { name: 'Сергей Сергеев', status: 'Активный', roles: ['Менеджер', 'Системный администратор'], email: 'sergeev@example.com' },
+    { name: 'Иван Иванов', status: 'Активный', roles: ['Мойщик'], email: 'ivanov@example.com' },
+    { name: 'Петр Петров', status: 'Активный', roles: ['Мойщик'], email: 'petrov@example.com' },
+    { name: 'Сергей Сергеев', status: 'Активный', roles: ['Стажер'], email: 'sergeev@example.com' },
   ];
+  carWashId!: number;
+  invitations: InvitationDTO[] = [];
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private http: HttpClient) {
+    this.http.get<Configuration>("api/car-wash/configuration").pipe(
+      switchMap((configuration: Configuration) => {
+        this.carWashId = configuration.id;
+        // Выполнить второй запрос, используя ID автомойки
+        return this.http.get<InvitationDTO[]>("api/car-wash/invitation/" + this.carWashId);
+      })
+    ).subscribe(
+      (invitations: InvitationDTO[]) => {
+        this.invitations = invitations;
+        // Дополнительные действия при успешном получении приглашений
+      },
+      error => {
+        console.error('Ошибка при получении приглашений', error);
+        // Дополнительные действия при ошибке получении приглашений
+      }
+    );
+  }
 
   setActiveTab(tab: string) {
     this.activeTab = tab;

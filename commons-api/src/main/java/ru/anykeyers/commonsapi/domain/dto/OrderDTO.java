@@ -41,7 +41,7 @@ public class OrderDTO {
     /**
      * Статус
      */
-    private OrderState status;
+    private String status;
 
     /**
      * Список услуг
@@ -61,7 +61,7 @@ public class OrderDTO {
     /**
      * Тип оплаты
      */
-    private PaymentType typePayment;
+    private String typePayment;
 
     /**
      * Время создания

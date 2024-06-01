@@ -123,9 +123,9 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO saveOrder(String username, OrderRequest orderRequest) {
         log.info("Processing order: {}", orderRequest);
         Order order = OrderMapper.createOrder(username, orderRequest);
-        Instant endTime = calculateEndTime(orderRequest.getTime(), orderRequest.getServiceIds());
+        Instant endTime = calculateEndTime(Instant.parse(orderRequest.getTime()), orderRequest.getServiceIds());
         Long boxId = boxService
-                .getBoxForOrder(orderRequest.getCarWashId(), new TimeRange(orderRequest.getTime(), endTime))
+                .getBoxForOrder(orderRequest.getCarWashId(), new TimeRange(Instant.parse(orderRequest.getTime()), endTime))
                 .orElseThrow(BoxFreeNotFoundException::new);
         order.setEndTime(endTime);
         order.setBoxId(boxId);

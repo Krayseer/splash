@@ -42,7 +42,28 @@
         </div>
       </div>
       <div *ngIf="activeTab === 'tab2'">Контент для графика работы</div>
-      <div *ngIf="activeTab === 'tab3'">Контент для истории приглашений</div>
+      <div *ngIf="activeTab === 'tab3'">
+        <div class="table-container">
+          <table>
+            <thead>
+            <tr>
+              <th class="Inter name-column">Имя</th>
+              <th class="Inter roles-column">Роли</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let inv of invitations">
+              <td class="Inter name-column">{{ inv.username }}</td>
+              <td class="roles-column">
+                <div class="roles-container">
+                  <div class="Inter role-container" *ngFor="let role of inv.roles">{{ role }}</div>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>

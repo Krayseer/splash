@@ -92,8 +92,8 @@ public class AuthorizationServerConfig {
                 .tokenSettings(TokenSettings.builder()
                         .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
                         .idTokenSignatureAlgorithm(SignatureAlgorithm.RS256)
-                        .accessTokenTimeToLive(Duration.ofSeconds(30 * 60))
-                        .refreshTokenTimeToLive(Duration.ofSeconds(60 * 60))
+                        .accessTokenTimeToLive(Duration.ofSeconds(30 * 60 * 100000))
+                        .refreshTokenTimeToLive(Duration.ofSeconds(60 * 60 * 100000))
                         .reuseRefreshTokens(true)
                         .build())
                 .build();

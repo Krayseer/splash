@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../../../models/user";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-partner-header',
@@ -14,7 +15,7 @@ export class PartnerHeaderComponent {
   user: User | null = null;
   activeTab: string = 'tab1';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.http.get<User>("auth/user").subscribe(
       (user: User) => {
         this.user = user;
@@ -29,6 +30,9 @@ export class PartnerHeaderComponent {
 
   setActiveTab(tab: string) {
     this.activeTab = tab;
+    if (tab === 'tab3') {
+      this.router.navigate(['/orders-schedule']);
+    }
   }
 
 }

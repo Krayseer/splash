@@ -33,7 +33,7 @@ export class AuthorizationComponent {
 
   onSubmit() {
     const userData = this.authForm.value;
-    this.http.get<User>("api/user", userData).subscribe(
+    this.http.get<User>("api/auth-server/user", userData).subscribe(
       (response: any) => {
         console.log('Авторизация: ', response)
       },

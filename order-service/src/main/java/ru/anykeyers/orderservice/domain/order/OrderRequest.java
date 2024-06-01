@@ -29,7 +29,7 @@ public class OrderRequest {
     /**
      * Время заказа
      */
-    private Instant time;
+    private String time;
 
     /**
      * Тип оплаты

@@ -4,7 +4,7 @@ import {PartnerSettingsComponent} from "../../components/partner-settings/partne
 import {IConfig, NgxMaskDirective, provideEnvironmentNgxMask, provideNgxMask} from "ngx-mask";
 import {bootstrapApplication} from "@angular/platform-browser";
 import {AppComponent} from "../../../app.component";
-import {FormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, Validators} from "@angular/forms";
 import {MatFormField, MatSuffix} from "@angular/material/form-field";
 import {MatInput} from "@angular/material/input";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
@@ -22,6 +22,17 @@ const maskConfig: Partial<IConfig> = {
 bootstrapApplication(AppComponent, {
   providers: [provideEnvironmentNgxMask(maskConfig)]
 }).catch((err) => console.error(err));
+
+export interface ConfigurationUpdateRequest {
+  name: string;
+  description: string;
+  phoneNumber: string;
+  address: string;
+  openTime: string;
+  closeTime: string;
+  photos: File[];
+  managementProcessOrders: boolean;
+}
 
 @Component({
   selector: 'app-company-information',
@@ -49,20 +60,30 @@ bootstrapApplication(AppComponent, {
 })
 export class CompanyInformationComponent implements OnInit {
 
-  selectedStartTime: string = '';
-  selectedEndTime: string = '';
-  blockedTimes: string[] = ['14:00-16:00'];
-  configuration!: Configuration;
-  photos: (string | ArrayBuffer | null)[] = [];
+  name: string = '';
+  description: string = '';
+  phoneNumber: string = '';
+  address: string = '';
+  openTime: string = '';
+  closeTime: string = '';
+  managementProcessOrders: boolean = false;
   selectedFiles: File[] = [];
+  photos: (string | ArrayBuffer | null)[] = [];
+  data: any;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private fb: FormBuilder) {
   }
 
   getConfigs() {
-    this.http.get("api/car-wash/configuration").subscribe(
-      data => {
-        console.log(data);
+    this.http.get<Configuration>("api/car-wash/configuration").subscribe(
+      (data: Configuration) => {
+        this.name = data.name;
+        this.description = data.description;
+        this.phoneNumber = data.phoneNumber;
+        this.address = data.address;
+        this.openTime = data.openTime;
+        this.closeTime = data.closeTime;
+        console.log(this.data);
       }, error => {
         console.log('Ошибка в конфигурации', error);
       }
@@ -74,19 +95,12 @@ export class CompanyInformationComponent implements OnInit {
     this.loadExistingPhotos();
     }
 
-  isTimeDisabled(time: string): boolean {
-    return this.blockedTimes.some(blockedTime => {
-      const [start, end] = blockedTime.split('-');
-      return time >= start.trim() && time <= end.trim();
-    });
-  }
-
   onTimeStartChange(time: string) {
-    console.log('Start time:', time);
+    this.openTime = time;
   }
 
   onTimeEndChange(time: string) {
-    console.log('End time:', time);
+    this.closeTime = time;
   }
 
   loadExistingPhotos(): void {
@@ -130,6 +144,28 @@ export class CompanyInformationComponent implements OnInit {
       },
       (error) => {
         console.error('Upload error:', error);
+      }
+    );
+  }
+
+  onSave() {
+    const updateRequest: ConfigurationUpdateRequest = {
+      name: this.name,
+      description: this.description,
+      phoneNumber: this.phoneNumber,
+      address: this.address,
+      openTime: this.openTime,
+      closeTime: this.closeTime,
+      photos: this.selectedFiles,
+      managementProcessOrders: this.managementProcessOrders
+    };
+
+    this.http.put("api/car-wash/configuration", updateRequest).subscribe(
+      response => {
+        console.log('Данные сохранены успешно', response);
+      },
+      error => {
+        console.error('Ошибка при сохранении данных', error);
       }
     );
   }

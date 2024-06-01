@@ -45,11 +45,11 @@ class EventServiceTest {
                 .username("test-user")
                 .carWashId(1L)
                 .boxId(2L)
-                .status(OrderState.WAIT_CONFIRM)
+                .status(OrderState.WAIT_CONFIRM.name())
                 .startTime(now.plus(1, ChronoUnit.DAYS).toString())
                 .endTime(now.plus(2, ChronoUnit.DAYS).toString())
                 .serviceIds(List.of(3L, 4L))
-                .typePayment(PaymentType.SBP)
+                .typePayment(PaymentType.SBP.name())
                 .createdAt(now.toString())
                 .build();
         eventService.sendOrderCreatedEvent(orderDTO);

@@ -21,7 +21,7 @@ public final class OrderMapper {
                 .username(username)
                 .carWashId(orderRequest.getCarWashId())
                 .serviceIds(orderRequest.getServiceIds())
-                .startTime(orderRequest.getTime())
+                .startTime(Instant.parse(orderRequest.getTime()))
                 .typePayment(orderRequest.getTypePayment())
                 .status(OrderState.WAIT_CONFIRM)
                 .createdAt(Instant.now())
@@ -39,11 +39,11 @@ public final class OrderMapper {
                 .username(order.getUsername())
                 .carWashId(order.getCarWashId())
                 .boxId(order.getBoxId())
-                .status(order.getStatus())
+                .status(order.getStatus().name())
                 .startTime(order.getStartTime().toString())
                 .serviceIds(order.getServiceIds())
                 .endTime(order.getEndTime().toString())
-                .typePayment(order.getTypePayment())
+                .typePayment(order.getTypePayment().name())
                 .createdAt(order.getCreatedAt().toString())
                 .build();
     }

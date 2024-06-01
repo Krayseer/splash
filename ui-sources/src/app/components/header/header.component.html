@@ -1,6 +1,6 @@
 <header class="header">
   <div class="container">
-    <div class="header-logo">
+    <div (click)="goToMain()" class="header-logo" style="cursor: pointer;">
       <a>
         <img src="../../../assets/images/logoimage.svg" alt="Logo"/>
       </a>
@@ -10,16 +10,19 @@
       <button class="header-button light-button" (click)="goToOrder()">Запись</button>
     </div>
     <div class="user-info">
-      <div class="user-group">
+      <div class="user-group" *ngIf="user; else loginLink">
         <img class="user-img" style="margin-right: 6px" src="assets/images/user.svg"/>
-        <label style="font-weight: 700; font-size: 15px;">Михаил</label>
+        <label style="font-weight: 700; font-size: 15px;">{{ user.name }}</label>
+        <div class="notification">
+          <img src="assets/images/notification.svg"/>
+        </div>
+        <div class="messages">
+          <img src="assets/images/messages.svg"/>
+        </div>
       </div>
-      <div class="notification">
-        <img src="assets/images/notification.svg"/>
-      </div>
-      <div class="messages">
-        <img src="assets/images/messages.svg"/>
-      </div>
+      <ng-template #loginLink>
+        <a (click)="redirectToLogin()" class="Inter" style="font-weight: 700; font-size: 15px; margin-right: 5px; cursor: pointer;">Войти</a>
+      </ng-template>
     </div>
   </div>
 </header>

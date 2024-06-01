@@ -52,17 +52,17 @@ class OrderServiceTest {
         String username = "test-user";
         Long carWashId = 1L;
         List<Long> serviceIds = List.of(1L, 2L);
-        Instant startTime = Instant.now();
+        String startTime = Instant.now().toString();
         OrderRequest orderRequest = new OrderRequest(carWashId, serviceIds, startTime, PaymentType.SBP);
         long mockDuration = 2000L;
-        Instant endTime = startTime.plusMillis(mockDuration);
+        Instant endTime = Instant.parse(startTime).plusMillis(mockDuration);
         Long boxId = 1L;
         Order expectedOrder = Order.builder()
                 .id(1L)
                 .username(username)
                 .carWashId(carWashId)
                 .serviceIds(serviceIds)
-                .startTime(startTime)
+                .startTime(Instant.parse(startTime))
                 .endTime(endTime)
                 .boxId(boxId)
                 .typePayment(PaymentType.SBP)
@@ -70,7 +70,7 @@ class OrderServiceTest {
                 .createdAt(Instant.now())
                 .build();
         Mockito.when(remoteServicesService.getServicesDuration(serviceIds)).thenReturn(mockDuration);
-        Mockito.when(boxService.getBoxForOrder(carWashId, new TimeRange(startTime, endTime))).thenReturn(Optional.of(boxId));
+        Mockito.when(boxService.getBoxForOrder(carWashId, new TimeRange(Instant.parse(startTime), endTime))).thenReturn(Optional.of(boxId));
         Mockito.when(orderRepository.save(Mockito.any(Order.class))).thenReturn(expectedOrder);
         OrderDTO actualOrderDTO = orderService.saveOrder(username, orderRequest);
         OrderDTO expectedOrderDTO = OrderDTO.builder()
@@ -78,11 +78,11 @@ class OrderServiceTest {
                 .username(username)
                 .carWashId(carWashId)
                 .boxId(boxId)
-                .status(OrderState.WAIT_CONFIRM)
-                .startTime(startTime.toString())
+                .status(OrderState.WAIT_CONFIRM.name())
+                .startTime(startTime)
                 .serviceIds(serviceIds)
                 .endTime(endTime.toString())
-                .typePayment(PaymentType.SBP)
+                .typePayment(PaymentType.SBP.name())
                 .createdAt(actualOrderDTO.getCreatedAt())
                 .build();
         Assertions.assertEquals(expectedOrderDTO, actualOrderDTO);
@@ -95,7 +95,7 @@ class OrderServiceTest {
      */
     @Test
     void saveOrderWithNotFoundFreeBox() {
-        OrderRequest orderRequest = new OrderRequest(1L, List.of(1L, 2L), Instant.now(), PaymentType.SBP);
+        OrderRequest orderRequest = new OrderRequest(1L, List.of(1L, 2L), Instant.now().toString(), PaymentType.SBP);
         Mockito.when(boxService.getBoxForOrder(Mockito.any(), Mockito.any())).thenReturn(Optional.empty());
         BoxFreeNotFoundException exception = Assertions.assertThrows(
                 BoxFreeNotFoundException.class, () -> orderService.saveOrder("test", orderRequest)

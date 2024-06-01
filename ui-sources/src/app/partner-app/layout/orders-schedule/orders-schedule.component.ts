@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import {NgForOf} from "@angular/common";
 import {PartnerHeaderComponent} from "../../components/partner-header/partner-header.component";
 import {PartnerFooterComponent} from "../../components/partner-footer/partner-footer.component";
+import {HttpClient} from "@angular/common/http";
+import {switchMap} from "rxjs";
+import {Configuration} from "../../../models/wash-config";
+import {InvitationDTO} from "../../modals/invitation-modal/invitation-modal.component";
 
 interface Booking {
   boxId: number;
@@ -12,6 +16,19 @@ interface Booking {
 interface Box {
   id: number;
   name: string;
+}
+
+export interface OrderDTO {
+  id: number;
+  username: string;
+  carWashId: number;
+  boxId: number;
+  status: string;
+  serviceIds: number[];
+  startTime: string;
+  endTime: string;
+  typePayment: string;
+  createdAt: string;
 }
 
 @Component({
@@ -43,12 +60,43 @@ export class OrdersScheduleComponent {
     { boxId: 2, startTime: '15:00', endTime: '18:00' }
   ];
 
-  constructor() {}
+  carWashId!: number;
+  orders: OrderDTO[] = [];
+
+  constructor(private http: HttpClient) {
+    this.http.get<Configuration>("api/car-wash/configuration").pipe(
+      switchMap((configuration: Configuration) => {
+        this.carWashId = configuration.id;
+        // Выполнить второй запрос, используя ID автомойки
+        return this.http.get<OrderDTO[]>("api/order/car-wash/by-date?id=" + this.carWashId + "&date=16-03-2024");
+      })
+    ).subscribe(
+      (orders: OrderDTO[]) => {
+        this.orders = orders;
+        console.log(this.orders);
+        // Дополнительные действия при успешном получении приглашений
+      },
+      error => {
+        console.error('Ошибка при получении заказов', error);
+        // Дополнительные действия при ошибке получении приглашений
+      }
+    );
+  }
 
   isBooked(box: Box, time: string): boolean {
     return this.bookings.some(booking => {
       return booking.boxId === box.id && time >= booking.startTime && time < booking.endTime;
     });
+  }
+
+  getDate(order: OrderDTO): string {
+    const datePart = order.createdAt.split('T')[0];
+    return datePart;
+  }
+
+  getTime(order: OrderDTO): string {
+    const timePart = order.createdAt.split('T')[1].split('.')[0];
+    return timePart;
   }
 
 }

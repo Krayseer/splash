@@ -3,6 +3,7 @@ import {FormsModule, NgForm} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {NgClass, NgIf} from "@angular/common";
+import {Router} from "@angular/router";
 
 export interface ConfigurationRegisterRequest {
   tin: string;
@@ -23,7 +24,7 @@ export interface ConfigurationRegisterRequest {
 })
 export class CarWashRegistrationComponent {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   onSubmit(form: NgForm) {
     if (form.valid) {
@@ -35,6 +36,7 @@ export class CarWashRegistrationComponent {
 
       this.http.post(`api/car-wash/configuration`, registrationData).subscribe(
         response => {
+          this.router.navigate(['/comp-information']);
           console.log('Registration successful:', response);
         },
         error => {
