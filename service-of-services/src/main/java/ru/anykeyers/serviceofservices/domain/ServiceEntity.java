@@ -10,6 +10,7 @@ import lombok.*;
 @Setter
 @Entity
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "SERVICE")

@@ -36,4 +36,19 @@ public interface ServiceProcessor {
      */
     void saveService(Long carWashId, ServiceRequest serviceRequest);
 
+    /**
+     * Обновить услугу
+     *
+     * @param serviceId         идентификатор услуги
+     * @param serviceRequest    даные об услуге
+     */
+    void updateService(Long serviceId, ServiceRequest serviceRequest);
+
+    /**
+     * Удалить услугу
+     *
+     * @param serviceId идентификатор услуги
+     */
+    void deleteService(Long serviceId);
+
 }

@@ -54,4 +54,21 @@ public class ServiceController {
         serviceProcessor.saveService(carWashId, serviceRequest);
     }
 
+    @Operation(summary = "Обновить услугу")
+    @PutMapping("/{serviceId}")
+    public void updateService(
+            @Parameter(name = "Идентификатор услуги") @PathVariable Long serviceId,
+            @Parameter(name = "Обновленные данные об услуге") @RequestBody ServiceRequest serviceRequest
+    ) {
+       serviceProcessor.updateService(serviceId, serviceRequest);
+    }
+
+    @Operation(summary = "Удалить услугу")
+    @DeleteMapping("/{serviceId}")
+    public void deleteService(
+            @Parameter(name = "Идентификатор услуги") @PathVariable Long serviceId
+    ) {
+        serviceProcessor.deleteService(serviceId);
+    }
+
 }

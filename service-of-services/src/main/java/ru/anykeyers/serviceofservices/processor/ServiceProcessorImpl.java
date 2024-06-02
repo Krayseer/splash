@@ -1,6 +1,7 @@
 package ru.anykeyers.serviceofservices.processor;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.serviceofservices.domain.ServiceMapper;
 import ru.anykeyers.serviceofservices.ServiceRepository;
@@ -13,6 +14,7 @@ import java.util.List;
 /**
  * Реализация сервиса обработки услуг
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ServiceProcessorImpl implements ServiceProcessor {
@@ -39,6 +41,25 @@ public class ServiceProcessorImpl implements ServiceProcessor {
     public void saveService(Long carWashId, ServiceRequest serviceRequest) {
         ServiceEntity service = ServiceMapper.createService(carWashId, serviceRequest);
         serviceRepository.save(service);
+        log.info("Saving service: {}", service);
+    }
+
+    @Override
+    public void updateService(Long serviceId, ServiceRequest serviceRequest) {
+        ServiceEntity service = serviceRepository.findById(serviceId).orElseThrow(
+                () -> new RuntimeException("Service not found")
+        );
+        service.setDuration(serviceRequest.getDuration());
+        service.setName(serviceRequest.getName());
+        service.setPrice(serviceRequest.getPrice());
+        serviceRepository.save(service);
+        log.info("Updating service: {}", service);
+    }
+
+    @Override
+    public void deleteService(Long serviceId) {
+        serviceRepository.deleteById(serviceId);
+        log.info("Deleting service: {}", serviceId);
     }
 
 }
