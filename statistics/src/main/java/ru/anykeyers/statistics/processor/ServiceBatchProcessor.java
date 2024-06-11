@@ -24,7 +24,7 @@ public class ServiceBatchProcessor {
 
     private final ServicesRepository servicesRepository;
 
-    private final AtomicInteger orderCount = new AtomicInteger(0);
+    private final AtomicInteger orderCounter = new AtomicInteger(0);
 
     /**
      * Добавить метрики по услугам в статистику
@@ -48,13 +48,20 @@ public class ServiceBatchProcessor {
      */
     public void forceUpdate() {
         log.info("Save batch in DB: {}", servicesByCarWashId.size());
-        orderCount.set(0);
-        servicesRepository.saveAll(servicesByCarWashId.values());
+        orderCounter.set(0);
+        servicesByCarWashId.forEach((key, value) -> {
+            ServiceMetric serviceMetric = servicesRepository.findByCarWashId(key);
+            if (serviceMetric != null) {
+                serviceMetric.setCount(serviceMetric.getCount() + value.getCount());
+                serviceMetric.setSum(serviceMetric.getSum() + value.getSum());
+            }
+            servicesRepository.save(value);
+        });
         servicesByCarWashId.clear();
     }
 
     private void checkCache() {
-        if (orderCount.incrementAndGet() != 100) {
+        if (orderCounter.incrementAndGet() != 100) {
             return;
         }
         forceUpdate();
