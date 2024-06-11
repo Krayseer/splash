@@ -32,4 +32,19 @@ public interface BoxService {
      */
     void addBox(Long carWashId, BoxRequest boxRequest);
 
+    /**
+     * Обновить информацию о боксе
+     *
+     * @param boxId         идентификатор бокса
+     * @param boxRequest    обновленные данные о боксе
+     */
+    void updateBox(Long boxId, BoxRequest boxRequest);
+
+    /**
+     * Удалить бокс
+     *
+     * @param boxId идентификатор бокса
+     */
+    void deleteBox(Long boxId);
+
 }

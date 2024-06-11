@@ -3,6 +3,7 @@ package ru.anykeyers.configurationservice.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.MessageQueue;
@@ -21,6 +22,7 @@ import java.util.List;
 /**
  * Реализация сервиса обработки работников
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -58,7 +60,16 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .build();
         employeeRepository.save(employee);
         EmployeeDTO employeeDTO = new EmployeeDTO(employee.getUserId(), employee.getConfiguration().getId());
+        log.info("Add employee to car wash: {}", employee);
         kafkaTemplate.send(MessageQueue.INVITATION_APPLY, objectMapper.writeValueAsString(employeeDTO));
+    }
+
+    @Override
+    public void deleteEmployee(Long carWashId, Long userId) {
+        Configuration configuration = configurationRepository.findById(carWashId).orElseThrow(
+                () -> new ConfigurationNotFoundException(carWashId)
+        );
+        employeeRepository.deleteByConfigurationAndUserId(configuration, userId);
     }
 
 }

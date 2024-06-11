@@ -50,8 +50,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteOrder(String orderId) {
-        orderRepository.deleteById(Long.getLong(orderId));
+    public List<OrderDTO> getOrders(List<Long> orderIds) {
+        List<Order> orders = orderRepository.findAllById(orderIds);
+        return orders.stream().map(OrderMapper::createDTO).toList();
     }
 
     @Override
@@ -62,6 +63,21 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(OrderState.WAIT_PROCESS);
         orderRepository.save(order);
         log.info("Process order apply employee: {}", order);
+    }
+
+    @Override
+    public void disappointEmployeeFromOrder(long orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(
+                () -> new OrderNotFoundException(orderId)
+        );
+        order.setStatus(OrderState.WAIT_CONFIRM);
+        orderRepository.save(order);
+        log.info("Disappoint employee from order: {}", order);
+    }
+
+    @Override
+    public void deleteOrder(String orderId) {
+        orderRepository.deleteById(Long.getLong(orderId));
     }
 
     @Override
@@ -133,6 +149,12 @@ public class OrderServiceImpl implements OrderService {
         OrderDTO orderDTO = OrderMapper.createDTO(savedOrder);
         eventService.sendOrderCreatedEvent(orderDTO);
         return orderDTO;
+    }
+
+    @Override
+    public void deleteOrder(String username, Long orderId) {
+        orderRepository.deleteByUsernameAndId(username, orderId);
+        log.info("Delete order: {}", orderId);
     }
 
     /**

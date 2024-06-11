@@ -24,4 +24,12 @@ public interface EmployeeService {
      */
     void addCarWashEmployee(Long carWashId, Long userId);
 
+    /**
+     * Удалить работника с автомойки
+     *
+     * @param carWashId идентификатор автомойки
+     * @param userId    идентификатор работника
+     */
+    void deleteEmployee(Long carWashId, Long userId);
+
 }

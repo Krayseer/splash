@@ -1,6 +1,7 @@
 package ru.anykeyers.businessorderservice;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,6 +38,13 @@ public class BusinessOrderController {
     @PostMapping("/appoint")
     public void appointOrderEmployee(@RequestBody BusinessOrderRequest request) {
         orderService.appointOrderEmployee(request.getOrderId(), request.getEmployeeId());
+    }
+
+    @Operation(summary = "Убрать работника с заказа")
+    @PostMapping("/disappoint/{businessOrderId}")
+    public void disappointOrderEmployee(
+            @Parameter(description = "Идентификатор заказа") @PathVariable Long businessOrderId) {
+        orderService.disappointEmployeeFromOrder(businessOrderId);
     }
 
 }

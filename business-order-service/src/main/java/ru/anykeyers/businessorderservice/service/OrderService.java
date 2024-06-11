@@ -38,8 +38,8 @@ public class OrderService {
      */
     public List<OrderDTO> getOrders(String username) {
         UserDTO user = remoteUserService.getUser(username);
-        List<BusinessOrder> orders = businessOrderRepository.findByEmployeeId(user.getId());
-        return null; //TODO доделать
+        List<BusinessOrder> businessOrders = businessOrderRepository.findByEmployeeId(user.getId());
+        return remoteOrderService.getOrders(businessOrders.stream().map(BusinessOrder::getOrderId).toList());
     }
 
     /**
@@ -68,7 +68,7 @@ public class OrderService {
                 .map(businessOrderRepository::findByOrderId)
                 .map(BusinessOrder::getEmployeeId)
                 .forEach(employeeIds::remove);
-        if (employeeIds.isEmpty()) {;
+        if (employeeIds.isEmpty()) {
             eventService.sendOrderRemoveEvent(order.getId());
             return;
         }
@@ -86,6 +86,19 @@ public class OrderService {
         businessOrderRepository.save(businessOrder);
         log.info("Appoint order employee {} for order {}", employeeId, orderId);
         eventService.sendOrderApplyEmployeeEvent(String.valueOf(orderId));
+    }
+
+    /**
+     * Удалить работника с заказа
+     *
+     * @param businessOrderId идентификатор заказа
+     */
+    public void disappointEmployeeFromOrder(Long businessOrderId) {
+        BusinessOrder order = businessOrderRepository.findById(businessOrderId).orElseThrow(
+                () -> new RuntimeException("Order not found")
+        );
+        eventService.sendOrderDisappointEmployeeEvent(String.valueOf(order.getOrderId()));
+        businessOrderRepository.deleteById(businessOrderId);
     }
 
     /**

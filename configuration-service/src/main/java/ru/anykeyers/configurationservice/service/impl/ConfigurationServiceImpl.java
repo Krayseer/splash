@@ -81,6 +81,15 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         configurationRepository.save(configuration);
     }
 
+    @Override
+    public void deleteConfiguration(String username) {
+        Configuration configuration = configurationRepository.findByUsername(username).orElseThrow(
+                () -> new UserNotFoundConfigurationException(username)
+        );
+        configurationRepository.delete(configuration);
+        log.info("Deleted configuration: {}", configuration);
+    }
+
     private List<String> uploadPhotos(List<MultipartFile> photos) {
         List<String> photoUrls = new ArrayList<>();
         ResponseEntity<List<String>> photoUrlsResponse = remoteStorageService.uploadPhotos(photos);

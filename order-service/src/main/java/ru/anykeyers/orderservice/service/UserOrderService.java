@@ -33,4 +33,12 @@ public interface UserOrderService {
      */
     OrderDTO saveOrder(String username, OrderRequest orderRequest);
 
+    /**
+     * Удалить заказ
+     *
+     * @param username  имя пользователя
+     * @param orderId   идентификатор заказа
+     */
+    void deleteOrder(String username, Long orderId);
+
 }

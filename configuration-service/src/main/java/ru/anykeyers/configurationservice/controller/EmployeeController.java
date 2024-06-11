@@ -24,4 +24,11 @@ public class EmployeeController {
         return employeeService.getCarWashEmployees(carWashId);
     }
 
+    @Operation(summary = "Уволить работника с автомойки")
+    @DeleteMapping("/{carWashId}")
+    public void deleteEmployee(@PathVariable("carWashId") Long carWashId,
+                               @RequestParam("userId") Long userId) {
+        employeeService.deleteEmployee(carWashId, userId);
+    }
+
 }

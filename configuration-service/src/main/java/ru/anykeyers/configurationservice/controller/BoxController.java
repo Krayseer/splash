@@ -37,4 +37,16 @@ public class BoxController {
         boxService.addBox(carWashId, boxRequest);
     }
 
+    @Operation(summary = "Обновить бокс у автомойки")
+    @PutMapping("/{boxId}")
+    public void updateBox(@PathVariable Long boxId, @RequestBody BoxRequest boxRequest) {
+        boxService.updateBox(boxId, boxRequest);
+    }
+
+    @Operation(summary = "Удалить бокс у автомойки")
+    @DeleteMapping("/{boxId}")
+    public void deleteBox(@PathVariable Long boxId) {
+        boxService.deleteBox(boxId);
+    }
+
 }

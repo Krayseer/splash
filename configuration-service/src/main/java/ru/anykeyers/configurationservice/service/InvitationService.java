@@ -37,4 +37,11 @@ public interface InvitationService {
      */
     void applyInvitation(Long invitationId);
 
+    /**
+     * Удалить приглашение
+     *
+     * @param id идентификатор приглашения
+     */
+    void deleteInvitation(Long id);
+
 }

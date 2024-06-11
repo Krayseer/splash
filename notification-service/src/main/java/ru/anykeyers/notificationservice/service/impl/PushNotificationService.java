@@ -52,4 +52,14 @@ public class PushNotificationService implements NotificationService {
         return userSetting.isPushEnabled();
     }
 
+    /**
+     * Удалить push уведомление
+     *
+     * @param pushId идентификатор уведомления
+     */
+    public void deleteNotification(long pushId) {
+        notificationRepository.deleteById(pushId);
+        log.info("Deleted notification: {}", pushId);
+    }
+
 }

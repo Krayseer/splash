@@ -41,7 +41,21 @@ public class RemoteOrderService {
                 .toUriString();
         OrderDTO[] orders = restTemplate.getForObject(url, OrderDTO[].class);
         return orders == null ? Collections.emptyList() : Arrays.stream(orders).toList();
+    }
 
+    /**
+     * Получить список заказов
+     *
+     * @param orderIds идентификаторы заказов
+     */
+    public List<OrderDTO> getOrders(List<Long> orderIds) {
+        String url = UriComponentsBuilder
+                .fromHttpUrl(URL + "list")
+                .queryParam("order-ids", orderIds.toArray())
+                .encode()
+                .toUriString();
+        OrderDTO[] orders = restTemplate.getForObject(url, OrderDTO[].class);
+        return orders == null ? Collections.emptyList() : Arrays.stream(orders).toList();
     }
 
 }

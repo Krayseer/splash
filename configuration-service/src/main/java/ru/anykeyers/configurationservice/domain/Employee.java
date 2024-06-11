@@ -11,6 +11,7 @@ import ru.anykeyers.configurationservice.domain.configuration.Configuration;
 @Setter
 @Entity
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Employee {

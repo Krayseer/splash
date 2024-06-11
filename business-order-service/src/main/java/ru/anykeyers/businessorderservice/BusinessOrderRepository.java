@@ -26,4 +26,11 @@ public interface BusinessOrderRepository extends JpaRepository<BusinessOrder, Lo
      */
     BusinessOrder findByOrderId(Long id);
 
+    /**
+     * Удалить заказ
+     *
+     * @param orderId идентификатор заказа
+     */
+    void deleteByOrderId(Long orderId);
+
 }

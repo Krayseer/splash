@@ -55,4 +55,10 @@ public class UserOrderController {
         return orderService.saveOrder(jwt.getSubject(), orderRequest);
     }
 
+    @Operation(summary = "Удалить заказ пользователя")
+    @DeleteMapping("/{orderId}")
+    public void deleteOrder(@AuthenticationPrincipal Jwt jwt, @PathVariable Long orderId) {
+        orderService.deleteOrder(jwt.getSubject(), orderId);
+    }
+
 }

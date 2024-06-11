@@ -46,4 +46,11 @@ public interface ConfigurationService {
      */
     void updateConfiguration(String username, ConfigurationUpdateRequest configurationUpdateRequest);
 
+    /**
+     * Удалить конфигурацию автомойки
+     *
+     * @param username имя пользователя хозяина автомойки
+     */
+    void deleteConfiguration(String username);
+
 }

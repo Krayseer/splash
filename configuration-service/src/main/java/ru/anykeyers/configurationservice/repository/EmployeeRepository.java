@@ -20,4 +20,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
      */
     List<Employee> findByConfiguration(Configuration configuration);
 
+    /**
+     * Удалить работника
+     *
+     * @param configuration автомойка
+     * @param userId        идентификатор пользователя
+     */
+    void deleteByConfigurationAndUserId(Configuration configuration, Long userId);
+
 }

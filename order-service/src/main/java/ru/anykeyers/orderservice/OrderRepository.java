@@ -70,4 +70,12 @@ public interface OrderRepository extends JpaRepository<Order, Long>, PagingAndSo
      */
     List<Order> findByCarWashIdAndStatusIn(Long carWashId, List<OrderState> waitConfirm);
 
+    /**
+     * Удалить заказ
+     *
+     * @param username  имя пользователя
+     * @param orderId   идентификатор заказа
+     */
+    void deleteByUsernameAndId(String username, Long orderId);
+
 }

@@ -1,6 +1,9 @@
 package ru.anykeyers.orderservice.service;
 
+import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
+
+import java.util.List;
 
 
 /**
@@ -16,14 +19,28 @@ public interface OrderService extends UserOrderService, CarWashOrderService {
     FullOrderDTO getOrder(Long id);
 
     /**
-     * Удалить заказ
+     * Получить информацию о списке заказов
      *
-     * @param orderId идентификатор заказа
+     * @param orderIds идентификаторы заказов
      */
-    void deleteOrder(String orderId);
+    List<OrderDTO> getOrders(List<Long> orderIds);
 
     /**
      * Обработать назначение работника заказу
      */
     void applyOrderEmployee(Long orderId);
+
+    /**
+     * Обработать удаление работника с заказа
+     *
+     * @param orderId идентификатор заказа
+     */
+    void disappointEmployeeFromOrder(long orderId);
+
+    /**
+     * Удалить заказ
+     *
+     * @param orderId идентификатор заказа
+     */
+    void deleteOrder(String orderId);
 }

@@ -57,4 +57,10 @@ public class ConfigurationController {
         configurationService.updateConfiguration(jwt.getSubject(), configurationUpdateRequest);
     }
 
+    @Operation(summary = "Удалить конфигурацию автомойки")
+    @DeleteMapping
+    public void deleteConfiguration(@AuthenticationPrincipal Jwt jwt) {
+        configurationService.deleteConfiguration(jwt.getSubject());
+    }
+
 }

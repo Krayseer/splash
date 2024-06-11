@@ -24,6 +24,15 @@ public class EventService {
     }
 
     /**
+     * Отправить событие об удалении работника с заказа
+     *
+     * @param orderId идентификатор заказ
+     */
+    public void sendOrderDisappointEmployeeEvent(String orderId) {
+        kafkaTemplate.send(MessageQueue.ORDER_EMPLOYEE_DISAPPOINT, orderId);
+    }
+
+    /**
      * Отправить событие об удалении заказа
      *
      * @param orderId идентификатор заказа

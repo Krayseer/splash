@@ -29,6 +29,16 @@ public class KafkaProcessor {
     }
 
     /**
+     * Слушатель события удаления работника с заказа
+     *
+     * @param orderId идентификатор заказа
+     */
+    @KafkaListener(topics = MessageQueue.ORDER_EMPLOYEE_DISAPPOINT, groupId = GROUP_ID)
+    public void receiveOrderEmployeeDisappointed(String orderId) {
+        orderService.disappointEmployeeFromOrder(Long.parseLong(orderId));
+    }
+
+    /**
      * Слушатель события об удалении заказа
      */
     @KafkaListener(topics = MessageQueue.ORDER_DELETE, groupId = GROUP_ID)

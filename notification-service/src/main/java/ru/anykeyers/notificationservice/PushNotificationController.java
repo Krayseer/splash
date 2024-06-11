@@ -5,9 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.notificationservice.domain.ControllerName;
 import ru.anykeyers.notificationservice.domain.push.PushNotificationDTO;
 import ru.anykeyers.notificationservice.service.impl.PushNotificationService;
@@ -26,6 +24,12 @@ public class PushNotificationController {
     @GetMapping
     public List<PushNotificationDTO> getNotifications(@AuthenticationPrincipal Jwt jwt) {
         return pushNotificationService.getNotifications(jwt.getSubject());
+    }
+
+    @Operation(summary = "Удалить push уведомление")
+    @DeleteMapping("/{pushId}")
+    public void deleteNotification(@PathVariable long pushId) {
+        pushNotificationService.deleteNotification(pushId);
     }
 
 }
