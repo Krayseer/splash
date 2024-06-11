@@ -36,6 +36,16 @@ public class ConfigurationUpdateRequest {
     private String address;
 
     /**
+     * Долгота
+     */
+    private String longitude;
+
+    /**
+     * Широта
+     */
+    private String latitude;
+
+    /**
      * Время открытия
      */
     private String openTime;

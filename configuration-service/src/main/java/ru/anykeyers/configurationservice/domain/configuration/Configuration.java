@@ -69,6 +69,16 @@ public class Configuration {
     private String address;
 
     /**
+     * Долгота
+     */
+    private String longitude;
+
+    /**
+     * Широта
+     */
+    private String latitude;
+
+    /**
      * Время открытия
      */
     private String openTime;

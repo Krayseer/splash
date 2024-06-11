@@ -72,6 +72,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         configuration.setDescription(configurationUpdateRequest.getDescription());
         configuration.setPhoneNumber(configurationUpdateRequest.getPhoneNumber());
         configuration.setAddress(configurationUpdateRequest.getAddress());
+        configuration.setLongitude(configuration.getLongitude());
+        configuration.setLatitude(configuration.getLatitude());
         configuration.setOpenTime(configurationUpdateRequest.getOpenTime());
         configuration.setCloseTime(configurationUpdateRequest.getCloseTime());
         configuration.setManagementProcessOrders(configurationUpdateRequest.isManagementProcessOrders());

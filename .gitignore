@@ -5,7 +5,6 @@ target/
 
 .env
 deploy
-images
 
 ### IntelliJ IDEA ###
 .idea
