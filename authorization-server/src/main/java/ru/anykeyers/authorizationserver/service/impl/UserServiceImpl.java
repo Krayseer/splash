@@ -62,6 +62,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void registerUser(UserRequest userRequest) {
+        if (userRepository.findUserByUsername(userRequest.getUsername()) != null) {
+            throw new RuntimeException("User with username " + userRequest.getUsername() + " already exists");
+        }
         User user = UserMapper.toUser(userRequest);
         user.setRoleList(new ArrayList<>() {{ roleRepository.findByRoleCode("ROLE_USER"); }});
         userRepository.save(user);
