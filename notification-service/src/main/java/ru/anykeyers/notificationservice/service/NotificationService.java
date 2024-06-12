@@ -1,7 +1,7 @@
 package ru.anykeyers.notificationservice.service;
 
-import ru.anykeyers.commonsapi.domain.dto.UserDTO;
-import ru.anykeyers.commonsapi.domain.dto.UserSettingDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserSettingDTO;
 import ru.anykeyers.notificationservice.domain.Notification;
 
 /**

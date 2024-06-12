@@ -1,6 +1,6 @@
 package ru.anykeyers.configurationservice.service;
 
-import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationRegisterRequest;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationUpdateRequest;
 

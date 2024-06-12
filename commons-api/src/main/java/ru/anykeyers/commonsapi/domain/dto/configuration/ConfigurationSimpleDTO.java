@@ -1,16 +1,18 @@
-package ru.anykeyers.commonsapi.domain.dto;
+package ru.anykeyers.commonsapi.domain.dto.configuration;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Данные о боксе
+ * Простой DTO с информацией о конфигурации автомойки
  */
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoxDTO {
+public class ConfigurationSimpleDTO {
 
     /**
      * Идентификатор
@@ -21,10 +23,5 @@ public class BoxDTO {
      * Название
      */
     private String name;
-
-    /**
-     * Идентификатор автомойки
-     */
-    private Long carWashId;
 
 }

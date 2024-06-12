@@ -14,8 +14,8 @@ import ru.anykeyers.authorizationserver.domain.user.UserSetting;
 import ru.anykeyers.authorizationserver.repository.RoleRepository;
 import ru.anykeyers.authorizationserver.repository.UserRepository;
 import ru.anykeyers.authorizationserver.service.UserService;
-import ru.anykeyers.commonsapi.domain.dto.UserDTO;
-import ru.anykeyers.commonsapi.domain.dto.UserSettingDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserSettingDTO;
 import ru.anykeyers.commonsapi.service.RemoteStorageService;
 
 import java.util.ArrayList;

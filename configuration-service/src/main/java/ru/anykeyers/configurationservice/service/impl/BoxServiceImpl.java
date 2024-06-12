@@ -3,7 +3,7 @@ package ru.anykeyers.configurationservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.domain.dto.BoxDTO;
+import ru.anykeyers.commonsapi.domain.dto.configuration.BoxDTO;
 import ru.anykeyers.configurationservice.domain.box.BoxRequest;
 import ru.anykeyers.configurationservice.domain.box.Box;
 import ru.anykeyers.configurationservice.domain.configuration.Configuration;

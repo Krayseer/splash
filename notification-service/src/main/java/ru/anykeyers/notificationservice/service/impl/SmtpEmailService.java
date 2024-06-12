@@ -7,8 +7,8 @@ import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.domain.dto.UserDTO;
-import ru.anykeyers.commonsapi.domain.dto.UserSettingDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserSettingDTO;
 import ru.anykeyers.notificationservice.domain.Notification;
 import ru.anykeyers.notificationservice.service.NotificationService;
 

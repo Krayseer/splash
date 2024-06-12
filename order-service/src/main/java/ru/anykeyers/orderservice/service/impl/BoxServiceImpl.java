@@ -2,8 +2,8 @@ package ru.anykeyers.orderservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.domain.dto.BoxDTO;
-import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.dto.configuration.BoxDTO;
+import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.DateUtils;
 import ru.anykeyers.orderservice.OrderRepository;
 import ru.anykeyers.orderservice.domain.order.Order;

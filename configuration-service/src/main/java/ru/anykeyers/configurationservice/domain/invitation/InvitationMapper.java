@@ -1,6 +1,8 @@
 package ru.anykeyers.configurationservice.domain.invitation;
 
-import ru.anykeyers.commonsapi.domain.dto.InvitationDTO;
+import ru.anykeyers.commonsapi.domain.invitation.InvitationDTO;
+import ru.anykeyers.commonsapi.domain.invitation.InvitationState;
+import ru.anykeyers.configurationservice.domain.configuration.ConfigurationMapper;
 
 import java.util.List;
 
@@ -12,13 +14,13 @@ public final class InvitationMapper {
     /**
      * Создать приглашение
      *
-     * @param invitationDTO данные о приглашении
+     * @param invitationRequest данные о приглашении
      */
-    public static Invitation createInvitation(InvitationDTO invitationDTO) {
+    public static Invitation createInvitation(InvitationRequest invitationRequest) {
         return Invitation.builder()
-                .username(invitationDTO.getUsername())
-                .carWashId(invitationDTO.getCarWashId())
-                .roles(invitationDTO.getRoles())
+                .username(invitationRequest.getUsername())
+                .invitationState(InvitationState.SENT)
+                .roles(invitationRequest.getRoles())
                 .build();
     }
 
@@ -27,8 +29,13 @@ public final class InvitationMapper {
      *
      * @param invitation приглашение
      */
-    public static InvitationDTO createDTO(Invitation invitation) {
-        return new InvitationDTO(invitation.getUsername(), invitation.getCarWashId(), invitation.getRoles());
+    public static InvitationDTO toDTO(Invitation invitation) {
+        return new InvitationDTO(
+                invitation.getUsername(),
+                ConfigurationMapper.toSimpleDTO(invitation.getConfiguration()),
+                invitation.getRoles(),
+                invitation.getInvitationState()
+        );
     }
 
     /**
@@ -36,8 +43,8 @@ public final class InvitationMapper {
      *
      * @param invitations список приглашений
      */
-    public static List<InvitationDTO> createDTO(List<Invitation> invitations) {
-        return invitations.stream().map(InvitationMapper::createDTO).toList();
+    public static List<InvitationDTO> toDTO(List<Invitation> invitations) {
+        return invitations.stream().map(InvitationMapper::toDTO).toList();
     }
 
 }

@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.service.RemoteStorageService;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationRegisterRequest;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationMapper;
@@ -46,7 +46,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         Configuration configuration = configurationRepository.findByUsername(username).orElseThrow(
                 () -> new UserNotFoundConfigurationException(username)
         );
-        return configurationMapper.createDTO(configuration);
+        return configurationMapper.toDTO(configuration);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         Configuration configuration = configurationRepository.findById(id).orElseThrow(
                 () -> new ConfigurationNotFoundException(id)
         );
-        return configurationMapper.createDTO(configuration);
+        return configurationMapper.toDTO(configuration);
     }
 
     @Override

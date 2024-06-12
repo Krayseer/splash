@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
 import ru.anykeyers.configurationservice.domain.ControllerName;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationRegisterRequest;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationUpdateRequest;

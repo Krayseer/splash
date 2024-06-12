@@ -2,9 +2,9 @@ package ru.anykeyers.notificationservice.processor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
-import ru.anykeyers.commonsapi.domain.dto.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
 import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
 import ru.anykeyers.notificationservice.domain.Notification;

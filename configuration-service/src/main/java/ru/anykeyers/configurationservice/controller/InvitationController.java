@@ -6,8 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import ru.anykeyers.commonsapi.domain.dto.InvitationDTO;
+import ru.anykeyers.commonsapi.domain.invitation.InvitationDTO;
+import ru.anykeyers.commonsapi.domain.invitation.InvitationState;
 import ru.anykeyers.configurationservice.domain.ControllerName;
+import ru.anykeyers.configurationservice.domain.invitation.InvitationRequest;
 import ru.anykeyers.configurationservice.service.InvitationService;
 
 import java.util.List;
@@ -35,16 +37,40 @@ public class InvitationController {
         return invitationService.getInvitations(carWashId);
     }
 
+    @Operation(summary = "Получить список отправленных не обработнных приглашений автомойки")
+    @GetMapping("/{carWashId}/sent")
+    public List<InvitationDTO> getSentInvitations(@PathVariable Long carWashId) {
+        return invitationService.getInvitations(carWashId, InvitationState.SENT);
+    }
+
+    @Operation(summary = "Получить список принятых приглашений автомойки")
+    @GetMapping("/{carWashId}/accepted")
+    public List<InvitationDTO> getAcceptedInvitations(@PathVariable Long carWashId) {
+        return invitationService.getInvitations(carWashId, InvitationState.ACCEPTED);
+    }
+
+    @Operation(summary = "Получить список отклоненных приглашений автомойки")
+    @GetMapping("/{carWashId}/rejected")
+    public List<InvitationDTO> getRejectedInvitations(@PathVariable Long carWashId) {
+        return invitationService.getInvitations(carWashId, InvitationState.REJECTED);
+    }
+
     @Operation(summary = "Добавление данных об отправленном приглашении")
     @PostMapping
-    public void addInvitation(@RequestBody InvitationDTO invitation) {
+    public void addInvitation(@RequestBody InvitationRequest invitation) {
         invitationService.addInvitation(invitation);
     }
 
     @Operation(summary = "Подтверждение приглашения")
-    @PostMapping("/{id}")
+    @PostMapping("/apply/{id}")
     public void applyInvitation(@PathVariable Long id) {
         invitationService.applyInvitation(id);
+    }
+
+    @Operation(summary = "Отклонить приглашение")
+    @PostMapping("/decline/{id}")
+    public void declineInvitation(@PathVariable Long id) {
+        invitationService.declineInvitation(id);
     }
 
     @Operation(summary = "Удалить приглашение")

@@ -3,7 +3,7 @@ package ru.anykeyers.commonsapi.service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.anykeyers.commonsapi.domain.RemoteConfiguration;
-import ru.anykeyers.commonsapi.domain.dto.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
 
 import java.util.Arrays;
 import java.util.Collections;

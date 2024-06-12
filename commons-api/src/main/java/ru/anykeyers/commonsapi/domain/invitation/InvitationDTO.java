@@ -1,8 +1,9 @@
-package ru.anykeyers.commonsapi.domain.dto;
+package ru.anykeyers.commonsapi.domain.invitation;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationSimpleDTO;
 
 import java.util.List;
 
@@ -20,13 +21,18 @@ public class InvitationDTO {
     private String username;
 
     /**
-     * Идентификатор автомойки
+     * Автомойки
      */
-    private Long carWashId;
+    private ConfigurationSimpleDTO configuration;
 
     /**
      * Роли
      */
     private List<String> roles;
+
+    /**
+     * Статус заказа
+     */
+    private InvitationState invitationState;
 
 }

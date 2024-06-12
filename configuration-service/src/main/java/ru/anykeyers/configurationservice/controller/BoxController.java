@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.anykeyers.commonsapi.domain.dto.BoxDTO;
+import ru.anykeyers.commonsapi.domain.dto.configuration.BoxDTO;
 import ru.anykeyers.configurationservice.domain.ControllerName;
 import ru.anykeyers.configurationservice.domain.box.BoxRequest;
 import ru.anykeyers.configurationservice.service.BoxService;

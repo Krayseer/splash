@@ -9,8 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.authorizationserver.domain.ControllerName;
 import ru.anykeyers.authorizationserver.domain.user.UserRequest;
 import ru.anykeyers.authorizationserver.service.UserService;
-import ru.anykeyers.commonsapi.domain.dto.UserDTO;
-import ru.anykeyers.commonsapi.domain.dto.UserSettingDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserSettingDTO;
 
 import java.security.Principal;
 import java.util.Arrays;

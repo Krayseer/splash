@@ -1,8 +1,8 @@
 package ru.anykeyers.authorizationserver.domain.user;
 
 import ru.anykeyers.authorizationserver.domain.entity.Role;
-import ru.anykeyers.commonsapi.domain.dto.UserDTO;
-import ru.anykeyers.commonsapi.domain.dto.UserSettingDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserSettingDTO;
 
 import java.time.Instant;
 

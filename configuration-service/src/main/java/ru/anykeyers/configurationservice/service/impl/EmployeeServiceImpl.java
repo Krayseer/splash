@@ -8,7 +8,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.MessageQueue;
 import ru.anykeyers.commonsapi.domain.dto.EmployeeDTO;
-import ru.anykeyers.commonsapi.domain.dto.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
 import ru.anykeyers.configurationservice.domain.configuration.Configuration;
 import ru.anykeyers.configurationservice.domain.Employee;
@@ -50,10 +50,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @SneakyThrows
-    public void addCarWashEmployee(Long carWashId, Long userId) {
-        Configuration configuration = configurationRepository.findById(carWashId).orElseThrow(
-                () -> new ConfigurationNotFoundException(carWashId)
-        );
+    public void addCarWashEmployee(Configuration configuration, Long userId) {
         Employee employee = Employee.builder()
                 .userId(userId)
                 .configuration(configuration)

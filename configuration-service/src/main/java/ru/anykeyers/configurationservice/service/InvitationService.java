@@ -1,6 +1,8 @@
 package ru.anykeyers.configurationservice.service;
 
-import ru.anykeyers.commonsapi.domain.dto.InvitationDTO;
+import ru.anykeyers.commonsapi.domain.invitation.InvitationDTO;
+import ru.anykeyers.commonsapi.domain.invitation.InvitationState;
+import ru.anykeyers.configurationservice.domain.invitation.InvitationRequest;
 
 import java.util.List;
 
@@ -24,11 +26,19 @@ public interface InvitationService {
     List<InvitationDTO> getInvitations(Long carWashId);
 
     /**
+     * Получить список приглашений автомойки
+     *
+     * @param carWashId         идентификатор автомойки
+     * @param invitationState   статус приглашения
+     */
+    List<InvitationDTO> getInvitations(Long carWashId, InvitationState invitationState);
+
+    /**
      * Добавить приглашение
      *
      * @param invitation данные о приглашении
      */
-    void addInvitation(InvitationDTO invitation);
+    void addInvitation(InvitationRequest invitation);
 
     /**
      * Одобрить приглашение
@@ -36,6 +46,13 @@ public interface InvitationService {
      * @param invitationId идентификатор приглашения
      */
     void applyInvitation(Long invitationId);
+
+    /**
+     * Отклонить приглашение
+     *
+     * @param id идентификатор приглашения
+     */
+    void declineInvitation(Long id);
 
     /**
      * Удалить приглашение

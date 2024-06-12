@@ -1,4 +1,4 @@
-package ru.anykeyers.commonsapi.domain.dto;
+package ru.anykeyers.commonsapi.domain.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

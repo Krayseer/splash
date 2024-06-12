@@ -1,6 +1,7 @@
 package ru.anykeyers.configurationservice.service;
 
-import ru.anykeyers.commonsapi.domain.dto.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
+import ru.anykeyers.configurationservice.domain.configuration.Configuration;
 
 import java.util.List;
 
@@ -19,10 +20,10 @@ public interface EmployeeService {
     /**
      * Добавить работника автомойке
      *
-     * @param carWashId идентификатор автомойки
-     * @param userId    идентификатор пользователя
+     * @param configuration автомойка
+     * @param userId        идентификатор пользователя
      */
-    void addCarWashEmployee(Long carWashId, Long userId);
+    void addCarWashEmployee(Configuration configuration, Long userId);
 
     /**
      * Удалить работника с автомойки

@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.anykeyers.commonsapi.domain.dto.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
 import ru.anykeyers.configurationservice.domain.ControllerName;
 import ru.anykeyers.configurationservice.service.EmployeeService;
 

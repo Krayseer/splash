@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.anykeyers.commonsapi.domain.dto.InvitationDTO;
+import ru.anykeyers.commonsapi.domain.invitation.InvitationDTO;
 import ru.anykeyers.configurationservice.domain.invitation.Invitation;
 import ru.anykeyers.configurationservice.exception.InvitationNotFoundException;
 import ru.anykeyers.configurationservice.repository.InvitationRepository;

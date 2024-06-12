@@ -1,9 +1,10 @@
-package ru.anykeyers.commonsapi.domain.dto;
+package ru.anykeyers.commonsapi.domain.dto.configuration;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 
 import java.util.List;
 
@@ -60,6 +61,16 @@ public class ConfigurationDTO {
      * Адрес
      */
     private String address;
+
+    /**
+     * Долгота
+     */
+    private String longitude;
+
+    /**
+     * Ширина
+     */
+    private String latitude;
 
     /**
      * Время открытия

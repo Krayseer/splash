@@ -2,8 +2,9 @@ package ru.anykeyers.configurationservice.domain.configuration;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
+import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationSimpleDTO;
 import ru.anykeyers.commonsapi.service.RemoteServicesService;
 import ru.anykeyers.configurationservice.domain.box.BoxMapper;
 
@@ -39,7 +40,7 @@ public class ConfigurationMapper {
      *
      * @param configuration конфигурация автомойки
      */
-    public ConfigurationDTO createDTO(Configuration configuration) {
+    public ConfigurationDTO toDTO(Configuration configuration) {
         List<ServiceDTO> services = remoteServicesService.getServices(configuration.getId());
         return ConfigurationDTO.builder()
                 .id(configuration.getId())
@@ -51,12 +52,26 @@ public class ConfigurationMapper {
                 .description(configuration.getDescription())
                 .phoneNumber(configuration.getPhoneNumber())
                 .address(configuration.getAddress())
+                .longitude(configuration.getLongitude())
+                .latitude(configuration.getLatitude())
                 .openTime(configuration.getOpenTime())
                 .closeTime(configuration.getCloseTime())
                 .services(services)
                 .boxes(BoxMapper.createDTO(configuration.getBoxes()))
                 .managementProcessOrders(configuration.isManagementProcessOrders())
                 .createdAt(configuration.getCreatedAt().toString())
+                .build();
+    }
+
+    /**
+     * Создать данные для передачи информации об автомойке
+     *
+     * @param configuration конфигурация автомойки
+     */
+    public static ConfigurationSimpleDTO toSimpleDTO(Configuration configuration) {
+        return ConfigurationSimpleDTO.builder()
+                .id(configuration.getId())
+                .name(configuration.getName())
                 .build();
     }
 
@@ -72,6 +87,8 @@ public class ConfigurationMapper {
                 .name(configuration.getName())
                 .phoneNumber(configuration.getPhoneNumber())
                 .address(configuration.getAddress())
+                .longitude(configuration.getLongitude())
+                .latitude(configuration.getLatitude())
                 .description(configuration.getDescription())
                 .services(services)
                 .boxes(BoxMapper.createDTO(configuration.getBoxes()))

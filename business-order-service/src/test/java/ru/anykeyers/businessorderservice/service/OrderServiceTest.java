@@ -8,9 +8,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.anykeyers.businessorderservice.BusinessOrderRepository;
 import ru.anykeyers.businessorderservice.domain.BusinessOrder;
-import ru.anykeyers.commonsapi.domain.dto.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
-import ru.anykeyers.commonsapi.domain.dto.UserDTO;
+import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
 import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
 import ru.anykeyers.commonsapi.service.RemoteOrderService;
 
