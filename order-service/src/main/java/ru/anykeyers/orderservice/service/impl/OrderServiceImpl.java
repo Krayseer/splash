@@ -45,14 +45,14 @@ public class OrderServiceImpl implements OrderService {
                 () -> new OrderNotFoundException(id)
         );
         return new FullOrderDTO(
-                OrderMapper.createDTO(order), remoteServicesService.getServices(order.getServiceIds())
+                OrderMapper.toDTO(order), remoteServicesService.getServices(order.getServiceIds())
         );
     }
 
     @Override
     public List<OrderDTO> getOrders(List<Long> orderIds) {
         List<Order> orders = orderRepository.findAllById(orderIds);
-        return orders.stream().map(OrderMapper::createDTO).toList();
+        return orders.stream().map(OrderMapper::toDTO).toList();
     }
 
     @Override
@@ -141,7 +141,7 @@ public class OrderServiceImpl implements OrderService {
         order.setEndTime(endTime);
         order.setBoxId(boxId);
         Order savedOrder = orderRepository.save(order);
-        OrderDTO orderDTO = OrderMapper.createDTO(savedOrder);
+        OrderDTO orderDTO = OrderMapper.toDTO(savedOrder);
         eventService.sendOrderCreatedEvent(orderDTO);
         return orderDTO;
     }
@@ -177,7 +177,7 @@ public class OrderServiceImpl implements OrderService {
     private List<FullOrderDTO> getFullOrderDTOList(List<Order> orders) {
         return orders.stream()
                 .map(order -> new FullOrderDTO(
-                        OrderMapper.createDTO(order), remoteServicesService.getServices(order.getServiceIds())))
+                        OrderMapper.toDTO(order), remoteServicesService.getServices(order.getServiceIds())))
                 .toList();
     }
 
@@ -187,7 +187,7 @@ public class OrderServiceImpl implements OrderService {
      * @param orders список заказов
      */
     private List<OrderDTO> getOrderDTOList(List<Order> orders) {
-        return orders.stream().map(OrderMapper::createDTO).toList();
+        return orders.stream().map(OrderMapper::toDTO).toList();
     }
 
 }

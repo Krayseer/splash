@@ -1,23 +1,23 @@
 package ru.anykeyers.orderservice.domain;
 
 /**
- * Названия контроллеров
+ * Название контроллера
  */
 public final class ControllerName {
 
     /**
      * Базовое название контроллеров
      */
-    public static final String BASE_NAME = "/order";
+    public static final String BASE_CONTROLLER = "/order";
 
     /**
      * Название контроллера для обработки заказов пользователей
      */
-    public static final String USER_ORDER_NAME = BASE_NAME + "/user";
+    public static final String USER_ORDER_CONTROLLER = BASE_CONTROLLER + "/user";
 
     /**
      * Название контроллера для обработки заказов автомоек
      */
-    public static final String CAR_WASH_ORDER_NAME = BASE_NAME + "/car-wash";
+    public static final String CAR_WASH_ORDER_CONTROLLER = BASE_CONTROLLER + "/car-wash";
 
 }

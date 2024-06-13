@@ -14,9 +14,6 @@ import ru.anykeyers.configurationservice.service.InvitationService;
 
 import java.util.List;
 
-/**
- * REST контроллер запросов на обработку приглашений
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(ControllerName.INVITATION_CONTROLLER)

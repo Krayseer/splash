@@ -1,7 +1,13 @@
 package ru.anykeyers.businessorderservice.domain;
 
+/**
+ * Название контроллера
+ */
 public final class ControllerName {
 
-    public static final String BASE_NAME = "/business-order";
+    /**
+     * Базовый контроллер
+     */
+    public static final String BASE_CONTROLLER = "/business-order";
 
 }

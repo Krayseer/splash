@@ -17,11 +17,11 @@ import ru.anykeyers.notificationservice.service.NotificationServiceCompound;
 @RequiredArgsConstructor
 public class OrderProcessor {
 
-    private final NotificationServiceCompound notificationServiceCompound;
-
     private final RemoteUserService remoteUserService;
 
     private final RemoteConfigurationService remoteConfigurationService;
+
+    private final NotificationServiceCompound notificationServiceCompound;
 
     /**
      * Уведомление, что был создан новый заказ

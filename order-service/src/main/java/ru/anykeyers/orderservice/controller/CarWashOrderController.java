@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ControllerName.CAR_WASH_ORDER_NAME)
+@RequestMapping(ControllerName.CAR_WASH_ORDER_CONTROLLER)
 @Tag(name = "Обработка заказов автомойки")
 public class CarWashOrderController {
 

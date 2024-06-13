@@ -15,9 +15,6 @@ import ru.anykeyers.configurationservice.service.ConfigurationService;
 
 import java.util.List;
 
-/**
- * REST контроллер для обработки конфигураций
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(ControllerName.CONFIGURATION_CONTROLLER)

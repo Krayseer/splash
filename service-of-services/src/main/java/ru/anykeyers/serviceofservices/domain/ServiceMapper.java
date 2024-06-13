@@ -27,7 +27,7 @@ public final class ServiceMapper {
      *
      * @param serviceEntity услуга
      */
-    public static ServiceDTO createDTO(ServiceEntity serviceEntity) {
+    public static ServiceDTO toDTO(ServiceEntity serviceEntity) {
         return ServiceDTO.builder()
                 .id(serviceEntity.getId())
                 .name(serviceEntity.getName())

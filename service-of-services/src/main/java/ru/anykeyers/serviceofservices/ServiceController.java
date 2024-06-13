@@ -12,9 +12,6 @@ import ru.anykeyers.serviceofservices.processor.ServiceProcessor;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * REST контроллер для обработки услуг
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/service")

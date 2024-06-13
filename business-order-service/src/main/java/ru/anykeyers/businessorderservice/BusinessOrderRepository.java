@@ -13,13 +13,6 @@ import java.util.List;
 public interface BusinessOrderRepository extends JpaRepository<BusinessOrder, Long> {
 
     /**
-     * Получить список бизнес заказов работника
-     *
-     * @param employeeId идентификатор работника
-     */
-    List<BusinessOrder> findByEmployeeId(Long employeeId);
-
-    /**
      * Получить бизнес заказ
      *
      * @param id идентификатор оригинального заказа
@@ -27,10 +20,10 @@ public interface BusinessOrderRepository extends JpaRepository<BusinessOrder, Lo
     BusinessOrder findByOrderId(Long id);
 
     /**
-     * Удалить заказ
+     * Получить список бизнес заказов работника
      *
-     * @param orderId идентификатор заказа
+     * @param employeeId идентификатор работника
      */
-    void deleteByOrderId(Long orderId);
+    List<BusinessOrder> findByEmployeeId(Long employeeId);
 
 }

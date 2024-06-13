@@ -10,7 +10,6 @@ import ru.anykeyers.commonsapi.domain.RemoteConfiguration;
 import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
 
-import java.rmi.Remote;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

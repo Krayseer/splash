@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ControllerName.PUSH_NAME)
+@RequestMapping(ControllerName.PUSH_CONTROLLER)
 @Tag(name = "Обработка уведомлений")
 public class PushNotificationController {
 

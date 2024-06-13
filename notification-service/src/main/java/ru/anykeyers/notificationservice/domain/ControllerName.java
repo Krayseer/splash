@@ -1,9 +1,18 @@
 package ru.anykeyers.notificationservice.domain;
 
+/**
+ * Название контроллера
+ */
 public final class ControllerName {
 
-    public static final String BASE_NAME = "/notification";
+    /**
+     * Базовый контроллер
+     */
+    public static final String BASE_CONTROLLER = "/notification";
 
-    public static final String PUSH_NAME = BASE_NAME + "/push";
+    /**
+     * Контроллер PUSH уведомлений
+     */
+    public static final String PUSH_CONTROLLER = BASE_CONTROLLER + "/push";
 
 }

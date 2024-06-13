@@ -23,7 +23,7 @@ public class ServiceProcessorImpl implements ServiceProcessor {
 
     @Override
     public List<ServiceDTO> getServices(List<Long> serviceIds) {
-        return serviceRepository.findByIdIn(serviceIds).stream().map(ServiceMapper::createDTO).toList();
+        return serviceRepository.findByIdIn(serviceIds).stream().map(ServiceMapper::toDTO).toList();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ServiceProcessorImpl implements ServiceProcessor {
 
     @Override
     public List<ServiceDTO> getAllServices(Long carWashId) {
-        return serviceRepository.findByCarWashId(carWashId).stream().map(ServiceMapper::createDTO).toList();
+        return serviceRepository.findByCarWashId(carWashId).stream().map(ServiceMapper::toDTO).toList();
     }
 
     @Override

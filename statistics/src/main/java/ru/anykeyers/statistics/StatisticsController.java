@@ -14,7 +14,7 @@ import ru.anykeyers.statistics.service.StatisticsService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ControllerName.BASE_NAME)
+@RequestMapping(ControllerName.BASE_CONTROLLER)
 @Tag(name = "Обработка статистики")
 public class StatisticsController {
 

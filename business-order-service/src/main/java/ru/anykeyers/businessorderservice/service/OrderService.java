@@ -94,9 +94,7 @@ public class OrderService {
      * @param employeeId    идентификатор работника
      */
     public void appointOrderEmployee(OrderDTO order, Long employeeId) {
-        BusinessOrder businessOrder = new BusinessOrder(order.getId(), employeeId);
-        businessOrderRepository.save(businessOrder);
-        log.info("Appoint order employee {} for order {}", employeeId, order.getId());
+        appointOrderEmployee(order.getId(), employeeId);
         eventService.sendOrderApplyEmployeeEvent(order);
     }
 

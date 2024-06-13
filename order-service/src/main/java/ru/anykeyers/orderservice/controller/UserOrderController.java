@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ControllerName.USER_ORDER_NAME)
+@RequestMapping(ControllerName.USER_ORDER_CONTROLLER)
 @Tag(name = "Обработка заказов пользователя")
 public class UserOrderController {
 

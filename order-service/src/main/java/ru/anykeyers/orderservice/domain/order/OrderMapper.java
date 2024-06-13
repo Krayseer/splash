@@ -33,7 +33,7 @@ public final class OrderMapper {
      *
      * @param order заказ
      */
-    public static OrderDTO createDTO(Order order) {
+    public static OrderDTO toDTO(Order order) {
         return OrderDTO.builder()
                 .id(order.getId())
                 .username(order.getUsername())
