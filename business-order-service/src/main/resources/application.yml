@@ -13,6 +13,14 @@ spring:
       ddl-auto: update
     database: postgresql
 
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
+    consumer:
+      group-id: business-order-group
+      auto-offset-reset: earliest
+    template:
+      default-topic: topic
+
   security:
     oauth2:
       resourceserver:
