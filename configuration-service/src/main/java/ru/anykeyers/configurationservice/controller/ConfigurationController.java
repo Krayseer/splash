@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
 import ru.anykeyers.configurationservice.domain.ControllerName;
+import ru.anykeyers.configurationservice.domain.configuration.ConfigurationInfoDTO;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationRegisterRequest;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationUpdateRequest;
 import ru.anykeyers.configurationservice.service.ConfigurationService;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ControllerName.CONFIGURATION_NAME)
+@RequestMapping(ControllerName.CONFIGURATION_CONTROLLER)
 @Tag(name = "Обработка конфигураций автомоек")
 public class ConfigurationController {
 
@@ -39,7 +40,7 @@ public class ConfigurationController {
 
     @Operation(summary = "Получить список всех автомоек")
     @GetMapping("/all")
-    public List<ConfigurationDTO> getAllConfigurations() {
+    public List<ConfigurationInfoDTO> getAllConfigurations() {
         return configurationService.getAllConfigurations();
     }
 
@@ -53,7 +54,7 @@ public class ConfigurationController {
     @Operation(summary = "Обновить конфигурацию автомойки")
     @PutMapping
     public void updateConfiguration(@AuthenticationPrincipal Jwt jwt,
-                                    @RequestBody ConfigurationUpdateRequest configurationUpdateRequest) {
+                                    @ModelAttribute ConfigurationUpdateRequest configurationUpdateRequest) {
         configurationService.updateConfiguration(jwt.getSubject(), configurationUpdateRequest);
     }
 

@@ -1,18 +1,33 @@
 package ru.anykeyers.configurationservice.domain;
 
+/**
+ * Название контроллера
+ */
 public final class ControllerName {
 
     /**
-     * Базовое название контроллеров
+     * Базовый контроллер
      */
-    public static final String BASE_NAME = "/car-wash";
+    public static final String BASE_CONTROLLER = "/car-wash";
 
-    public static final String CONFIGURATION_NAME = BASE_NAME + "/configuration";
+    /**
+     * Контроллер конфигурации автомоек
+     */
+    public static final String CONFIGURATION_CONTROLLER = BASE_CONTROLLER + "/configuration";
 
-    public static final String EMPLOYEE_NAME = BASE_NAME + "/employee";
+    /**
+     * Контроллер работников
+     */
+    public static final String EMPLOYEE_CONTROLLER = BASE_CONTROLLER + "/employee";
 
-    public static final String BOX_NAME = BASE_NAME + "/box";
+    /**
+     * Контроллер боксов
+     */
+    public static final String BOX_CONTROLLER = BASE_CONTROLLER + "/box";
 
-    public static final String INVITATION_NAME = BASE_NAME + "/invitation";
+    /**
+     * Контроллер приглашений
+     */
+    public static final String INVITATION_CONTROLLER = BASE_CONTROLLER + "/invitation";
 
 }

@@ -1,4 +1,4 @@
-package ru.anykeyers.configurationservice.domain;
+package ru.anykeyers.configurationservice.domain.employee;
 
 import jakarta.persistence.*;
 import lombok.*;

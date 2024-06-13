@@ -69,6 +69,8 @@ class ConfigurationServiceTest {
                 "My car wash is really best",
                 "+795214545",
                 "Lvov",
+                "123",
+                "456",
                 "05:00",
                 "23:00",
                 null,

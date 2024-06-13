@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ControllerName.INVITATION_NAME)
+@RequestMapping(ControllerName.INVITATION_CONTROLLER)
 @Tag(name = "Обработка отправки приглашений")
 public class InvitationController {
 

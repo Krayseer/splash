@@ -59,7 +59,7 @@ public class OrderService {
         String orderDate = DateUtils.toDate(Instant.parse(order.getStartTime()));
         List<OrderDTO> orders = remoteOrderService.getOrders(configuration.getId(), orderDate);
         if (CollectionUtils.isEmpty(orders)) {
-            appointOrderEmployee(order.getId(), employeeIds.getFirst());
+            appointOrderEmployee(order, employeeIds.getFirst());
             return;
         }
         orders.stream()
@@ -69,10 +69,10 @@ public class OrderService {
                 .map(BusinessOrder::getEmployeeId)
                 .forEach(employeeIds::remove);
         if (employeeIds.isEmpty()) {
-            eventService.sendOrderRemoveEvent(order.getId());
+            eventService.sendOrderRemoveEvent(order);
             return;
         }
-        appointOrderEmployee(order.getId(), employeeIds.getFirst());
+        appointOrderEmployee(order, employeeIds.getFirst());
     }
 
     /**
@@ -85,7 +85,19 @@ public class OrderService {
         BusinessOrder businessOrder = new BusinessOrder(orderId, employeeId);
         businessOrderRepository.save(businessOrder);
         log.info("Appoint order employee {} for order {}", employeeId, orderId);
-        eventService.sendOrderApplyEmployeeEvent(String.valueOf(orderId));
+    }
+
+    /**
+     * Назначить работника заказу
+     *
+     * @param order         данные о заказе
+     * @param employeeId    идентификатор работника
+     */
+    public void appointOrderEmployee(OrderDTO order, Long employeeId) {
+        BusinessOrder businessOrder = new BusinessOrder(order.getId(), employeeId);
+        businessOrderRepository.save(businessOrder);
+        log.info("Appoint order employee {} for order {}", employeeId, order.getId());
+        eventService.sendOrderApplyEmployeeEvent(order);
     }
 
     /**

@@ -11,7 +11,8 @@ import ru.anykeyers.commonsapi.service.RemoteServicesService;
 import ru.anykeyers.commonsapi.service.RemoteStorageService;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
 
-import java.rmi.Remote;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Контекст приложения
@@ -23,6 +24,11 @@ public class ApplicationContext {
     @ConfigurationProperties(prefix = "remote-configuration")
     public RemoteConfiguration remoteConfiguration() {
         return new RemoteConfiguration();
+    }
+
+    @Bean
+    public ExecutorService executorService() {
+        return Executors.newVirtualThreadPerTaskExecutor();
     }
 
     @Bean

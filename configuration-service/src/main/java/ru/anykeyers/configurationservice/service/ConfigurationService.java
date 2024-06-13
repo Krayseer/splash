@@ -1,6 +1,7 @@
 package ru.anykeyers.configurationservice.service;
 
 import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
+import ru.anykeyers.configurationservice.domain.configuration.ConfigurationInfoDTO;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationRegisterRequest;
 import ru.anykeyers.configurationservice.domain.configuration.ConfigurationUpdateRequest;
 
@@ -14,7 +15,7 @@ public interface ConfigurationService {
     /**
      * Получить информацию обо всех автомойках
      */
-    List<ConfigurationDTO> getAllConfigurations();
+    List<ConfigurationInfoDTO> getAllConfigurations();
 
     /**
      * Получить информацию об автомойке

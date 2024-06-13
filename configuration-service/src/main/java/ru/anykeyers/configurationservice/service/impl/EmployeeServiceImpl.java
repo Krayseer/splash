@@ -1,21 +1,20 @@
 package ru.anykeyers.configurationservice.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.MessageQueue;
 import ru.anykeyers.commonsapi.domain.dto.EmployeeDTO;
 import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
 import ru.anykeyers.configurationservice.domain.configuration.Configuration;
-import ru.anykeyers.configurationservice.domain.Employee;
+import ru.anykeyers.configurationservice.domain.employee.Employee;
+import ru.anykeyers.configurationservice.domain.employee.EmployeeMapper;
 import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundException;
 import ru.anykeyers.configurationservice.repository.ConfigurationRepository;
 import ru.anykeyers.configurationservice.repository.EmployeeRepository;
 import ru.anykeyers.configurationservice.service.EmployeeService;
+import ru.anykeyers.configurationservice.service.EventService;
 
 import java.util.List;
 
@@ -27,13 +26,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final ObjectMapper objectMapper;
+    private final EventService eventService;
 
     private final RemoteUserService remoteUserService;
 
     private final EmployeeRepository employeeRepository;
-
-    private final KafkaTemplate<String, String> kafkaTemplate;
 
     private final ConfigurationRepository configurationRepository;
 
@@ -51,14 +48,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @SneakyThrows
     public void addCarWashEmployee(Configuration configuration, Long userId) {
-        Employee employee = Employee.builder()
-                .userId(userId)
-                .configuration(configuration)
-                .build();
+        Employee employee = Employee.builder().userId(userId).configuration(configuration).build();
         employeeRepository.save(employee);
-        EmployeeDTO employeeDTO = new EmployeeDTO(employee.getUserId(), employee.getConfiguration().getId());
+        EmployeeDTO employeeDTO = EmployeeMapper.toDTO(employee);
         log.info("Add employee to car wash: {}", employee);
-        kafkaTemplate.send(MessageQueue.INVITATION_APPLY, objectMapper.writeValueAsString(employeeDTO));
+        eventService.sendEmployeeApplyEvent(employeeDTO);
     }
 
     @Override

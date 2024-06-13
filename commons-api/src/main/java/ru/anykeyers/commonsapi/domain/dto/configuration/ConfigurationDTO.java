@@ -93,6 +93,11 @@ public class ConfigurationDTO {
     private List<BoxDTO> boxes;
 
     /**
+     * Идентификаторы картинок
+     */
+    private List<String> photoUrls;
+
+    /**
      * Время регистрации автомойки
      */
     private String createdAt;

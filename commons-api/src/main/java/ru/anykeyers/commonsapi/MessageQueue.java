@@ -11,7 +11,7 @@ public final class MessageQueue {
     public static final String ORDER_CREATE = "order-create";
 
     /**
-     * Очереб с удаленными заказами
+     * Очередь с удаленными заказами
      */
     public static final String ORDER_DELETE = "order-delete";
 

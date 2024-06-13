@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import ru.anykeyers.commonsapi.domain.dto.EmployeeDTO;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.commonsapi.MessageQueue;
+import ru.anykeyers.notificationservice.processor.order.OrderProcessor;
 
 /**
  * Обработчик сообщений с Kafka
@@ -45,6 +46,26 @@ public class KafkaProcessor {
     public void receiveApplyInvitation(String invitationMessage) {
         EmployeeDTO employee = objectMapper.readValue(invitationMessage, new TypeReference<>() {});
         employeeProcessor.processEmployeeApply(employee);
+    }
+
+    /**
+     * Слушатель события назначения работника заказу
+     */
+    @SneakyThrows
+    @KafkaListener(topics = MessageQueue.ORDER_EMPLOYEE_APPLY, groupId = GROUP_ID)
+    public void receiveOrderApplyEmployee(String orderDTO) {
+        OrderDTO order = objectMapper.readValue(orderDTO, OrderDTO.class);
+        orderProcessor.processOrderEmployeeApply(order);
+    }
+
+    /**
+     * Слушатель события об удалении заказа
+     */
+    @SneakyThrows
+    @KafkaListener(topics = MessageQueue.ORDER_DELETE, groupId = GROUP_ID)
+    public void receiveOrderDelete(String orderDTO) {
+        OrderDTO order = objectMapper.readValue(orderDTO, OrderDTO.class);
+        orderProcessor.processOrderDelete(order);
     }
 
 }

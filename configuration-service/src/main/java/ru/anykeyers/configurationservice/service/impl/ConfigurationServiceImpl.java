@@ -7,16 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.service.RemoteStorageService;
-import ru.anykeyers.configurationservice.domain.configuration.ConfigurationRegisterRequest;
-import ru.anykeyers.configurationservice.domain.configuration.ConfigurationMapper;
+import ru.anykeyers.configurationservice.AsyncWorker;
+import ru.anykeyers.configurationservice.domain.configuration.*;
 import ru.anykeyers.configurationservice.repository.ConfigurationRepository;
-import ru.anykeyers.configurationservice.domain.configuration.Configuration;
-import ru.anykeyers.configurationservice.domain.configuration.ConfigurationUpdateRequest;
 import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundException;
 import ru.anykeyers.configurationservice.exception.UserNotFoundConfigurationException;
 import ru.anykeyers.configurationservice.service.ConfigurationService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConfigurationServiceImpl implements ConfigurationService {
 
+    private final AsyncWorker worker;
+
     private final ConfigurationMapper configurationMapper;
 
     private final RemoteStorageService remoteStorageService;
@@ -34,11 +33,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private final ConfigurationRepository configurationRepository;
 
     @Override
-    public List<ConfigurationDTO> getAllConfigurations() {
+    public List<ConfigurationInfoDTO> getAllConfigurations() {
         List<Configuration> configurations = configurationRepository.findAll();
-        return configurations.stream()
-                .map(configurationMapper::createInfoResponse)
-                .toList();
+        return configurations.stream().map(configurationMapper::toInfoDTO).toList();
     }
 
     @Override
@@ -72,15 +69,16 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         configuration.setDescription(configurationUpdateRequest.getDescription());
         configuration.setPhoneNumber(configurationUpdateRequest.getPhoneNumber());
         configuration.setAddress(configurationUpdateRequest.getAddress());
-        configuration.setLongitude(configuration.getLongitude());
-        configuration.setLatitude(configuration.getLatitude());
+        configuration.setLongitude(configurationUpdateRequest.getLongitude());
+        configuration.setLatitude(configurationUpdateRequest.getLatitude());
         configuration.setOpenTime(configurationUpdateRequest.getOpenTime());
         configuration.setCloseTime(configurationUpdateRequest.getCloseTime());
         configuration.setManagementProcessOrders(configurationUpdateRequest.isManagementProcessOrders());
-        if (configurationUpdateRequest.getPhotos() != null) {
-            configuration.addPhotoUrls(uploadPhotos(configurationUpdateRequest.getPhotos()));
-        }
         configurationRepository.save(configuration);
+        if (configurationUpdateRequest.getPhotos() != null) {
+            uploadPhotos(configuration.getId(), configurationUpdateRequest.getPhotos());
+        }
+        log.info("Update configuration: {}", configuration);
     }
 
     @Override
@@ -92,18 +90,15 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         log.info("Deleted configuration: {}", configuration);
     }
 
-    private List<String> uploadPhotos(List<MultipartFile> photos) {
-        List<String> photoUrls = new ArrayList<>();
-        ResponseEntity<List<String>> photoUrlsResponse = remoteStorageService.uploadPhotos(photos);
-        if (photoUrlsResponse.getStatusCode().is2xxSuccessful()) {
-            List<String> responseBody = photoUrlsResponse.getBody();
-            if (responseBody != null) {
-                photoUrls.addAll(responseBody);
-            }
-        } else {
-            log.error("Cannot upload photos. Upload service returned status {}", photoUrlsResponse.getStatusCode());
-        }
-        return photoUrls;
+    private void uploadPhotos(Long configurationId, List<MultipartFile> photos) {
+        worker.addTask(() -> {
+            ResponseEntity<List<String>> photoUrlsResponse = remoteStorageService.uploadPhotos(photos);
+            Configuration configuration = configurationRepository.findById(configurationId).orElseThrow(
+                    () -> new ConfigurationNotFoundException(configurationId)
+            );
+            configuration.addPhotoUrls(photoUrlsResponse.getBody());
+            configurationRepository.save(configuration);
+        });
     }
 
 }

@@ -31,6 +31,7 @@ public final class InvitationMapper {
      */
     public static InvitationDTO toDTO(Invitation invitation) {
         return new InvitationDTO(
+                invitation.getId(),
                 invitation.getUsername(),
                 ConfigurationMapper.toSimpleDTO(invitation.getConfiguration()),
                 invitation.getRoles(),

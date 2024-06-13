@@ -58,6 +58,7 @@ public class ConfigurationMapper {
                 .closeTime(configuration.getCloseTime())
                 .services(services)
                 .boxes(BoxMapper.createDTO(configuration.getBoxes()))
+                .photoUrls(configuration.getPhotoUrls())
                 .managementProcessOrders(configuration.isManagementProcessOrders())
                 .createdAt(configuration.getCreatedAt().toString())
                 .build();
@@ -80,9 +81,9 @@ public class ConfigurationMapper {
      *
      * @param configuration конфигурация автомойки
      */
-    public ConfigurationDTO createInfoResponse(Configuration configuration) {
+    public ConfigurationInfoDTO toInfoDTO(Configuration configuration) {
         List<ServiceDTO> services = remoteServicesService.getServices(configuration.getId());
-        return ConfigurationDTO.builder()
+        return ConfigurationInfoDTO.builder()
                 .id(configuration.getId())
                 .name(configuration.getName())
                 .phoneNumber(configuration.getPhoneNumber())
@@ -92,6 +93,7 @@ public class ConfigurationMapper {
                 .description(configuration.getDescription())
                 .services(services)
                 .boxes(BoxMapper.createDTO(configuration.getBoxes()))
+                .photoUrls(configuration.getPhotoUrls())
                 .build();
     }
 

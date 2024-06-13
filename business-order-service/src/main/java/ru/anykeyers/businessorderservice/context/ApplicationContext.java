@@ -1,5 +1,6 @@
 package ru.anykeyers.businessorderservice.context;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,11 @@ import ru.anykeyers.commonsapi.service.RemoteUserService;
  */
 @Configuration
 public class ApplicationContext {
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 
     @Bean
     @ConfigurationProperties(prefix = "remote-configuration")

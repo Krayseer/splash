@@ -83,7 +83,7 @@ class OrderServiceTest {
 
         Mockito.verify(eventService, Mockito.never()).sendOrderRemoveEvent(Mockito.any());
         Mockito.verify(businessOrderRepository, Mockito.times(1)).save(Mockito.any());
-        Mockito.verify(eventService, Mockito.times(1)).sendOrderApplyEmployeeEvent("2");
+        Mockito.verify(eventService, Mockito.times(1)).sendOrderApplyEmployeeEvent(order);
     }
 
     /**
@@ -138,7 +138,7 @@ class OrderServiceTest {
 
         Mockito.verify(eventService, Mockito.never()).sendOrderRemoveEvent(Mockito.any());
         Mockito.verify(businessOrderRepository, Mockito.times(1)).save(Mockito.any());
-        Mockito.verify(eventService, Mockito.times(1)).sendOrderApplyEmployeeEvent("2");
+        Mockito.verify(eventService, Mockito.times(1)).sendOrderApplyEmployeeEvent(order);
     }
 
     /**
@@ -146,9 +146,10 @@ class OrderServiceTest {
      */
     @Test
     void appointOrderEmployee() {
-        orderService.appointOrderEmployee(1L, 2L);
+        OrderDTO order = OrderDTO.builder().id(2L).build();
+        orderService.appointOrderEmployee(order, 2L);
         Mockito.verify(businessOrderRepository, Mockito.times(1)).save(Mockito.any());
-        Mockito.verify(eventService, Mockito.times(1)).sendOrderApplyEmployeeEvent("1");
+        Mockito.verify(eventService, Mockito.times(1)).sendOrderApplyEmployeeEvent(order);
     }
 
 }

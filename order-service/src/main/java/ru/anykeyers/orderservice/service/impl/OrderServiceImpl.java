@@ -76,11 +76,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteOrder(String orderId) {
-        orderRepository.deleteById(Long.getLong(orderId));
-    }
-
-    @Override
     public List<OrderDTO> getOrders(Long carWashId, Instant date) {
         List<Order> orders = orderRepository.findByCarWashIdAndStatusIn(
                 carWashId, List.of(OrderState.WAIT_CONFIRM, OrderState.WAIT_PROCESS, OrderState.PROCESSING)
@@ -149,6 +144,12 @@ public class OrderServiceImpl implements OrderService {
         OrderDTO orderDTO = OrderMapper.createDTO(savedOrder);
         eventService.sendOrderCreatedEvent(orderDTO);
         return orderDTO;
+    }
+
+    @Override
+    public void deleteOrder(Long orderId) {
+        orderRepository.deleteById(orderId);
+        log.info("Delete order: {}", orderId);
     }
 
     @Override

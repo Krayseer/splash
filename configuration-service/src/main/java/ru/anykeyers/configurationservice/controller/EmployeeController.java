@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ControllerName.EMPLOYEE_NAME)
+@RequestMapping(ControllerName.EMPLOYEE_CONTROLLER)
 @Tag(name = "Обработка работников автомойки")
 public class EmployeeController {
 

@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ControllerName.BOX_NAME)
+@RequestMapping(ControllerName.BOX_CONTROLLER)
 @Tag(name = "Обработка боксов автомоек")
 public class BoxController {
 

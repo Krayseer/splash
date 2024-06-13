@@ -42,5 +42,5 @@ public interface OrderService extends UserOrderService, CarWashOrderService {
      *
      * @param orderId идентификатор заказа
      */
-    void deleteOrder(String orderId);
+    void deleteOrder(Long orderId);
 }

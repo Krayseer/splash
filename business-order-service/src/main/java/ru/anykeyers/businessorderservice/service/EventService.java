@@ -1,9 +1,12 @@
 package ru.anykeyers.businessorderservice.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.MessageQueue;
+import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 
 /**
  * Сервис обработки событий приложения
@@ -12,15 +15,18 @@ import ru.anykeyers.commonsapi.MessageQueue;
 @RequiredArgsConstructor
 public class EventService {
 
+    private final ObjectMapper objectMapper;
+
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     /**
      * Отправить событие о создании заказа
      *
-     * @param orderId идентификатор заказа
+     * @param order данные о заказе
      */
-    public void sendOrderApplyEmployeeEvent(String orderId) {
-        kafkaTemplate.send(MessageQueue.ORDER_EMPLOYEE_APPLY, orderId);
+    @SneakyThrows
+    public void sendOrderApplyEmployeeEvent(OrderDTO order) {
+        kafkaTemplate.send(MessageQueue.ORDER_EMPLOYEE_APPLY, objectMapper.writeValueAsString(order));
     }
 
     /**
@@ -35,10 +41,11 @@ public class EventService {
     /**
      * Отправить событие об удалении заказа
      *
-     * @param orderId идентификатор заказа
+     * @param order данные о заказе
      */
-    public void sendOrderRemoveEvent(Long orderId) {
-       kafkaTemplate.send(MessageQueue.ORDER_DELETE, String.valueOf(orderId));
+    @SneakyThrows
+    public void sendOrderRemoveEvent(OrderDTO order) {
+       kafkaTemplate.send(MessageQueue.ORDER_DELETE, objectMapper.writeValueAsString(order));
     }
 
 }

@@ -16,6 +16,11 @@ import java.util.List;
 public class InvitationDTO {
 
     /**
+     * Идентификатор
+     */
+    private Long id;
+
+    /**
      * Имя пользователя, кому отправляется приглашение
      */
     private String username;
