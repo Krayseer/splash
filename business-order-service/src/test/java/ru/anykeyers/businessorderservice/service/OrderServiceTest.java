@@ -1,5 +1,6 @@
 package ru.anykeyers.businessorderservice.service;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +17,7 @@ import ru.anykeyers.commonsapi.service.RemoteOrderService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Тесты для {@link OrderService}
@@ -150,6 +152,33 @@ class OrderServiceTest {
         orderService.appointOrderEmployee(order, 2L);
         Mockito.verify(businessOrderRepository, Mockito.times(1)).save(Mockito.any());
         Mockito.verify(eventService, Mockito.times(1)).sendOrderApplyEmployeeEvent(order);
+    }
+
+    /**
+     * Тест удаления работника с несуществующего бизнес заказа
+     */
+    @Test
+    void disappointEmployeeFromNotExistsBusinessOrder() {
+        Mockito.when(businessOrderRepository.findById(1L)).thenReturn(Optional.empty());
+
+        RuntimeException exception = Assertions.assertThrows(
+                RuntimeException.class, () -> orderService.disappointEmployeeFromOrder(1L)
+        );
+        Assertions.assertEquals("Order not found", exception.getMessage());
+    }
+
+    /**
+     * Тест успешного удаления работника с бизнес заказа
+     */
+    @Test
+    void disappointEmployeeFromOrder() {
+        BusinessOrder order = new BusinessOrder(1L, 2L, 3L);
+        Mockito.when(businessOrderRepository.findById(1L)).thenReturn(Optional.of(order));
+
+        orderService.disappointEmployeeFromOrder(1L);
+
+        Mockito.verify(eventService, Mockito.times(1)).sendOrderDisappointEmployeeEvent("2");
+        Mockito.verify(businessOrderRepository, Mockito.times(1)).deleteById(1L);
     }
 
 }

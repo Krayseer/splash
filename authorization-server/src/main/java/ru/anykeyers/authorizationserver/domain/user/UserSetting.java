@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Настройки пользователя
+ */
 @Getter
 @Setter
 @Entity
@@ -13,12 +16,21 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserSetting {
 
+    /**
+     * Идентификатор
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Разрешена отправка push уведомлений
+     */
     private boolean pushEnabled;
 
+    /**
+     * Разрешена отправка уведомлений по email
+     */
     private boolean emailEnabled;
 
     /**

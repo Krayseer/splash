@@ -9,9 +9,9 @@ import ru.anykeyers.notificationservice.domain.Notification;
 import ru.anykeyers.notificationservice.NotificationRepository;
 import ru.anykeyers.notificationservice.domain.push.PushNotification;
 import ru.anykeyers.notificationservice.domain.push.PushNotificationDTO;
+import ru.anykeyers.notificationservice.domain.push.PushNotificationMapper;
 import ru.anykeyers.notificationservice.service.NotificationService;
 
-import java.time.Instant;
 import java.util.List;
 
 /**
@@ -30,19 +30,12 @@ public class PushNotificationService implements NotificationService {
      * @param username имя пользователя
      */
     public List<PushNotificationDTO> getNotifications(String username) {
-        return notificationRepository.findByUsername(username).stream()
-                .map(PushNotificationDTO::new)
-                .toList();
+        return notificationRepository.findByUsername(username).stream().map(PushNotificationMapper::toDTO).toList();
     }
 
     @Override
     public void notify(UserDTO user, Notification notification) {
-        PushNotification pushNotification = PushNotification.builder()
-                .username(user.getUsername())
-                .subject(notification.getSubject())
-                .message(notification.getMessage())
-                .createdAt(Instant.now())
-                .build();
+        PushNotification pushNotification = PushNotificationMapper.toPushNotification(user.getUsername(), notification);
         notificationRepository.save(pushNotification);
         log.info("Created notification: {}", pushNotification);
     }

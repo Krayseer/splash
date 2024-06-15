@@ -133,7 +133,7 @@ public class OrderServiceImpl implements OrderService {
     @SneakyThrows
     public OrderDTO saveOrder(String username, OrderRequest orderRequest) {
         log.info("Processing order: {}", orderRequest);
-        Order order = OrderMapper.createOrder(username, orderRequest);
+        Order order = OrderMapper.toOrder(username, orderRequest);
         Instant endTime = calculateEndTime(Instant.parse(orderRequest.getTime()), orderRequest.getServiceIds());
         Long boxId = boxService
                 .getBoxForOrder(orderRequest.getCarWashId(), new TimeRange(Instant.parse(orderRequest.getTime()), endTime))

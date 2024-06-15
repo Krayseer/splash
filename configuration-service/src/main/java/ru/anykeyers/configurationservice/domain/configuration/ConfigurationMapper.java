@@ -25,7 +25,7 @@ public class ConfigurationMapper {
      *
      * @param registerRequest запрос с данными конфигурации
      */
-    public static Configuration createConfiguration(String username, ConfigurationRegisterRequest registerRequest) {
+    public static Configuration toConfiguration(String username, ConfigurationRegisterRequest registerRequest) {
         return Configuration.builder()
                 .username(username)
                 .tin(registerRequest.getTin())

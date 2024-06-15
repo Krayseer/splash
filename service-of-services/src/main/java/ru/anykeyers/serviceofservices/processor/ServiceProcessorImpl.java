@@ -8,6 +8,7 @@ import ru.anykeyers.serviceofservices.ServiceRepository;
 import ru.anykeyers.serviceofservices.domain.ServiceEntity;
 import ru.anykeyers.serviceofservices.domain.ServiceRequest;
 import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
+import ru.anykeyers.serviceofservices.exception.ServiceNotFoundException;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class ServiceProcessorImpl implements ServiceProcessor {
 
     @Override
     public void saveService(Long carWashId, ServiceRequest serviceRequest) {
-        ServiceEntity service = ServiceMapper.createService(carWashId, serviceRequest);
+        ServiceEntity service = ServiceMapper.toService(carWashId, serviceRequest);
         serviceRepository.save(service);
         log.info("Saving service: {}", service);
     }
@@ -47,7 +48,7 @@ public class ServiceProcessorImpl implements ServiceProcessor {
     @Override
     public void updateService(Long serviceId, ServiceRequest serviceRequest) {
         ServiceEntity service = serviceRepository.findById(serviceId).orElseThrow(
-                () -> new RuntimeException("Service not found")
+                () -> new ServiceNotFoundException(serviceId)
         );
         service.setDuration(serviceRequest.getDuration());
         service.setName(serviceRequest.getName());

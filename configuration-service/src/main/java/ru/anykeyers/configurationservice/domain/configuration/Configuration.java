@@ -6,6 +6,7 @@ import ru.anykeyers.configurationservice.domain.TypeOrganization;
 import ru.anykeyers.configurationservice.domain.box.Box;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -110,6 +111,9 @@ public class Configuration {
     private boolean managementProcessOrders;
 
     public void addPhotoUrls(List<String> photoUrls) {
+        if (this.photoUrls == null) {
+            this.photoUrls = new ArrayList<>();
+        }
         this.photoUrls.addAll(photoUrls);
     }
 

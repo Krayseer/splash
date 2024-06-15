@@ -13,7 +13,7 @@ public final class ServiceMapper {
      *
      * @param serviceRequest данные для создания услуги
      */
-    public static ServiceEntity createService(Long carWashId, ServiceRequest serviceRequest) {
+    public static ServiceEntity toService(Long carWashId, ServiceRequest serviceRequest) {
         return ServiceEntity.builder()
                 .carWashId(carWashId)
                 .name(serviceRequest.getName())

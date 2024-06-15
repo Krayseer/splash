@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.anykeyers.statistics.domain.ControllerName;
-import ru.anykeyers.statistics.domain.StatisticsDTO;
+import ru.anykeyers.statistics.domain.metric.CarWashMetric;
 import ru.anykeyers.statistics.service.StatisticsService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class StatisticsController {
 
     @Operation(summary = "Получить метрики по автомойке")
     @GetMapping("/{carWashId}")
-    public StatisticsDTO getStatistics(
+    public List<CarWashMetric> getStatistics(
             @Parameter(description = "Идентификатор автомойки") @PathVariable Long carWashId
     ) {
         return statisticsService.getStatistics(carWashId);

@@ -1,4 +1,4 @@
-package ru.anykeyers.notificationservice.processor;
+package ru.anykeyers.notificationservice;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,15 +10,16 @@ import org.springframework.stereotype.Component;
 import ru.anykeyers.commonsapi.domain.dto.EmployeeDTO;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.commonsapi.MessageQueue;
+import ru.anykeyers.notificationservice.processor.EmployeeProcessor;
 import ru.anykeyers.notificationservice.processor.order.OrderProcessor;
 
 /**
- * Обработчик сообщений с Kafka
+ * Слушатель сообщений с Kafka
  */
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class KafkaProcessor {
+public class KafkaMessageListener {
 
     private static final String GROUP_ID = "notification-group";
 

@@ -16,7 +16,7 @@ public final class OrderMapper {
      * @param username      имя пользователя создателя заказа
      * @param orderRequest  данные для создания заказа
      */
-    public static Order createOrder(String username, OrderRequest orderRequest) {
+    public static Order toOrder(String username, OrderRequest orderRequest) {
         return Order.builder()
                 .username(username)
                 .carWashId(orderRequest.getCarWashId())

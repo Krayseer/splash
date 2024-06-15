@@ -1,7 +1,9 @@
 package ru.anykeyers.statistics.service;
 
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
-import ru.anykeyers.statistics.domain.StatisticsDTO;
+import ru.anykeyers.statistics.domain.metric.CarWashMetric;
+
+import java.util.List;
 
 /**
  * Сервис статистики
@@ -9,11 +11,11 @@ import ru.anykeyers.statistics.domain.StatisticsDTO;
 public interface StatisticsService {
 
     /**
-     * Получить статистику
+     * Получить статистику по автомойке
      *
      * @param carWashId идентификатор автомойки
      */
-    StatisticsDTO getStatistics(Long carWashId);
+    List<CarWashMetric> getStatistics(Long carWashId);
 
     /**
      * Собрать метрики по заказу

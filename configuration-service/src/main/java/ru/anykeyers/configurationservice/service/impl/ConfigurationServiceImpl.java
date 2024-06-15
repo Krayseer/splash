@@ -56,7 +56,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     @Override
     public void registerConfiguration(String username, ConfigurationRegisterRequest registerRequest) {
-        Configuration configuration = ConfigurationMapper.createConfiguration(username, registerRequest);
+        Configuration configuration = ConfigurationMapper.toConfiguration(username, registerRequest);
         configurationRepository.save(configuration);
     }
 

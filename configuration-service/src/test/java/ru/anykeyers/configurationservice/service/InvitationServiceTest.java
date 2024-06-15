@@ -6,15 +6,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.invitation.InvitationState;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
 import ru.anykeyers.configurationservice.domain.configuration.Configuration;
 import ru.anykeyers.configurationservice.domain.invitation.Invitation;
 import ru.anykeyers.configurationservice.domain.invitation.InvitationRequest;
+import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundException;
 import ru.anykeyers.configurationservice.exception.InvitationNotFoundException;
 import ru.anykeyers.configurationservice.repository.ConfigurationRepository;
 import ru.anykeyers.configurationservice.repository.InvitationRepository;
 import ru.anykeyers.configurationservice.service.impl.InvitationServiceImpl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +46,22 @@ class InvitationServiceTest {
     private ArgumentCaptor<Invitation> invitationCaptor;
 
     /**
+     * Тест добавления приглашения от несуществующей автомойки
+     */
+    @Test
+    void addInvitationForNotExistsConfiguration() {
+        InvitationRequest request = new InvitationRequest("test-user", 2L, Collections.emptyList());
+        Mockito.when(configurationRepository.findById(2L)).thenReturn(Optional.empty());
+
+        ConfigurationNotFoundException exception = Assertions.assertThrows(
+                ConfigurationNotFoundException.class, () -> invitationService.addInvitation(request)
+        );
+
+        Assertions.assertEquals("Configuration with id 2 not found", exception.getMessage());
+        Mockito.verify(invitationRepository, Mockito.never()).save(Mockito.any());
+    }
+
+    /**
      * Тест добавления приглашения пользователю
      */
     @Test
@@ -57,9 +76,27 @@ class InvitationServiceTest {
 
         Mockito.verify(invitationRepository, Mockito.times(1)).save(invitationCaptor.capture());
         Invitation invitation = invitationCaptor.getValue();
-        Assertions.assertEquals(invitation.getUsername(), "test-user");
-        Assertions.assertEquals(invitation.getConfiguration().getId(), 2L);
+        Assertions.assertEquals("test-user", invitation.getUsername());
+        Assertions.assertEquals(2L, invitation.getConfiguration().getId());
+        Assertions.assertEquals(InvitationState.SENT, invitation.getInvitationState());
         Assertions.assertEquals(invitation.getRoles(), List.of("ROLE_MANAGER"));
+    }
+
+    /**
+     * Тест одобрения несуществующего приглашения
+     */
+    @Test
+    void applyNotExistsInvitation() {
+        Long invitationId = 1L;
+        Mockito.when(invitationRepository.findById(invitationId)).thenReturn(Optional.empty());
+
+        InvitationNotFoundException exception = Assertions.assertThrows(
+                InvitationNotFoundException.class, () -> invitationService.applyInvitation(invitationId)
+        );
+
+        Assertions.assertEquals("Invitation with id 1 not found", exception.getMessage());
+        Mockito.verify(employeeService, Mockito.never()).addCarWashEmployee(Mockito.any(), Mockito.any());
+        Mockito.verify(invitationRepository, Mockito.never()).save(Mockito.any());
     }
 
     /**
@@ -81,23 +118,54 @@ class InvitationServiceTest {
 
         invitationService.applyInvitation(invitationId);
 
+        Mockito.verify(invitationRepository).save(invitationCaptor.capture());
+        Assertions.assertEquals(InvitationState.ACCEPTED, invitationCaptor.getValue().getInvitationState());
         Mockito.verify(employeeService, Mockito.times(1)).addCarWashEmployee(configuration, 2L);
     }
 
     /**
-     * Тест одобрения несуществующего приглашения
+     * Тест отклонения несуществующего приглашения
      */
     @Test
-    void applyNotExistsInvitation() {
+    void declineNotExistsInvitation() {
         Long invitationId = 1L;
         Mockito.when(invitationRepository.findById(invitationId)).thenReturn(Optional.empty());
 
         InvitationNotFoundException exception = Assertions.assertThrows(
-                InvitationNotFoundException.class, () -> invitationService.applyInvitation(invitationId)
+                InvitationNotFoundException.class, () -> invitationService.declineInvitation(invitationId)
         );
 
         Assertions.assertEquals("Invitation with id 1 not found", exception.getMessage());
         Mockito.verify(employeeService, Mockito.never()).addCarWashEmployee(Mockito.any(), Mockito.any());
+        Mockito.verify(invitationRepository, Mockito.never()).save(Mockito.any());
+    }
+
+    /**
+     * Тест отклонения приглашения
+     */
+    @Test
+    void declineInvitation() {
+        Long invitationId = 1L;
+        Invitation invitation = Invitation.builder()
+                .id(invitationId)
+                .username("test-user")
+                .roles(List.of("ROLE_WASHER"))
+                .build();
+        Mockito.when(invitationRepository.findById(invitationId)).thenReturn(Optional.of(invitation));
+
+        invitationService.declineInvitation(invitationId);
+
+        Mockito.verify(invitationRepository).save(invitationCaptor.capture());
+        Assertions.assertEquals(InvitationState.REJECTED, invitationCaptor.getValue().getInvitationState());
+    }
+
+    /**
+     * Тест удаления приглашения
+     */
+    @Test
+    void deleteInvitation() {
+        invitationService.deleteInvitation(1L);
+        Mockito.verify(invitationRepository).deleteById(1L);
     }
 
 }

@@ -47,6 +47,11 @@ public class UserDTO {
     private String phoneNumber;
 
     /**
+     * URL фотографии аккаунта
+     */
+    private String photoUrl;
+
+    /**
      * Время создания аккаунта
      */
     private String createdAt;

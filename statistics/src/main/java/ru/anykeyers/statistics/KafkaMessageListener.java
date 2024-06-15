@@ -1,4 +1,4 @@
-package ru.anykeyers.statistics.processor;
+package ru.anykeyers.statistics;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,7 +17,7 @@ import ru.anykeyers.statistics.service.StatisticsService;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class KafkaProcessor {
+public class KafkaMessageListener {
 
     private static final String GROUP_ID = "statistics-group";
 

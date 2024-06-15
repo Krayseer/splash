@@ -81,6 +81,17 @@ services:
     ports:
       - '${STORAGE_SERVICE_PORT}:${STORAGE_SERVICE_PORT}'
 
+  postgres:
+    image: 'postgres'
+    container_name: postgresql
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
   frontend:
     build:
       context: ui-sources/

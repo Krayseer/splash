@@ -86,8 +86,8 @@ class OrderServiceTest {
                 .createdAt(actualOrderDTO.getCreatedAt())
                 .build();
         Assertions.assertEquals(expectedOrderDTO, actualOrderDTO);
-        Mockito.verify(orderRepository, Mockito.times(1)).save(Mockito.any(Order.class));
-        Mockito.verify(eventService, Mockito.times(1)).sendOrderCreatedEvent(expectedOrderDTO);
+        Mockito.verify(orderRepository).save(Mockito.any(Order.class));
+        Mockito.verify(eventService).sendOrderCreatedEvent(expectedOrderDTO);
     }
 
     /**
@@ -104,20 +104,6 @@ class OrderServiceTest {
     }
 
     /**
-     * Тест обработки назначения работника заказу
-     */
-    @Test
-    void applyOrderEmployee() {
-        Order order = new Order();
-        order.setId(1L);
-        order.setStatus(OrderState.WAIT_CONFIRM);
-        Mockito.when(orderRepository.findById(Mockito.any())).thenReturn(Optional.of(order));
-        orderService.applyOrderEmployee(1L);
-        Assertions.assertEquals(OrderState.WAIT_PROCESS, order.getStatus());
-        Mockito.verify(orderRepository, Mockito.times(1)).save(order);
-    }
-
-    /**
      * Тест обработки назначения работника несуществующему заказу
      */
     @Test
@@ -128,6 +114,58 @@ class OrderServiceTest {
         );
         Assertions.assertEquals("Order with id 1 not found", exception.getMessage());
         Mockito.verify(orderRepository, Mockito.never()).save(Mockito.any());
+    }
+
+    /**
+     * Тест обработки назначения работника заказу
+     */
+    @Test
+    void applyOrderEmployee() {
+        Order order = new Order();
+        order.setId(1L);
+        order.setStatus(OrderState.WAIT_CONFIRM);
+        Mockito.when(orderRepository.findById(Mockito.any())).thenReturn(Optional.of(order));
+        orderService.applyOrderEmployee(1L);
+        Assertions.assertEquals(OrderState.WAIT_PROCESS, order.getStatus());
+        Mockito.verify(orderRepository).save(order);
+    }
+
+    /**
+     * Тест удаления работника с несуществующего заказа
+     */
+    @Test
+    void disappointEmployeeFromNotExistsOrder() {
+        Mockito.when(orderRepository.findById(1L)).thenReturn(Optional.empty());
+        OrderNotFoundException exception = Assertions.assertThrows(
+                OrderNotFoundException.class, () -> orderService.disappointEmployeeFromOrder(1L)
+        );
+        Assertions.assertEquals("Order with id 1 not found", exception.getMessage());
+        Mockito.verify(orderRepository, Mockito.never()).save(Mockito.any());
+    }
+
+    /**
+     * Тест удаления работника с заказа
+     */
+    @Test
+    void disappointEmployee() {
+        Order order = new Order();
+        order.setId(1L);
+        order.setStatus(OrderState.WAIT_PROCESS);
+        Mockito.when(orderRepository.findById(Mockito.any())).thenReturn(Optional.of(order));
+        orderService.disappointEmployeeFromOrder(1L);
+        Assertions.assertEquals(OrderState.WAIT_CONFIRM, order.getStatus());
+        Mockito.verify(orderRepository).save(order);
+    }
+
+    /**
+     * Тест удаления заказа
+     */
+    @Test
+    void deleteOrder() {
+        orderService.deleteOrder(1L);
+        orderService.deleteOrder("test-user", 2L);
+        Mockito.verify(orderRepository).deleteById(1L);
+        Mockito.verify(orderRepository).deleteByUsernameAndId("test-user", 2L);
     }
 
 }

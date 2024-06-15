@@ -44,7 +44,7 @@ public class OrderProcessorTest {
      */
     @Test
     @SneakyThrows
-    void testVerifyProcessingOrders() {
+    void verifyProcessingOrders() {
         Order processingOrder = Order.builder()
                 .status(OrderState.WAIT_PROCESS)
                 .startTime(Instant.now().minus(2, ChronoUnit.SECONDS))
@@ -75,7 +75,7 @@ public class OrderProcessorTest {
      */
     @Test
     @SneakyThrows
-    void testVerifyProcessedOrders() {
+    void verifyProcessedOrders() {
         Order processingOrder = Order.builder()
                 .status(OrderState.PROCESSING)
                 .startTime(Instant.now().minus(2, ChronoUnit.SECONDS))

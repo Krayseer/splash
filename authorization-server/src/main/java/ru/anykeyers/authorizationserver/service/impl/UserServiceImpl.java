@@ -11,6 +11,8 @@ import ru.anykeyers.authorizationserver.domain.user.UserRequest;
 import ru.anykeyers.authorizationserver.domain.entity.Role;
 import ru.anykeyers.authorizationserver.domain.user.User;
 import ru.anykeyers.authorizationserver.domain.user.UserSetting;
+import ru.anykeyers.authorizationserver.exception.UserAlreadyExistsException;
+import ru.anykeyers.authorizationserver.exception.UserNotFoundException;
 import ru.anykeyers.authorizationserver.repository.RoleRepository;
 import ru.anykeyers.authorizationserver.repository.UserRepository;
 import ru.anykeyers.authorizationserver.service.UserService;
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
+
     private final RemoteStorageService remoteStorageService;
 
     @Override
@@ -44,9 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(
-                () -> new UsernameNotFoundException(id.toString())
-        );
+        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         return UserMapper.toDTO(user);
     }
 
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void registerUser(UserRequest userRequest) {
         if (userRepository.findUserByUsername(userRequest.getUsername()) != null) {
-            throw new RuntimeException("User with username " + userRequest.getUsername() + " already exists");
+            throw new UserAlreadyExistsException(userRequest.getUsername());
         }
         User user = UserMapper.toUser(userRequest);
         user.setRoleList(new ArrayList<>() {{ roleRepository.findByRoleCode("ROLE_USER"); }});
@@ -72,9 +73,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void setUserRoles(Long userId, List<String> roles) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new UsernameNotFoundException("user not found")
-        );
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         Set<Role> updatedRoles = new HashSet<>();
         updatedRoles.addAll(user.getRoleList());
         updatedRoles.addAll(roleRepository.findByRoleCodeIn(roles));
@@ -97,7 +96,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setUserSetting(String username, UserSettingDTO userSetting) {
         User user = userRepository.findUserByUsername(username);
-        UserSetting setting = user.getUserSetting() == null ? new UserSetting() : user.getUserSetting();
+        UserSetting setting = user.getUserSetting();
         setting.setEmailEnabled(userSetting.isEmailEnabled());
         setting.setPushEnabled(userSetting.isPushEnabled());
         user.setUserSetting(setting);

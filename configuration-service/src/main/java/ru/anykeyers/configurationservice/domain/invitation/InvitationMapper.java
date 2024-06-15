@@ -16,7 +16,7 @@ public final class InvitationMapper {
      *
      * @param invitationRequest данные о приглашении
      */
-    public static Invitation createInvitation(InvitationRequest invitationRequest) {
+    public static Invitation toInvitation(InvitationRequest invitationRequest) {
         return Invitation.builder()
                 .username(invitationRequest.getUsername())
                 .invitationState(InvitationState.SENT)

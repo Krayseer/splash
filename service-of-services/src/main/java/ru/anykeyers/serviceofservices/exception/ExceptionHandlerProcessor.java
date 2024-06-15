@@ -1,4 +1,4 @@
-package ru.anykeyers.serviceofservices.processor;
+package ru.anykeyers.serviceofservices.exception;
 
 
 import lombok.extern.slf4j.Slf4j;

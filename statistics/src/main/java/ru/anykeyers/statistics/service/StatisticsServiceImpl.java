@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
-import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
-import ru.anykeyers.commonsapi.service.RemoteServicesService;
-import ru.anykeyers.statistics.ServicesRepository;
-import ru.anykeyers.statistics.domain.ServiceMetric;
-import ru.anykeyers.statistics.domain.StatisticsDTO;
-import ru.anykeyers.statistics.processor.ServiceBatchProcessor;
+import ru.anykeyers.statistics.domain.metric.CarWashMetric;
+import ru.anykeyers.statistics.repository.CarWashMetricRepository;
+import ru.anykeyers.statistics.service.batch.processor.order.OrderBatchProcessor;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.stream.Collectors;
 
 /**
  * Реализация сервиса статистики
@@ -21,24 +20,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StatisticsServiceImpl implements StatisticsService {
 
-    private final ServiceBatchProcessor serviceBatchProcessor;
+    private final ExecutorService executorService;
 
-    private final ServicesRepository servicesRepository;
+    private final List<OrderBatchProcessor> orderBatchProcessors;
 
-    private final RemoteServicesService remoteServicesService;
+    private final List<CarWashMetricRepository<?>> carWashMetricRepositories;
 
     @Override
-    public StatisticsDTO getStatistics(Long carWashId) {
-        serviceBatchProcessor.forceUpdate();
-        ServiceMetric serviceMetric = servicesRepository.findByCarWashId(carWashId);
-        return new StatisticsDTO(serviceMetric.getCount(), serviceMetric.getSum());
+    public List<CarWashMetric> getStatistics(Long carWashId) {
+        return carWashMetricRepositories.stream()
+                .map(carWashMetricRepository -> carWashMetricRepository.findByCarWashId(carWashId))
+                .collect(Collectors.toList());
     }
 
     @Override
     public void processOrder(OrderDTO orderDTO) {
         log.info("Processing order {}", orderDTO);
-        List<ServiceDTO> services = remoteServicesService.getServices(orderDTO.getServiceIds());
-        serviceBatchProcessor.addServicesMetric(orderDTO.getCarWashId(), services);
+        for (OrderBatchProcessor processor : orderBatchProcessors) {
+            executorService.execute(() -> processor.process(orderDTO));
+        }
     }
 
 }

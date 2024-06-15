@@ -56,10 +56,10 @@ public class InvitationServiceImpl implements InvitationService {
 
     @Override
     public void addInvitation(InvitationRequest invitationRequest) {
-        Invitation invitation = InvitationMapper.createInvitation(invitationRequest);
         Configuration configuration = configurationRepository.findById(invitationRequest.getCarWashId()).orElseThrow(
                 () -> new ConfigurationNotFoundException(invitationRequest.getCarWashId())
         );
+        Invitation invitation = InvitationMapper.toInvitation(invitationRequest);
         invitation.setConfiguration(configuration);
         invitationRepository.save(invitation);
         log.info("Send invitation: {}", invitation);
@@ -74,6 +74,7 @@ public class InvitationServiceImpl implements InvitationService {
         invitation.setInvitationState(InvitationState.ACCEPTED);
         UserDTO user = remoteUserService.getUser(invitation.getUsername());
         employeeService.addCarWashEmployee(invitation.getConfiguration(), user.getId());
+        invitationRepository.save(invitation);
         log.info("Apply invitation: {}", invitation);
     }
 

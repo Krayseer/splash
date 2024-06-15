@@ -1,7 +1,6 @@
 package ru.anykeyers.configurationservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.domain.dto.EmployeeDTO;
@@ -46,7 +45,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    @SneakyThrows
     public void addCarWashEmployee(Configuration configuration, Long userId) {
         Employee employee = Employee.builder().userId(userId).configuration(configuration).build();
         employeeRepository.save(employee);
