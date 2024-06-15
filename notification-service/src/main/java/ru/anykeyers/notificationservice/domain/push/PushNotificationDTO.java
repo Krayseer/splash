@@ -13,6 +13,11 @@ import lombok.NoArgsConstructor;
 public class PushNotificationDTO {
 
     /**
+     * Идентификатор
+     */
+    private Long id;
+
+    /**
      * Тема
      */
     private String subject;
@@ -28,6 +33,7 @@ public class PushNotificationDTO {
     private String createdAt;
 
     public PushNotificationDTO(PushNotification pushNotification) {
+        this.id = pushNotification.getId();
         this.subject = pushNotification.getSubject();
         this.message = pushNotification.getMessage();
         this.createdAt = pushNotification.getCreatedAt().toString();

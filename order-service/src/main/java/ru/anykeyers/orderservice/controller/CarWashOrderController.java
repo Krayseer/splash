@@ -16,6 +16,7 @@ import ru.anykeyers.orderservice.service.BoxService;
 import ru.anykeyers.orderservice.service.CarWashOrderService;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class CarWashOrderController {
             @Parameter(description = "Идентификатор автомойки") @RequestParam("id") Long carWashId,
             @Parameter(description = "Дата для получения свободных отрезков") @RequestParam("date") String date
     ) {
-        List<TimeRange> timeRanges = boxService.getOrderFreeTimes(carWashId, DateUtils.toInstant(date));
+        Set<TimeRange> timeRanges = boxService.getOrderFreeTimes(carWashId, DateUtils.toInstant(date));
         return timeRanges.stream().map(TimeRangeMapper::toDTO).toList();
     }
 

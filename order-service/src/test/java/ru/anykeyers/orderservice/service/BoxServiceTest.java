@@ -20,6 +20,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Тесты для {@link BoxService}
@@ -100,9 +101,8 @@ class BoxServiceTest {
         Mockito.when(remoteConfigurationService.getConfiguration(carWashId)).thenReturn(configuration);
         Instant date = DateUtils.toInstant("16-03-2024");
         Mockito.when(orderRepository.findByBoxIdIn(List.of(2L, 3L))).thenReturn(Collections.emptyList());
-        List<TimeRange> actualTimeRanges = boxService.getOrderFreeTimes(carWashId, date);
+        Set<TimeRange> actualTimeRanges = boxService.getOrderFreeTimes(carWashId, date);
         List<TimeRange> expectedTimeRanges = List.of(
-                new TimeRange(Instant.parse("2024-03-16T00:00:00Z"), Instant.parse("2024-03-17T00:00:00Z")),
                 new TimeRange(Instant.parse("2024-03-16T00:00:00Z"), Instant.parse("2024-03-17T00:00:00Z"))
         );
         Assertions.assertArrayEquals(expectedTimeRanges.toArray(), actualTimeRanges.toArray());
@@ -136,14 +136,14 @@ class BoxServiceTest {
                 .boxId(3L)
                 .build();
         Mockito.when(orderRepository.findByBoxIdIn(List.of(2L, 3L))).thenReturn(List.of(firstBoxOrder, secondBoxOrder));
-        List<TimeRange> actualTimeRanges = boxService.getOrderFreeTimes(carWashId, date);
-        List<TimeRange> expectedTimeRanges = List.of(
+        Set<TimeRange> actualTimeRanges = boxService.getOrderFreeTimes(carWashId, date);
+        Set<TimeRange> expectedTimeRanges = Set.of(
                 new TimeRange(Instant.parse("2024-03-16T08:00:00Z"), Instant.parse("2024-03-16T09:00:00Z")),
                 new TimeRange(Instant.parse("2024-03-16T10:00:00Z"), Instant.parse("2024-03-16T23:00:00Z")),
                 new TimeRange(Instant.parse("2024-03-16T08:00:00Z"), Instant.parse("2024-03-16T13:00:00Z")),
                 new TimeRange(Instant.parse("2024-03-16T13:30:00Z"), Instant.parse("2024-03-16T23:00:00Z"))
         );
-        Assertions.assertArrayEquals(expectedTimeRanges.toArray(), actualTimeRanges.toArray());
+        Assertions.assertEquals(expectedTimeRanges, actualTimeRanges);
     }
 
     /**
@@ -171,7 +171,7 @@ class BoxServiceTest {
                 .boxId(2L)
                 .build();
         Mockito.when(orderRepository.findByBoxIdIn(List.of(2L))).thenReturn(List.of(firstBoxOrder, secondBoxOrder));
-        List<TimeRange> actualTimeRanges = boxService.getOrderFreeTimes(carWashId, date);
+        Set<TimeRange> actualTimeRanges = boxService.getOrderFreeTimes(carWashId, date);
         Assertions.assertTrue(actualTimeRanges.isEmpty());
     }
 

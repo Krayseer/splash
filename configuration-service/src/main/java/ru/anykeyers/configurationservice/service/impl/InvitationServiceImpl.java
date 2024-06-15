@@ -83,6 +83,7 @@ public class InvitationServiceImpl implements InvitationService {
                 () -> new InvitationNotFoundException(id)
         );
         invitation.setInvitationState(InvitationState.REJECTED);
+        invitationRepository.save(invitation);
         log.info("Decline invitation: {}", invitation);
     }
 

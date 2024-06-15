@@ -39,7 +39,7 @@ public class BoxServiceImpl implements BoxService {
     }
 
     @Override
-    public List<TimeRange> getOrderFreeTimes(Long carWashId, Instant time) {
+    public Set<TimeRange> getOrderFreeTimes(Long carWashId, Instant time) {
         ConfigurationDTO configuration = remoteConfigurationService.getConfiguration(carWashId);
         List<Long> boxIds = configuration.getBoxes().stream().map(BoxDTO::getId).collect(Collectors.toList());
         Instant startTime = Optional.ofNullable(configuration.getOpenTime())
@@ -50,7 +50,7 @@ public class BoxServiceImpl implements BoxService {
                 .orElse(time.plus(1, ChronoUnit.DAYS));
         return getOrdersByBoxIdFiltered(boxIds, startTime, endTime).values().stream()
                 .flatMap(busyTimeRanges -> findFreeTimeRanges(busyTimeRanges, startTime, endTime).stream())
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     private Map<Long, List<TimeRange>> getOrdersByBoxId(List<Long> boxIds) {
