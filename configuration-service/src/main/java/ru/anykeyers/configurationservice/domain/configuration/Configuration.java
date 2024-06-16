@@ -92,7 +92,7 @@ public class Configuration {
     @OneToMany(mappedBy = "configuration", cascade = CascadeType.ALL)
     private List<Box> boxes;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "configuration_photo_urls",
             joinColumns = @JoinColumn(name = "configuration_id")

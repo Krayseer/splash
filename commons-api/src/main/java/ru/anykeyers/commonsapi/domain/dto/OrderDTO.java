@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.anykeyers.commonsapi.domain.PaymentType;
-import ru.anykeyers.commonsapi.domain.OrderState;
 
 import java.util.List;
 

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.anykeyers.commonsapi.service.RemoteUserService;
 import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
 import ru.anykeyers.commonsapi.domain.OrderState;
 import ru.anykeyers.commonsapi.service.RemoteServicesService;
@@ -37,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
+    private final RemoteUserService remoteUserService;
+
     private final RemoteServicesService remoteServicesService;
 
     @Override
@@ -44,9 +47,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id).orElseThrow(
                 () -> new OrderNotFoundException(id)
         );
-        return new FullOrderDTO(
-                OrderMapper.toDTO(order), remoteServicesService.getServices(order.getServiceIds())
-        );
+        return OrderMapper.toFullDTO(order, remoteUserService, remoteServicesService);
     }
 
     @Override
@@ -176,8 +177,7 @@ public class OrderServiceImpl implements OrderService {
      */
     private List<FullOrderDTO> getFullOrderDTOList(List<Order> orders) {
         return orders.stream()
-                .map(order -> new FullOrderDTO(
-                        OrderMapper.toDTO(order), remoteServicesService.getServices(order.getServiceIds())))
+                .map(order -> OrderMapper.toFullDTO(order, remoteUserService, remoteServicesService))
                 .toList();
     }
 

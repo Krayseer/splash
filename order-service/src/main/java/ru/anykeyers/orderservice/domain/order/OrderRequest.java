@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.anykeyers.commonsapi.domain.PaymentType;
 
-import java.time.Instant;
 import java.util.List;
 
 /**
