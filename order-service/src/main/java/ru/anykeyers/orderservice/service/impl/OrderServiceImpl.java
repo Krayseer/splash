@@ -77,12 +77,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> getOrders(Long carWashId, Instant date) {
+    public List<FullOrderDTO> getOrders(Long carWashId, Instant date) {
         List<Order> orders = orderRepository.findByCarWashIdAndStatusIn(
                 carWashId, List.of(OrderState.WAIT_CONFIRM, OrderState.WAIT_PROCESS, OrderState.PROCESSING)
         );
         Instant endTime = date.plus(1, ChronoUnit.DAYS);
-        return getOrderDTOList(
+        return getFullOrderDTOList(
                 orders.stream()
                 .filter(order -> order.getStartTime().equals(date)
                         || (order.getStartTime().isAfter(date) && order.getEndTime().isBefore(endTime)
@@ -98,25 +98,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int getWaitConfirmOrdersCount(Long carWashId) {
-        return orderRepository.countByCarWashIdAndStatus(carWashId, OrderState.WAIT_CONFIRM);
+    public int getOrdersCount(Long carWashId, OrderState orderState) {
+        return orderRepository.countByCarWashIdAndStatus(carWashId, orderState);
     }
-
-    @Override
-    public int getActiveOrdersCount(Long carWashId) {
-        return orderRepository.countByCarWashIdAndStatus(carWashId, OrderState.WAIT_PROCESS);
-    }
-
-    @Override
-    public int getProcessingOrdersCount(Long carWashId) {
-        return orderRepository.countByCarWashIdAndStatus(carWashId, OrderState.PROCESSING);
-    }
-
-    @Override
-    public int getProcessedOrdersCount(Long carWashId) {
-        return orderRepository.countByCarWashIdAndStatus(carWashId, OrderState.PROCESSED);
-    }
-
     @Override
     public List<FullOrderDTO> getActiveOrders(String username) {
         List<OrderState> activeOrderStates = List.of(OrderState.WAIT_CONFIRM, OrderState.WAIT_PROCESS, OrderState.PROCESSING);

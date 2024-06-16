@@ -1,5 +1,6 @@
 package ru.anykeyers.orderservice.service;
 
+import ru.anykeyers.commonsapi.domain.OrderState;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
 
@@ -17,7 +18,7 @@ public interface CarWashOrderService {
      * @param carWashId идентификатор автомойки
      * @param date      дата, за которую нужно получить список заказов
      */
-    List<OrderDTO> getOrders(Long carWashId, Instant date);
+    List<FullOrderDTO> getOrders(Long carWashId, Instant date);
 
     /**
      * Получить список заказов, ожидающих обработки
@@ -27,31 +28,11 @@ public interface CarWashOrderService {
     List<FullOrderDTO> getWaitConfirmOrders(Long carWashId);
 
     /**
-     * Получить количество заказов ожидающих обработки
+     * Получить количество заказов
      *
-     * @param carWashId идентификатор автомойки
+     * @param carWashId     идентификатор автомойки
+     * @param orderState    статус заказа
      */
-    int getWaitConfirmOrdersCount(Long carWashId);
-
-    /**
-     * Получить количество активных заказов
-     *
-     * @param carWashId идентификатор автомойки
-     */
-    int getActiveOrdersCount(Long carWashId);
-
-    /**
-     * Получить количество заказов, находящихся в обработке
-     *
-     * @param carWashId идентификатор автомойки
-     */
-    int getProcessingOrdersCount(Long carWashId);
-
-    /**
-     * Получить количество обработаных заказов
-     *
-     * @param carWashId идентификатор автомойки
-     */
-    int getProcessedOrdersCount(Long carWashId);
+    int getOrdersCount(Long carWashId, OrderState orderState);
 
 }
