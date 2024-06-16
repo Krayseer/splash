@@ -67,7 +67,9 @@ public class UserServiceImpl implements UserService {
             throw new UserAlreadyExistsException(userRequest.getUsername());
         }
         User user = UserMapper.toUser(userRequest);
-        user.setRoleList(new ArrayList<>() {{ roleRepository.findByRoleCode("ROLE_USER"); }});
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleRepository.findByRoleCode("ROLE_USER"));
+        user.setRoleList(roles);
         userRepository.save(user);
     }
 
