@@ -34,6 +34,12 @@ public class BusinessOrderController {
         return orderService.getOrders(username);
     }
 
+    @Operation(summary = "Получить свободных работников на заказ")
+    @GetMapping("/free-employees/{orderId}")
+    public List<Long> getFreeEmployees(@PathVariable Long orderId) {
+        return orderService.getFreeEmployees(orderId);
+    }
+
     @Operation(summary = "Назначить работника на заказ")
     @PostMapping("/appoint")
     public void appointOrderEmployee(@RequestBody BusinessOrderRequest request) {

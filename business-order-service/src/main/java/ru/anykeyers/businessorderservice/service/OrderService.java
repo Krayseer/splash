@@ -44,6 +44,16 @@ public class OrderService {
     }
 
     /**
+     * Получить свободных работников на заказ
+     *
+     * @param orderId идентификатор заказа
+     */
+    public List<Long> getFreeEmployees(Long orderId) {
+        OrderDTO order = remoteOrderService.getOrders(List.of(orderId)).getFirst();
+        return getFreeEmployees(order);
+    }
+
+    /**
      * Обработать создание заказа
      *
      * @param order данные о новом заказе
@@ -58,22 +68,8 @@ public class OrderService {
             eventService.sendOrderApplyEmployeeEvent(order);
             return;
         }
-        List<Long> employeeIds = new ArrayList<>(remoteConfigurationService.getEmployees(order.getCarWashId()).stream()
-                .map(UserDTO::getId)
-                .toList());
-        String orderDate = DateUtils.toDate(Instant.parse(order.getStartTime()));
-        List<FullOrderDTO> orders = remoteOrderService.getOrders(configuration.getId(), orderDate);
-        if (CollectionUtils.isEmpty(orders)) {
-            appointOrderEmployee(order, employeeIds.getFirst());
-            return;
-        }
-        orders.stream()
-                .filter(o -> isOverlapOrders(o, order))
-                .map(FullOrderDTO::getId)
-                .map(businessOrderRepository::findByOrderId)
-                .map(BusinessOrder::getEmployeeId)
-                .forEach(employeeIds::remove);
-        if (employeeIds.isEmpty()) {
+        List<Long> employeeIds = getFreeEmployees(order);
+        if (employeeIds == null || employeeIds.isEmpty()) {
             eventService.sendOrderRemoveEvent(order);
             return;
         }
@@ -114,6 +110,31 @@ public class OrderService {
         );
         eventService.sendOrderDisappointEmployeeEvent(String.valueOf(order.getOrderId()));
         businessOrderRepository.deleteById(businessOrderId);
+    }
+
+    /**
+     * Получить свободных работников на заказ
+     *
+     * @param order заказ
+     */
+    private List<Long> getFreeEmployees(OrderDTO order) {
+        ConfigurationDTO configuration = remoteConfigurationService.getConfiguration(order.getCarWashId());
+        List<Long> employeeIds = new ArrayList<>(remoteConfigurationService.getEmployees(order.getCarWashId()).stream()
+                .map(UserDTO::getId)
+                .toList());
+        String orderDate = DateUtils.toDate(Instant.parse(order.getStartTime()));
+        List<FullOrderDTO> orders = remoteOrderService.getOrders(configuration.getId(), orderDate);
+        if (CollectionUtils.isEmpty(orders)) {
+            appointOrderEmployee(order, employeeIds.getFirst());
+            return null;
+        }
+        orders.stream()
+                .filter(o -> isOverlapOrders(o, order))
+                .map(FullOrderDTO::getId)
+                .map(businessOrderRepository::findByOrderId)
+                .map(BusinessOrder::getEmployeeId)
+                .forEach(employeeIds::remove);
+        return employeeIds;
     }
 
     /**
