@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.anykeyers.businessorderservice.BusinessOrderRepository;
 import ru.anykeyers.businessorderservice.domain.BusinessOrder;
+import ru.anykeyers.commonsapi.domain.dto.FullOrderDTO;
 import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
@@ -42,7 +43,7 @@ class OrderServiceTest {
 
     private final UserDTO employee = UserDTO.builder().id(5L).username("employee-name").build();
 
-    private final OrderDTO testOrder = OrderDTO.builder()
+    private final FullOrderDTO testOrder = FullOrderDTO.builder()
             .id(5L)
             .carWashId(19L)
             .startTime("1970-01-02T09:00:00Z")

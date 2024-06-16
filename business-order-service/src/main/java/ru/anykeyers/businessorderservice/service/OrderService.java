@@ -69,7 +69,7 @@ public class OrderService {
             return;
         }
         List<Long> employeeIds = getFreeEmployees(order);
-        if (employeeIds == null || employeeIds.isEmpty()) {
+        if (employeeIds.isEmpty()) {
             eventService.sendOrderRemoveEvent(order);
             return;
         }
@@ -125,8 +125,7 @@ public class OrderService {
         String orderDate = DateUtils.toDate(Instant.parse(order.getStartTime()));
         List<FullOrderDTO> orders = remoteOrderService.getOrders(configuration.getId(), orderDate);
         if (CollectionUtils.isEmpty(orders)) {
-            appointOrderEmployee(order, employeeIds.getFirst());
-            return null;
+            return employeeIds;
         }
         orders.stream()
                 .filter(o -> isOverlapOrders(o, order))
