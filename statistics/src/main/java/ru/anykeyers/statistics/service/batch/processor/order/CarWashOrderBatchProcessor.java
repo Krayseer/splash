@@ -18,9 +18,11 @@ public class CarWashOrderBatchProcessor extends BaseOrderBatchProcessor<OrderMet
     }
 
     @Override
-    public void process(OrderDTO order) {
-        OrderMetric orderMetric = getMetric(order.getCarWashId());
-        orderMetric.setCount(orderMetric.getCount() + 1);
+    public Runnable getProcessTask(OrderDTO order) {
+        return () -> {
+            OrderMetric orderMetric = getMetric(order.getCarWashId());
+            orderMetric.incrementCount();
+        };
     }
 
 }

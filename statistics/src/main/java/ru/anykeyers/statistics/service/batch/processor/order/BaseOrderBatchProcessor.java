@@ -9,6 +9,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
+/**
+ * Базовый класс пакетных обработчиков заказов
+ * @param <T>
+ */
 @Slf4j
 @RequiredArgsConstructor
 public abstract class BaseOrderBatchProcessor<T extends CarWashMetric> implements OrderBatchProcessor {
@@ -21,8 +25,12 @@ public abstract class BaseOrderBatchProcessor<T extends CarWashMetric> implement
 
     protected T getMetric(Long carWashId) {
         if (!metricByCarWashId.containsKey(carWashId)) {
-            T existsMetric = carWashMetricRepository.findByCarWashId(carWashId);
-            metricByCarWashId.put(carWashId, existsMetric == null ? carWashMetricCreator.get() : existsMetric);
+            T metric = carWashMetricRepository.findByCarWashId(carWashId);
+            if (metric == null) {
+                metric = carWashMetricCreator.get();
+                metric.setCarWashId(carWashId);
+            }
+            metricByCarWashId.put(carWashId, metric);
         }
         return metricByCarWashId.get(carWashId);
     }
@@ -30,9 +38,13 @@ public abstract class BaseOrderBatchProcessor<T extends CarWashMetric> implement
     @Override
     public Runnable getBatchProcessTask() {
         return () -> {
-            log.info("Save batch in DB: {}", metricByCarWashId.size());
+            if (metricByCarWashId.isEmpty()) {
+                return;
+            }
+            log.info("Save order batch in DB: {}", metricByCarWashId.size());
             carWashMetricRepository.saveAll(metricByCarWashId.values());
             metricByCarWashId.clear();
         };
     }
+
 }

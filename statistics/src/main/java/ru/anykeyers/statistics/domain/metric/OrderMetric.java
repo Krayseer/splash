@@ -10,11 +10,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ORDER_METRIC")
 public class OrderMetric extends CarWashMetric {
 
     private Long count;
+
+    public OrderMetric() {
+        this.count = 0L;
+    }
+
+    public void incrementCount() {
+        count++;
+    }
 
 }

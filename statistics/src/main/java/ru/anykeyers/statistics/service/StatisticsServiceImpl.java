@@ -37,7 +37,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     public void processOrder(OrderDTO orderDTO) {
         log.info("Processing order {}", orderDTO);
         for (OrderBatchProcessor processor : orderBatchProcessors) {
-            executorService.execute(() -> processor.process(orderDTO));
+            executorService.execute(processor.getProcessTask(orderDTO));
         }
     }
 

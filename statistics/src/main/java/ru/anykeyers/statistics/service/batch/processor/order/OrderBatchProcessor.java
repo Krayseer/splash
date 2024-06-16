@@ -9,10 +9,10 @@ import ru.anykeyers.statistics.service.batch.processor.BatchProcessor;
 public interface OrderBatchProcessor extends BatchProcessor {
 
     /**
-     * Обработать заказ
+     * Получить задание на обработку заказа
      *
      * @param order заказ
      */
-    void process(OrderDTO order);
+    Runnable getProcessTask(OrderDTO order);
 
 }

@@ -26,11 +26,13 @@ public class ServiceBatchProcessor extends BaseOrderBatchProcessor<ServiceMetric
     }
 
     @Override
-    public void process(OrderDTO order) {
-        List<ServiceDTO> services = remoteServicesService.getServices(order.getServiceIds());
-        ServiceMetric serviceMetric = getMetric(order.getCarWashId());
-        serviceMetric.setSum(serviceMetric.getSum() + services.stream().mapToInt(ServiceDTO::getPrice).sum());
-        serviceMetric.setCount(serviceMetric.getCount() + services.size());
+    public Runnable getProcessTask(OrderDTO order) {
+        return () -> {
+            ServiceMetric serviceMetric = getMetric(order.getCarWashId());
+            List<ServiceDTO> services = remoteServicesService.getServices(order.getServiceIds());
+            serviceMetric.addSum(services.stream().mapToInt(ServiceDTO::getPrice).sum());
+            serviceMetric.addCount(services.size());
+        };
     }
 
 }

@@ -11,6 +11,7 @@ import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
 import ru.anykeyers.commonsapi.service.RemoteConfigurationService;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
+import ru.anykeyers.notificationservice.domain.Notification;
 import ru.anykeyers.notificationservice.service.NotificationServiceCompound;
 
 /**
@@ -31,6 +32,9 @@ class EmployeeProcessorTest {
     @InjectMocks
     private EmployeeProcessor employeeProcessor;
 
+    /**
+     * Тест отправки уведомления о принятии работника на автомойку
+     */
     @Test
     void processEmployeeApply() {
         Long carWashId = 2L;
@@ -54,8 +58,23 @@ class EmployeeProcessorTest {
 
         employeeProcessor.processEmployeeApply(employeeDTO);
 
-        Mockito.verify(notificationServiceCompound).notify(employee, Mockito.any());
-        Mockito.verify(notificationServiceCompound).notify(carWashHolder, Mockito.any());
+        Notification expectedNotificationEmployee = new Notification(
+                "Вы приняты на работу", """
+                Поздравляем, вы стали работником автомойки!
+                Автомойка: car-wash
+                Адрес: address
+                """
+        );
+        Notification expectedNotificationCarWashHolder = new Notification(
+                "Новый работник", """
+                У вас новый работник!
+                Имя: null
+                Фамилия: null
+                Роли: null
+                """
+        );
+        Mockito.verify(notificationServiceCompound).notify(employee, expectedNotificationEmployee);
+        Mockito.verify(notificationServiceCompound).notify(carWashHolder, expectedNotificationCarWashHolder);
     }
 
 }

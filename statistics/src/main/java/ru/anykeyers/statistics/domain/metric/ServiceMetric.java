@@ -12,7 +12,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "SERVICE_METRIC")
 public class ServiceMetric extends CarWashMetric {
@@ -26,5 +25,18 @@ public class ServiceMetric extends CarWashMetric {
      * Общая сумма выполненных услуг
      */
     private long sum;
+
+    public ServiceMetric() {
+        this.count = 0L;
+        this.sum = 0L;
+    }
+
+    public void addCount(long count) {
+        this.count += count;
+    }
+
+    public void addSum(long sum) {
+        this.sum += sum;
+    }
 
 }
