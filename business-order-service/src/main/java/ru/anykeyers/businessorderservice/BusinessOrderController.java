@@ -43,7 +43,8 @@ public class BusinessOrderController {
     @Operation(summary = "Убрать работника с заказа")
     @PostMapping("/disappoint/{businessOrderId}")
     public void disappointOrderEmployee(
-            @Parameter(description = "Идентификатор заказа") @PathVariable Long businessOrderId) {
+            @Parameter(description = "Идентификатор заказа") @PathVariable Long businessOrderId
+    ) {
         orderService.disappointEmployeeFromOrder(businessOrderId);
     }
 

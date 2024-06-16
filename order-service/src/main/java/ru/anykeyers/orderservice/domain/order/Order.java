@@ -52,7 +52,7 @@ public class Order {
     /**
      * Список идентификаторов услуг
      */
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<Long> serviceIds;
 
     /**
