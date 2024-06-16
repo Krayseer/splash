@@ -36,8 +36,8 @@ class ServiceBatchProcessorTest {
     @Test
     void getProcessTask() {
         List<ServiceDTO> services = List.of(
-                new ServiceDTO(1L, "service1", "05:00", 250),
-                new ServiceDTO(2L, "service2", "03:30", 500)
+                new ServiceDTO(1L, "service1", 2000, 250),
+                new ServiceDTO(2L, "service2", 3000, 500)
         );
         List<Long> serviceIds = List.of(1L, 2L);
         OrderDTO orderDTO = OrderDTO.builder().serviceIds(serviceIds).build();

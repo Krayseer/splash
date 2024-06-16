@@ -1,6 +1,5 @@
 package ru.anykeyers.serviceofservices.domain;
 
-import ru.anykeyers.commonsapi.DateUtils;
 import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 
 /**
@@ -31,7 +30,7 @@ public final class ServiceMapper {
         return ServiceDTO.builder()
                 .id(serviceEntity.getId())
                 .name(serviceEntity.getName())
-                .duration(DateUtils.toDate(serviceEntity.getDuration()))
+                .duration(serviceEntity.getDuration())
                 .price(serviceEntity.getPrice())
                 .build();
     }

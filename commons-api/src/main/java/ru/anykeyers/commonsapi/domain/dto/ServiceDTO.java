@@ -27,7 +27,7 @@ public class ServiceDTO {
     /**
      * Время выполнения
      */
-    private String duration;
+    private long duration;
 
     /**
      * Цена выполнения
