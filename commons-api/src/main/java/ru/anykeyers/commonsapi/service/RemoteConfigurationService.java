@@ -49,7 +49,7 @@ public class RemoteConfigurationService {
      * @param id идентификатор автомойки
      */
     public List<UserDTO> getEmployees(Long id) {
-        UserDTO[] users = restTemplate.getForObject(URL + "employee?id=" + id, UserDTO[].class);
+        UserDTO[] users = restTemplate.getForObject(URL + "employee/" + id, UserDTO[].class);
         return users == null ? Collections.emptyList() : Arrays.stream(users).toList();
     }
 

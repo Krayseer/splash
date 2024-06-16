@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.commonsapi.DateUtils;
 import ru.anykeyers.commonsapi.domain.OrderState;
-import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
+import ru.anykeyers.commonsapi.domain.dto.FullOrderDTO;
 import ru.anykeyers.orderservice.domain.time.TimeRange;
 import ru.anykeyers.orderservice.domain.ControllerName;
 import ru.anykeyers.orderservice.domain.time.TimeRangeDTO;
@@ -41,7 +41,7 @@ public class CarWashOrderController {
     @Operation(summary = "Получить список заказов автомойки в конкретный день")
     @GetMapping("/by-date")
     public List<FullOrderDTO> getOrdersByDate(
-            @Parameter(description = "Идентификатор автомойки") @RequestParam("id") Long carWashId,
+            @Parameter(description = "Идентификатор автомойки") @RequestParam("carWashId") Long carWashId,
             @Parameter(description = "Дата для получения заказов") @RequestParam("date") String date
     ) {
         return orderService.getOrders(carWashId, DateUtils.toInstant(date));

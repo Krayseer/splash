@@ -1,6 +1,7 @@
 package ru.anykeyers.orderservice.domain.order;
 
 import ru.anykeyers.commonsapi.domain.OrderState;
+import ru.anykeyers.commonsapi.domain.dto.FullOrderDTO;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.commonsapi.service.RemoteServicesService;
 import ru.anykeyers.commonsapi.service.RemoteUserService;

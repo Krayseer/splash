@@ -1,7 +1,6 @@
-package ru.anykeyers.orderservice.domain.order;
+package ru.anykeyers.commonsapi.domain.dto;
 
 import lombok.*;
-import ru.anykeyers.commonsapi.domain.dto.ServiceDTO;
 import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
 
 import java.util.List;

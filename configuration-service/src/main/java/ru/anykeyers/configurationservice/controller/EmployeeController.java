@@ -19,8 +19,8 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @Operation(summary = "Получить список работников автомойки")
-    @GetMapping
-    public List<UserDTO> getEmployees(@RequestParam("carWashId") Long carWashId) {
+    @GetMapping("/{carWashId}")
+    public List<UserDTO> getEmployees(@PathVariable Long carWashId) {
         return employeeService.getCarWashEmployees(carWashId);
     }
 

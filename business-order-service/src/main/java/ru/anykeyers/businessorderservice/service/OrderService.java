@@ -7,6 +7,7 @@ import org.springframework.util.CollectionUtils;
 import ru.anykeyers.businessorderservice.BusinessOrderRepository;
 import ru.anykeyers.businessorderservice.domain.BusinessOrder;
 import ru.anykeyers.commonsapi.DateUtils;
+import ru.anykeyers.commonsapi.domain.dto.FullOrderDTO;
 import ru.anykeyers.commonsapi.domain.dto.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.commonsapi.domain.dto.user.UserDTO;
@@ -61,14 +62,14 @@ public class OrderService {
                 .map(UserDTO::getId)
                 .toList());
         String orderDate = DateUtils.toDate(Instant.parse(order.getStartTime()));
-        List<OrderDTO> orders = remoteOrderService.getOrders(configuration.getId(), orderDate);
+        List<FullOrderDTO> orders = remoteOrderService.getOrders(configuration.getId(), orderDate);
         if (CollectionUtils.isEmpty(orders)) {
             appointOrderEmployee(order, employeeIds.getFirst());
             return;
         }
         orders.stream()
                 .filter(o -> isOverlapOrders(o, order))
-                .map(OrderDTO::getId)
+                .map(FullOrderDTO::getId)
                 .map(businessOrderRepository::findByOrderId)
                 .map(BusinessOrder::getEmployeeId)
                 .forEach(employeeIds::remove);
@@ -121,7 +122,7 @@ public class OrderService {
      * @param savedOrder    сохраненный заказ
      * @param currentOrder  текущий заказ
      */
-    private boolean isOverlapOrders(OrderDTO savedOrder, OrderDTO currentOrder) {
+    private boolean isOverlapOrders(FullOrderDTO savedOrder, OrderDTO currentOrder) {
         Instant savedStart = Instant.parse(savedOrder.getStartTime());
         Instant currentStart = Instant.parse(currentOrder.getStartTime());
         Instant savedEnd = Instant.parse(savedOrder.getEndTime());

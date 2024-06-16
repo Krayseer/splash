@@ -1,7 +1,7 @@
 package ru.anykeyers.orderservice.service;
 
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
-import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
+import ru.anykeyers.commonsapi.domain.dto.FullOrderDTO;
 
 import java.util.List;
 

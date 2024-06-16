@@ -12,7 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.orderservice.domain.ControllerName;
-import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
+import ru.anykeyers.commonsapi.domain.dto.FullOrderDTO;
 import ru.anykeyers.orderservice.domain.order.OrderRequest;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
 import ru.anykeyers.orderservice.service.UserOrderService;

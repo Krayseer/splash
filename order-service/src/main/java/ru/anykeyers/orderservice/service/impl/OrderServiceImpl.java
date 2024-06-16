@@ -5,7 +5,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.service.RemoteUserService;
-import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
+import ru.anykeyers.commonsapi.domain.dto.FullOrderDTO;
 import ru.anykeyers.commonsapi.domain.OrderState;
 import ru.anykeyers.commonsapi.service.RemoteServicesService;
 import ru.anykeyers.orderservice.domain.time.TimeRange;

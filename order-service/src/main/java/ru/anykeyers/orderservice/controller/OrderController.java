@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.commonsapi.domain.dto.OrderDTO;
-import ru.anykeyers.orderservice.domain.order.FullOrderDTO;
+import ru.anykeyers.commonsapi.domain.dto.FullOrderDTO;
 import ru.anykeyers.orderservice.domain.ControllerName;
 import ru.anykeyers.orderservice.service.OrderService;
 
