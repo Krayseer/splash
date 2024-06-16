@@ -110,6 +110,11 @@ public class Configuration {
      */
     private boolean managementProcessOrders;
 
+    /**
+     * Включен режим самообслуживания
+     */
+    private boolean selfService;
+
     public void addPhotoUrls(List<String> photoUrls) {
         if (this.photoUrls == null) {
             this.photoUrls = new ArrayList<>();

@@ -65,4 +65,9 @@ public class ConfigurationUpdateRequest {
      */
     private boolean managementProcessOrders;
 
+    /**
+     * Включен режим самообслуживания
+     */
+    private boolean selfService;
+
 }

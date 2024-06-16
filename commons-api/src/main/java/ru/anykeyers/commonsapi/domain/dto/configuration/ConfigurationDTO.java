@@ -107,4 +107,9 @@ public class ConfigurationDTO {
      */
     private boolean managementProcessOrders;
 
+    /**
+     * Режим самообслуживания
+     */
+    private boolean selfService;
+
 }

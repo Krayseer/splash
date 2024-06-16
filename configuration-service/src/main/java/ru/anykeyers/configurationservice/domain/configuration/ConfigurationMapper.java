@@ -60,6 +60,7 @@ public class ConfigurationMapper {
                 .boxes(BoxMapper.createDTO(configuration.getBoxes()))
                 .photoUrls(configuration.getPhotoUrls())
                 .managementProcessOrders(configuration.isManagementProcessOrders())
+                .selfService(configuration.isSelfService())
                 .createdAt(configuration.getCreatedAt().toString())
                 .build();
     }

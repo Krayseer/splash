@@ -53,6 +53,10 @@ public class OrderService {
             // Не обрабатываем заказ, если у автомойки на это назначен менеджер
             return;
         }
+        if (configuration.isSelfService()) {
+            eventService.sendOrderApplyEmployeeEvent(order);
+            return;
+        }
         List<Long> employeeIds = new ArrayList<>(remoteConfigurationService.getEmployees(order.getCarWashId()).stream()
                 .map(UserDTO::getId)
                 .toList());

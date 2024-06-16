@@ -104,6 +104,7 @@ class ConfigurationServiceTest {
                 "05:00",
                 "23:00",
                 null,
+                true,
                 true
         );
         Mockito.when(configurationRepository.findByUsername("test-user")).thenReturn(Optional.ofNullable(existsConfiguration));
@@ -144,6 +145,7 @@ class ConfigurationServiceTest {
                 "05:00",
                 "23:00",
                 photos,
+                true,
                 true
         );
         List<String> photoUrls = List.of("photo-url");
