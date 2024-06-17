@@ -40,7 +40,7 @@
   border-radius: 8px;
   height: 56px;
   border: 2px solid #B5B8C3;
-  color: #B5B8C3;
+  color: #1D1D2D;
   box-sizing: border-box;
   font-size: 18px;
   font-weight: 600;
@@ -74,9 +74,15 @@
   font-weight: 700;
   background-color: #134EF2;
   color: #F4F6FA;
-  padding: 12px 121px;
+  padding: 12px 20px;
   border: none;
   margin-bottom: 16px;
+}
+
+.submit-button:disabled {
+  background-color: blue; /* Чтобы сохранить цвет фона */
+  cursor: not-allowed;
+  opacity: 0.5; /* Прозрачность */
 }
 
 .bottom-text-div {

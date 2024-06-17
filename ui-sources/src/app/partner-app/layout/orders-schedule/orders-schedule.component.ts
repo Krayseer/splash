@@ -1,11 +1,29 @@
-import { Component } from '@angular/core';
-import {NgForOf} from "@angular/common";
+import {Component, ViewChild} from '@angular/core';
+import {CommonModule, NgForOf} from "@angular/common";
 import {PartnerHeaderComponent} from "../../components/partner-header/partner-header.component";
 import {PartnerFooterComponent} from "../../components/partner-footer/partner-footer.component";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {switchMap} from "rxjs";
 import {Configuration} from "../../../models/wash-config";
-import {InvitationDTO} from "../../modals/invitation-modal/invitation-modal.component";
+import {InvitationDTO, InvitationModalComponent} from "../../modals/invitation-modal/invitation-modal.component";
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerModule,
+  MatDatepickerToggle
+} from "@angular/material/datepicker";
+import {MatFormField, MatFormFieldModule, MatLabel, MatSuffix} from "@angular/material/form-field";
+import {MatInput, MatInputModule} from "@angular/material/input";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {TimeRangeDTO} from "../../../layout/order-registration/order-registration.component";
+import {MatNativeDateModule} from "@angular/material/core";
+import {NgSelectModule} from "@ng-select/ng-select";
+import {formatDate} from "date-fns";
+import {User} from "../../../models/user";
+import {UserDTO} from "../employees/employees.component";
+import {WashService} from "../../../models/wash-service";
+import {MatDialog} from "@angular/material/dialog";
+import {OrderModalComponent} from "../../modals/order-modal/order-modal.component";
 
 interface Booking {
   boxId: number;
@@ -20,15 +38,20 @@ interface Box {
 
 export interface OrderDTO {
   id: number;
-  username: string;
+  user: UserDTO;
   carWashId: number;
   boxId: number;
   status: string;
-  serviceIds: number[];
+  services: WashService[];
   startTime: string;
   endTime: string;
   typePayment: string;
   createdAt: string;
+}
+
+export interface OrderDialogData {
+  user: UserDTO;
+  services: WashService[];
 }
 
 @Component({
@@ -37,23 +60,28 @@ export interface OrderDTO {
   imports: [
     NgForOf,
     PartnerHeaderComponent,
-    PartnerFooterComponent
+    PartnerFooterComponent,
+    MatDatepicker,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatFormField,
+    MatInput,
+    MatLabel,
+    MatSuffix,
+    ReactiveFormsModule,
+    FormsModule,
+    CommonModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatInputModule,
+    FormsModule,
+    MatNativeDateModule,
+    NgSelectModule
   ],
   templateUrl: './orders-schedule.component.html',
   styleUrl: './orders-schedule.component.css'
 })
 export class OrdersScheduleComponent {
-
-  timeSlots: string[] = [
-    '08:00', '09:00', '10:00', '11:00', '12:00',
-    '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'
-  ];
-
-  boxes: Box[] = [
-    { id: 1, name: 'Бокс 1' },
-    { id: 2, name: 'Бокс 2' },
-    { id: 3, name: 'Бокс 3' }
-  ];
 
   bookings: Booking[] = [
     { boxId: 1, startTime: '10:00', endTime: '12:00' },
@@ -61,26 +89,60 @@ export class OrdersScheduleComponent {
   ];
 
   carWashId!: number;
+  configuration!: Configuration;
   orders: OrderDTO[] = [];
+  selectedDate: Date | null;
+  minDate: Date;
 
-  constructor(private http: HttpClient) {
-    this.http.get<Configuration>("api/car-wash/configuration").pipe(
-      switchMap((configuration: Configuration) => {
-        this.carWashId = configuration.id;
-        // Выполнить второй запрос, используя ID автомойки
-        return this.http.get<OrderDTO[]>("api/order/car-wash/by-date?id=" + this.carWashId + "&date=16-03-2024");
-      })
-    ).subscribe(
-      (orders: OrderDTO[]) => {
-        this.orders = orders;
-        console.log(this.orders);
-        // Дополнительные действия при успешном получении приглашений
-      },
-      error => {
-        console.error('Ошибка при получении заказов', error);
-        // Дополнительные действия при ошибке получении приглашений
+  constructor(private http: HttpClient, public dialog: MatDialog) {
+    this.selectedDate = null;
+    this.minDate = new Date();
+    this.http.get<Configuration>("api/car-wash/configuration").subscribe(
+      data => {
+        this.configuration = data;
+        this.carWashId = data.id;
       }
     );
+  }
+
+  openOrderDialog(order: OrderDTO) {
+    const data: OrderDialogData = {
+      user: order.user,
+      services: order.services
+    }
+    const dialogRef = this.dialog.open(OrderModalComponent, {
+      panelClass: 'invitation-modal',
+      data: data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Модальное окно закрыто');
+      // Логика после закрытия модального окна, если необходимо
+    });
+  }
+
+  getBoxNameFromId() {
+
+  }
+
+  dateChanges() {
+    if (this.selectedDate) {
+      // Форматирование даты в формат 'dd-MM-yyyy'
+      const formattedDate = formatDate(this.selectedDate, 'dd-MM-yyyy');
+
+      const params = new HttpParams()
+        .set('carWashId', this.carWashId)
+        .set('date', formattedDate);
+
+      // Отправка запроса с форматированной датой
+      this.http.get<OrderDTO[]>('api/order/car-wash/by-date', { params })
+        .subscribe(response => {
+          this.orders = response;
+          console.log(this.orders);// Обработка ответа
+        }, error => {
+          console.error(error); // Обработка ошибки
+        });
+    }
   }
 
   isBooked(box: Box, time: string): boolean {
@@ -97,6 +159,66 @@ export class OrdersScheduleComponent {
   getTime(order: OrderDTO): string {
     const timePart = order.createdAt.split('T')[1].split('.')[0];
     return timePart;
+  }
+
+  getTimeFromISOString(isoString: string): string {
+    const date = new Date(isoString);
+
+    // Получаем часы и минуты
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+
+    // Форматируем часы и минуты в строку HH:mm
+    const formattedTime = `${this.padZero(hours)}:${this.padZero(minutes)}`;
+
+    return formattedTime;
+  }
+
+  /**
+   * Добавляет ведущий ноль к числу, если оно меньше 10
+   * @param num Число
+   * @returns Число в строковом формате с ведущим нулем
+   */
+  private padZero(num: number): string {
+    return num < 10 ? '0' + num : num.toString();
+  }
+
+  getDateFromISOString(isoString: string): string {
+    const date = new Date(isoString);
+
+    // Получаем день, месяц и год
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth(); // Номера месяцев начинаются с 0 (январь = 0, декабрь = 11)
+    const year = date.getUTCFullYear();
+
+    // Преобразуем номер месяца в название месяца на русском языке
+    const monthName = this.getMonthName(month);
+
+    // Форматируем дату в строку "дд месяц гггг"
+    const formattedDate = `${day} ${monthName} ${year}`;
+
+    return formattedDate;
+  }
+
+  /**
+   * Преобразует номер месяца в название месяца на русском языке
+   * @param month Номер месяца (0-11)
+   * @returns Название месяца на русском языке
+   */
+  private getMonthName(month: number): string {
+    const monthNames = [
+      'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+      'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+    ];
+    return monthNames[month];
+  }
+
+  getPrice(services: WashService[]): number {
+    let result = 0;
+    for (const service of services) {
+      result += service.price;
+    }
+    return result;
   }
 
 }

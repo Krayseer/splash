@@ -1,4 +1,6 @@
 @import "@fortawesome/fontawesome-free/css/all.css";
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '@ng-select/ng-select/themes/material.theme.css';
 
 @font-face {
   font-family: Inter;
@@ -25,6 +27,13 @@
 
 .mat-mdc-dialog-surface {
   border-radius: 30px !important;
+}
+
+
+
+.mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled {
+  border-radius: 10px;
+  border: 2px solid #B1B4BE;
 }
 
 html, body { height: 100%; }

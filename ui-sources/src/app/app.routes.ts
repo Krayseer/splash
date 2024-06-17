@@ -16,6 +16,9 @@ import {CompanyInformationComponent} from "./partner-app/layout/company-informat
 import {EmployeesComponent} from "./partner-app/layout/employees/employees.component";
 import {OrdersScheduleComponent} from "./partner-app/layout/orders-schedule/orders-schedule.component";
 import {ServicesAndBoxesComponent} from "./partner-app/layout/services-and-boxes/services-and-boxes.component";
+import {MapComponent} from "./map/map.component";
+import {UserProfileComponent} from "./layout/user-profile/user-profile.component";
+import {PartnerMainPageComponent} from "./partner-app/layout/partner-main-page/partner-main-page.component";
 
 export const routes: Routes = [
   {path: '', redirectTo: 'main', pathMatch: 'full'},
@@ -33,5 +36,8 @@ export const routes: Routes = [
   {path: 'comp-information', component: CompanyInformationComponent},
   {path: 'employees', component: EmployeesComponent},
   {path: 'orders-schedule', component: OrdersScheduleComponent},
-  {path: 'services-and-boxes', component: ServicesAndBoxesComponent}
+  {path: 'services-and-boxes', component: ServicesAndBoxesComponent},
+  {path: 'map', component: MapComponent},
+  {path: 'user-profile', component: UserProfileComponent},
+  {path: 'partner-main', component: PartnerMainPageComponent}
 ];

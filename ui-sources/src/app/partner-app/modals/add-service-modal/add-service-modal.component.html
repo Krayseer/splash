@@ -7,8 +7,13 @@
       </svg>
     </div>
   </div>
-  <input placeholder="Название" type="text" style="margin-bottom: 8px" class="Inter service-input">
-  <input placeholder="Цена (₽)" style="margin-bottom: 8px;" class="Inter service-input" type="text" name="positiveInteger" ngModel appPositiveInteger>
-  <input placeholder="Время выполнения (минуты)" type="text" style="margin-bottom: 64px;" class="Inter service-input" ngModel appPositiveInteger>
-  <button class="Inter add-button">Сохранить</button>
+  <form (ngSubmit)="submit()" style="width: 100%">
+    <input [(ngModel)]="name" name="name" placeholder="Название" type="text" style="margin-bottom: 8px; width: 100%; box-sizing: border-box;" class="Inter service-input" required>
+    <input [(ngModel)]="price" name="price" placeholder="Цена (₽)" style="margin-bottom: 8px; width: 100%; box-sizing: border-box;" class="Inter service-input" type="number" required>
+    <input [(ngModel)]="time" name="duration" placeholder="Время выполнения (число больше 0)"
+           type="number" style="margin-bottom: 64px; width: 100%; box-sizing: border-box;"
+           class="Inter service-input" required
+           inputmode="numeric" pattern="[0-9]*" minlength="1">
+    <button type="submit" class="Inter add-button" style="display: block; margin: 0 auto;">{{ service ? 'Изменить' : 'Сохранить' }}</button>
+  </form>
 </div>

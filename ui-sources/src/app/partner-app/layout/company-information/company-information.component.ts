@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {PartnerHeaderComponent} from "../../components/partner-header/partner-header.component";
 import {PartnerSettingsComponent} from "../../components/partner-settings/partner-settings.component";
 import {IConfig, NgxMaskDirective, provideEnvironmentNgxMask, provideNgxMask} from "ngx-mask";
@@ -14,6 +14,10 @@ import {PartnerFooterComponent} from "../../components/partner-footer/partner-fo
 import {HttpClient} from "@angular/common/http";
 import {Configuration} from "../../../models/wash-config";
 import {NgForOf, NgIf} from "@angular/common";
+import {Router} from "@angular/router";
+import {MatSnackBar} from "@angular/material/snack-bar";
+
+declare const ymaps: any;
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -28,9 +32,11 @@ export interface ConfigurationUpdateRequest {
   description: string;
   phoneNumber: string;
   address: string;
+  longitude: string;
+  latitude: string;
   openTime: string;
   closeTime: string;
-  photos: File[];
+  photos: File[] | (string | ArrayBuffer | null)[];
   managementProcessOrders: boolean;
 }
 
@@ -58,7 +64,11 @@ export interface ConfigurationUpdateRequest {
   ],
   providers: [provideNgxMask()]
 })
-export class CompanyInformationComponent implements OnInit {
+export class CompanyInformationComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('mapContainer', {static: false}) mapContainer!: ElementRef;
+  map: any;
+  marker: any;
 
   name: string = '';
   description: string = '';
@@ -66,13 +76,52 @@ export class CompanyInformationComponent implements OnInit {
   address: string = '';
   openTime: string = '';
   closeTime: string = '';
+  longitude: string = '';
+  latitude: string = '';
   managementProcessOrders: boolean = false;
+  photos: string[] = []; // Массив URL существующих фотографий
   selectedFiles: File[] = [];
-  photos: (string | ArrayBuffer | null)[] = [];
   data: any;
 
-  constructor(private http: HttpClient, private fb: FormBuilder) {
+  constructor(private http: HttpClient, private fb: FormBuilder, private router: Router,
+              private snackBar: MatSnackBar, private zone: NgZone) {
   }
+
+  ngAfterViewInit(): void {
+    ymaps.ready().then(() => {
+      this.map = new ymaps.Map(this.mapContainer.nativeElement, {
+        center: [55.76, 37.64],
+        zoom: 7
+      });
+
+      this.map.events.add('click', (e: any) => {
+        const coords = e.get('coords');
+        this.longitude = coords[1].toFixed(6);
+        this.latitude = coords[0].toFixed(6);
+
+        // Удаление предыдущей метки, если она есть
+        if (this.marker) {
+          this.map.geoObjects.remove(this.marker);
+        }
+
+        // Добавление новой метки на карту
+        this.marker = new ymaps.Placemark(coords, {}, {
+          preset: 'islands#icon',
+          iconColor: '#0095b6'
+        });
+        this.map.geoObjects.add(this.marker);
+
+        // Получение адреса по координатам
+        ymaps.geocode(coords).then((res: any) => {
+          this.zone.run(() => {
+            this.address = res.geoObjects.get(0).getAddressLine();
+          });
+        });
+      });
+    });
+
+    this.getConfigs();
+    }
 
   getConfigs() {
     this.http.get<Configuration>("api/car-wash/configuration").subscribe(
@@ -83,17 +132,40 @@ export class CompanyInformationComponent implements OnInit {
         this.address = data.address;
         this.openTime = data.openTime;
         this.closeTime = data.closeTime;
-        console.log(this.data);
+        this.longitude = data.longitude;
+        this.latitude = data.latitude;
+        this.managementProcessOrders = data.managementProcessOrders;
+        this.photos = data.photoUrls;
+        console.log(data);
+        if (this.longitude && this.latitude) {
+          const coordinates = [parseFloat(this.latitude), parseFloat(this.longitude)];
+
+          if (this.marker) {
+            this.marker.geometry.setCoordinates(coordinates);
+          } else {
+            this.marker = new ymaps.Placemark(coordinates, {}, {
+              preset: 'islands#icon',
+              iconColor: '#0095b6'
+            });
+            this.map.geoObjects.add(this.marker);
+          }
+
+          // Центрируем карту на координатах
+          this.map.setCenter(coordinates, 7);
+        }
       }, error => {
+        if (error.error && error.error.errorData.includes("Configuration for user")) {
+          this.snackBar.open('Необходимо зарегистрировать автомойку', 'Закрыть', {
+            duration: 3000,
+          });
+          this.router.navigate(['car-wash-reg']);
+        }
         console.log('Ошибка в конфигурации', error);
       }
     );
   }
 
-  ngOnInit(): void {
-    this.getConfigs();
-    this.loadExistingPhotos();
-    }
+  ngOnInit(): void {}
 
   onTimeStartChange(time: string) {
     this.openTime = time;
@@ -103,26 +175,15 @@ export class CompanyInformationComponent implements OnInit {
     this.closeTime = time;
   }
 
-  loadExistingPhotos(): void {
-    this.http.get<string[]>(`api/existing-photos`).subscribe(
-      (data) => {
-        this.photos = data;
-      },
-      (error) => {
-        console.error('Ошибка при загрузке существующих фотографий:', error);
-      }
-    );
-  }
-
   onFileSelected(event: any): void {
     const files = event.target.files;
     if (files && files.length) {
       for (let i = 0; i < files.length; i++) {
+        this.selectedFiles.push(files[i]);
         const reader = new FileReader();
         reader.onload = (e: any) => {
           this.photos.push(e.target.result);
         };
-        this.selectedFiles.push(files[i]);
         reader.readAsDataURL(files[i]);
       }
     }
@@ -132,35 +193,37 @@ export class CompanyInformationComponent implements OnInit {
     document.getElementById('fileInput')!.click();
   }
 
-  uploadPhotos(): void {
-    const formData = new FormData();
-    for (let file of this.selectedFiles) {
-      formData.append('files', file, file.name);
-    }
-
-    this.http.post(`api/upload`, formData).subscribe(
-      (response) => {
-        console.log('Upload success:', response);
-      },
-      (error) => {
-        console.error('Upload error:', error);
-      }
-    );
-  }
 
   onSave() {
-    const updateRequest: ConfigurationUpdateRequest = {
-      name: this.name,
-      description: this.description,
-      phoneNumber: this.phoneNumber,
-      address: this.address,
-      openTime: this.openTime,
-      closeTime: this.closeTime,
-      photos: this.selectedFiles,
-      managementProcessOrders: this.managementProcessOrders
-    };
+    const formData = new FormData();
+    formData.append('name', this.name);
+    formData.append('description', this.description);
+    formData.append('phoneNumber', this.phoneNumber);
+    formData.append('address', this.address);
+    formData.append('openTime', this.openTime);
+    formData.append('closeTime', this.closeTime);
+    formData.append('longitude', this.longitude.toString());
+    formData.append('latitude', this.latitude.toString());
+    formData.append('managementProcessOrders', JSON.stringify(this.managementProcessOrders));
+    if (this.selectedFiles && this.selectedFiles.length > 0) {
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        formData.append('photos', this.selectedFiles[i]);
+      }
+      // for (let i = 0; i < this.photos.length; i++) {
+      //   const base64Data = this.photos[i].split(',')[1]; // Извлекаем base64 строку
+      //   const byteCharacters = atob(base64Data);
+      //   const byteNumbers = new Array(byteCharacters.length);
+      //   for (let j = 0; j < byteCharacters.length; j++) {
+      //     byteNumbers[j] = byteCharacters.charCodeAt(j);
+      //   }
+      //   const byteArray = new Uint8Array(byteNumbers);
+      //   const blob = new Blob([byteArray], { type: 'image/jpeg' }); // Тип MIME изображения, может быть изменен
+      //
+      //   formData.append('photos', blob, `photo${i}.jpg`);
+      // }
+    }
 
-    this.http.put("api/car-wash/configuration", updateRequest).subscribe(
+    this.http.put("api/car-wash/configuration", formData).subscribe(
       response => {
         console.log('Данные сохранены успешно', response);
       },

@@ -5,15 +5,34 @@ import {PartnerFooterComponent} from "../../components/partner-footer/partner-fo
 import {NgForOf, NgIf} from "@angular/common";
 import {MatDialog} from "@angular/material/dialog";
 import {InvitationDTO, InvitationModalComponent} from "../../modals/invitation-modal/invitation-modal.component";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Configuration} from "../../../models/wash-config";
-import {switchMap} from "rxjs";
+import {forkJoin, switchMap} from "rxjs";
+import {User} from "../../../models/user";
 
 interface Employee {
   name: string;
   status: string;
   roles: string[];
   email: string;
+}
+
+export interface UserSettingDTO {
+  pushEnabled: boolean;
+  emailEnabled: boolean;
+}
+
+export interface UserDTO {
+  id: number;
+  name: string;
+  surname: string;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  createdAt: string;
+  roles: string[];
+  userSetting: UserSettingDTO;
+  photoUrl: string;
 }
 
 @Component({
@@ -32,11 +51,7 @@ interface Employee {
 export class EmployeesComponent {
 
   activeTab: string = 'tab1';
-  employees: Employee[] = [
-    { name: 'Иван Иванов', status: 'Активный', roles: ['Мойщик'], email: 'ivanov@example.com' },
-    { name: 'Петр Петров', status: 'Активный', roles: ['Мойщик'], email: 'petrov@example.com' },
-    { name: 'Сергей Сергеев', status: 'Активный', roles: ['Стажер'], email: 'sergeev@example.com' },
-  ];
+  employees: UserDTO[] = [];
   carWashId!: number;
   invitations: InvitationDTO[] = [];
 
@@ -44,17 +59,22 @@ export class EmployeesComponent {
     this.http.get<Configuration>("api/car-wash/configuration").pipe(
       switchMap((configuration: Configuration) => {
         this.carWashId = configuration.id;
+        const params = new HttpParams().set('carWashId', this.carWashId);
         // Выполнить второй запрос, используя ID автомойки
-        return this.http.get<InvitationDTO[]>("api/car-wash/invitation/" + this.carWashId);
+        return forkJoin({
+          invitations: this.http.get<InvitationDTO[]>("api/car-wash/invitation/" + this.carWashId),
+          employees: this.http.get<UserDTO[]>("api/car-wash/employee", {params})
+        });
       })
     ).subscribe(
-      (invitations: InvitationDTO[]) => {
+      ({ invitations, employees }) => {
         this.invitations = invitations;
-        // Дополнительные действия при успешном получении приглашений
+        this.employees = employees;
+        console.log('Invitations:', this.invitations);
+        console.log('Workers:', this.employees);
       },
       error => {
         console.error('Ошибка при получении приглашений', error);
-        // Дополнительные действия при ошибке получении приглашений
       }
     );
   }

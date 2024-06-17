@@ -8,6 +8,7 @@
   padding: 40px;
   border: 1px solid #B5B8C3;
   flex-direction: column;
+  min-height: 800px;
 }
 
 .boxes-container {
@@ -101,12 +102,14 @@
 
 .box {
   border: none;
-  padding: 17px 22px;
+  padding: 8px 22px;
   background-color: #E7EDFE;
   border-radius: 10px;
   margin-bottom: 8px;
   max-width: 550px;
   align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
 
 .service:last-child {

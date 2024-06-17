@@ -11,9 +11,14 @@ export interface Configuration {
   description: string;
   phoneNumber: string;
   address: string;
+  longitude: string;
+  latitude: string;
   openTime: string;
   closeTime: string;
   services: WashService[];
   boxes: Box[];
   createdAt: string;
+  managementProcessOrders: boolean;
+  photoUrls: string[];
+  selfService: boolean;
 }

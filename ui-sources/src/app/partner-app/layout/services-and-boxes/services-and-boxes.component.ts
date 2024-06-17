@@ -4,10 +4,28 @@ import {PartnerFooterComponent} from "../../components/partner-footer/partner-fo
 import {WashService} from "../../../models/wash-service";
 import {NgForOf, NgIf} from "@angular/common";
 import {Box} from "../../../models/wash-box";
-import {InvitationModalComponent} from "../../modals/invitation-modal/invitation-modal.component";
+import {InvitationDTO, InvitationModalComponent} from "../../modals/invitation-modal/invitation-modal.component";
 import {MatDialog} from "@angular/material/dialog";
 import {AddServiceModalComponent} from "../../modals/add-service-modal/add-service-modal.component";
 import {AddBoxModalComponent} from "../../modals/add-box-modal/add-box-modal.component";
+import {HttpClient} from "@angular/common/http";
+import {Configuration} from "../../../models/wash-config";
+import {forkJoin, switchMap} from "rxjs";
+import {FormsModule} from "@angular/forms";
+
+export interface ExtendedWashService extends WashService {
+  isEditing: boolean;
+}
+
+export interface dataForBoxModal {
+  box: Box | null,
+  carWashId: number | null;
+}
+
+export interface dataForServiceModal {
+  service: WashService | null;
+  carWashId: number | null;
+}
 
 @Component({
   selector: 'app-services-and-boxes',
@@ -16,7 +34,8 @@ import {AddBoxModalComponent} from "../../modals/add-box-modal/add-box-modal.com
     PartnerHeaderComponent,
     PartnerFooterComponent,
     NgForOf,
-    NgIf
+    NgIf,
+    FormsModule
   ],
   templateUrl: './services-and-boxes.component.html',
   styleUrl: './services-and-boxes.component.css'
@@ -24,20 +43,62 @@ import {AddBoxModalComponent} from "../../modals/add-box-modal/add-box-modal.com
 export class ServicesAndBoxesComponent {
 
   activeTab: string = 'tab1';
-  services: WashService[] = [
-    { id: 1, name: 'Услуга 1', duration: 30, price: 500 },
-    { id: 2, name: 'Услуга 2', duration: 60, price: 1000 },
-    { id: 3, name: 'Услуга 3', duration: 90, price: 1500 },
-    { id: 4, name: 'Услуга 4', duration: 120, price: 2000 },
-    { id: 5, name: 'Услуга 5', duration: 150, price: 2500 }
-  ];
-  boxes: Box[] = [
-    {id: 1, name: 'Бокс 1', carWashId: 1},
-    {id: 2, name: 'Бокс 2', carWashId: 1},
-    {id: 3, name: 'Бокс 3', carWashId: 1}
-  ];
+  services: ExtendedWashService[] = [];
+  boxes: Box[] = [];
+  carWashId!: number;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private http: HttpClient) {
+    this.http.get<Configuration>("api/car-wash/configuration").pipe(
+      switchMap((configuration: Configuration) => {
+        this.carWashId = configuration.id;
+        // Выполняем второй и третий запросы параллельно с использованием forkJoin
+        return forkJoin({
+          services: this.http.get<WashService[]>("api/service/" + this.carWashId),
+          boxes: this.http.get<Box[]>("api/car-wash/box/" + this.carWashId)
+        });
+      })
+    ).subscribe(
+      ({ services, boxes }) => {
+        this.services = services.map(service => ({
+          ...service,
+          isEditing: false
+        }));
+        this.boxes = boxes;
+        console.log('Services:', this.services);
+        console.log('Boxes:', this.boxes);
+      },
+      error => {
+        console.error('Ошибка при получении данных автомойки', error);
+        // Дополнительные действия при ошибке получении данных
+      }
+    );
+  }
+
+  startEditing(service: ExtendedWashService) {
+    service.isEditing = true;
+  }
+
+  deleteService(id: number) {
+    this.http.delete("api/service/" + id).subscribe();
+    window.location.reload();
+  }
+
+  deleteBox(boxId: number) {
+    this.http.delete("api/car-wash/box/" + boxId).subscribe();
+    window.location.reload();
+  }
+
+  saveService(service: ExtendedWashService) {
+    this.http.put(`/api/service/${service.id}`, service).subscribe(
+      response => {
+        service.isEditing = false;
+        // Обработка ответа если необходимо
+      },
+      error => {
+        console.error('Ошибка при сохранении услуги', error);
+      }
+    );
+  }
 
   setActiveTab(tab: string) {
     this.activeTab = tab;
@@ -51,33 +112,61 @@ export class ServicesAndBoxesComponent {
     return this.boxes.length;
   }
 
-  openDialogService(): void {
+  openDialogService(data: dataForServiceModal): void {
     const dialogRef = this.dialog.open(AddServiceModalComponent, {
-      panelClass: 'invitation-modal'
+      panelClass: 'invitation-modal',
+      data: data
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Модальное окно закрыто');
-      // Логика после закрытия модального окна, если необходимо
+      if (result) {
+        window.location.reload();
+      }
     });
   }
 
-  openDialogBox(): void {
+  openDialogBox(data: dataForBoxModal): void {
     const dialogRef = this.dialog.open(AddBoxModalComponent, {
-      panelClass: 'invitation-modal'
+      panelClass: 'invitation-modal',
+      data: data
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Модальное окно закрыто');
-      // Логика после закрытия модального окна, если необходимо
+      window.location.reload();
     });
+  }
+
+  onEditBox(box: Box): void {
+    const data: dataForBoxModal = {
+      box: box,
+      carWashId: null
+    }
+
+    this.openDialogBox(data);
+  }
+
+  onEditService(service: WashService) {
+    const data: dataForServiceModal = {
+      service: service,
+      carWashId: null
+    }
+
+    this.openDialogService(data);
   }
 
   onAddButtonClick() {
     if (this.activeTab === 'tab1') {
-      this.openDialogService();
+      const data: dataForServiceModal = {
+        service: null,
+        carWashId: this.carWashId
+      }
+      this.openDialogService(data);
     } else if (this.activeTab === 'tab2') {
-      this.openDialogBox();
+      const data: dataForBoxModal = {
+        box: null,
+        carWashId: this.carWashId
+      }
+      this.openDialogBox(data);
     }
   }
 }

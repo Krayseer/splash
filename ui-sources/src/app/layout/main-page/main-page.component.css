@@ -2,6 +2,7 @@
   max-width: 1200px;
   display: flex;
   margin: 40px auto 72px auto;
+  box-sizing: border-box;
 }
 
 .reclama {
@@ -12,6 +13,7 @@
   width: 100%;
   max-width: 1200px;
   margin: 40px auto 72px auto;
+  box-sizing: border-box;
 }
 
 .reclama-left-side {
@@ -54,6 +56,7 @@
   margin: 0 auto 72px auto;
   padding: 33px 40px;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .about-us-recomendations {
@@ -89,4 +92,15 @@
   border: 2px solid #134EF2;
   padding: 16px 59px;
   border-radius: 10px;
+}
+
+.partner-button {
+  background-color: #134EF2;
+  max-width: 360px;
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 16px 101px;
+  border-radius: 10px;
+  border: none;
 }

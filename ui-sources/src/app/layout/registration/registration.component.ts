@@ -47,7 +47,7 @@ export class RegistrationComponent {
       this.user = userData;
 
       // Отправляем запрос на сервер с данными пользователя
-      this.http.post('api/user', userData).subscribe(
+      this.http.post('api/auth-server/user', userData).subscribe(
         (response: any) => {
           if (response == null) {
             this.snackBar.open('Пользователь с такими данными уже существует', 'Закрыть', {

@@ -54,3 +54,34 @@
   flex-direction: column;
   margin-right: 20px;
 }
+
+.order-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  margin-right: 17px;
+}
+
+.order-username {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.order-phonenumber {
+  font-size: 16px;
+  line-height: 24px;
+  color: #666B7A;
+}
+
+.order-time {
+  font-size: 18px;
+  line-height: 24px;
+  color: #3A3D45;
+}
+
+.order-price {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+}

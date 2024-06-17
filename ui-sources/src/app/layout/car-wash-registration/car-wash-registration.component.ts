@@ -3,7 +3,7 @@ import {FormsModule, NgForm} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {NgClass, NgIf} from "@angular/common";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 
 export interface ConfigurationRegisterRequest {
   tin: string;
@@ -17,7 +17,8 @@ export interface ConfigurationRegisterRequest {
   imports: [
     FormsModule,
     NgClass,
-    NgIf
+    NgIf,
+    RouterLink
   ],
   templateUrl: './car-wash-registration.component.html',
   styleUrl: './car-wash-registration.component.css'

@@ -7,6 +7,8 @@
       </svg>
     </div>
   </div>
-  <input placeholder="Название" type="text" style="margin-bottom: 56px" class="Inter box-input">
-  <button class="Inter add-button">Сохранить</button>
+  <form (ngSubmit)="submit()" style="width: 100%">
+    <input [(ngModel)]="name" name="name" placeholder="Название" type="text" style="margin-bottom: 64px; width: 100%; box-sizing: border-box;" class="Inter box-input" required>
+    <button type="submit" class="Inter add-button" style="display: block; margin: 0 auto;">{{ box ? 'Изменить' : 'Сохранить' }}</button>
+  </form>
 </div>

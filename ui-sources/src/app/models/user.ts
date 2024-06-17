@@ -6,8 +6,10 @@ export class User {
   email: string;
   phoneNumber: string;
   createdAt: Date;
+  photoUrl: string;
 
-  constructor(id: number, name: string, surname: string, username: string, email: string, phoneNumber: string, createdAt: Date) {
+  constructor(id: number, name: string, surname: string, username: string,
+              email: string, phoneNumber: string, createdAt: Date, photoUrl: string) {
     this.id = id;
     this.name = name;
     this.surname = surname;
@@ -15,5 +17,6 @@ export class User {
     this.email = email;
     this.phoneNumber = phoneNumber;
     this.createdAt = createdAt;
+    this.photoUrl = photoUrl;
   }
 }

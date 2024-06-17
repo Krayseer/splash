@@ -28,8 +28,18 @@
     />
     <h3 class="Inter company-descr">Описание</h3>
     <textarea [(ngModel)]="description" placeholder="Введите текст" class="Inter company-descr-text"></textarea>
+    <div style="display: flex; align-items: baseline; margin-bottom: 40px;">
+      <input [(ngModel)]="managementProcessOrders" type="checkbox" style="width: 20px; height: 20px;">
+      <label class="Inter" style="font-size: 20px; font-weight: 600;">Обработка заказов менеджером</label>
+    </div>
+    <div #mapContainer id="map" style="width: 100%; height: 500px; margin-bottom: 40px;"></div>
+    <div style="display:flex; align-items: baseline; margin-bottom: 8px;">
+      <h3 class="Inter company-name" style="margin-right: 5px; margin-bottom: 0;">Адрес</h3>
+      <label style="font-size: 14px; color: #989CA9; font-weight: 400;">Определяется исходя из точки на карте</label>
+    </div>
+    <textarea style="max-width: 550px; min-height: 100px;" [(ngModel)]="address" class="Inter company-name-input" placeholder="Адрес" readonly></textarea>
     <div class="button-container" style="margin-bottom: 16px;">
-      <button class="Inter upload-photo" (click)="triggerFileInput()">Загрузить</button>
+      <button class="Inter upload-photo" (click)="triggerFileInput()">Загрузить фото</button>
       <input type="file" id="fileInput" (change)="onFileSelected($event)" multiple style="display: none;">
     </div>
     <div class="photo-list">

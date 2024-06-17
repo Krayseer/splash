@@ -1,20 +1,24 @@
 <div class="container">
   <div class="header-logo">
     <a>
-      <img src="assets/images/logo.svg" alt="LogoPartner"/>
+      <img src="assets/images/logo.svg" alt="LogoPartner" style="cursor:pointer;" [routerLink]="['/main']"/>
     </a>
   </div>
   <div class="registration-container">
     <h1 class="Inter registration-title">Регистрация мойки</h1>
     <form class="form" #registrationForm="ngForm" (ngSubmit)="onSubmit(registrationForm)">
       <div class="input-div" [ngClass]="{'has-error': tin.invalid && (tin.dirty || tin.touched)}">
-        <input placeholder="ИНН" class="input" type="text" id="INN" name="tin" ngModel #tin="ngModel" required>
+        <input placeholder="ИНН" class="input" type="text" id="INN" name="tin" ngModel #tin="ngModel" required pattern="[0-9]*" [minlength]="12" [maxlength]="12">
         <div *ngIf="tin.invalid && (tin.dirty || tin.touched)" class="error-tooltip">
-          ИНН обязателен
+          Невалидный ИНН
         </div>
       </div>
       <div class="input-div" [ngClass]="{'has-error': typeOrganization.invalid && (typeOrganization.dirty || typeOrganization.touched)}">
-        <input placeholder="Тип организации" class="input" type="text" id="typeOrganization" name="typeOrganization" ngModel #typeOrganization="ngModel" required>
+        <select class="input" id="typeOrganization" name="typeOrganization" ngModel #typeOrganization="ngModel" required>
+          <option value="" disabled selected style="color: #B5B8C3;">Выберите тип организации</option>
+          <option value="IP">ИП</option>
+          <option value="OOO">ООО</option>
+        </select>
         <div *ngIf="typeOrganization.invalid && (typeOrganization.dirty || typeOrganization.touched)" class="error-tooltip">
           Тип организации обязателен
         </div>
@@ -25,7 +29,7 @@
           Введите правильный email
         </div>
       </div>
-      <button type="submit" class="submit-button">Зарегистрировать</button>
+      <button type="submit" class="submit-button" [disabled]="registrationForm.invalid">Зарегистрировать</button>
     </form>
 
   </div>
