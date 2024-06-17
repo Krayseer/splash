@@ -1,10 +1,7 @@
 package ru.anykeyers.authorizationserver.domain.user;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Настройки пользователя
@@ -12,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserSetting {

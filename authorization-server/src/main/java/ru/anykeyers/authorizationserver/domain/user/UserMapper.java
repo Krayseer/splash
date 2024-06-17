@@ -25,7 +25,6 @@ public class UserMapper {
                 .email(userRequest.getEmail())
                 .phoneNumber(userRequest.getPhoneNumber())
                 .photoUrl(null)
-                .userSetting(new UserSetting())
                 .createdAt(Instant.now())
                 .build();
     }

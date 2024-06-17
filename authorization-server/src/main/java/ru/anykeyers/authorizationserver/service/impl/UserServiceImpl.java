@@ -70,6 +70,8 @@ public class UserServiceImpl implements UserService {
         List<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findByRoleCode("ROLE_USER"));
         user.setRoleList(roles);
+        UserSetting userSetting = UserSetting.builder().user(user).build();
+        user.setUserSetting(userSetting);
         userRepository.save(user);
     }
 
