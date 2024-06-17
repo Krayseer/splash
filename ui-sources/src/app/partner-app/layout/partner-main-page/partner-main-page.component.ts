@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PartnerHeaderComponent} from "../../components/partner-header/partner-header.component";
 import {PartnerFooterComponent} from "../../components/partner-footer/partner-footer.component";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {catchError, switchMap, throwError} from "rxjs";
 
@@ -11,7 +11,8 @@ import {catchError, switchMap, throwError} from "rxjs";
   standalone: true,
   imports: [
     PartnerHeaderComponent,
-    PartnerFooterComponent
+    PartnerFooterComponent,
+    RouterLink
   ],
   templateUrl: './partner-main-page.component.html',
   styleUrl: './partner-main-page.component.css'
