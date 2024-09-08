@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: business-order-service
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${BUSINESS_ORDER_SERVICE_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST}:${KAFKA_PORT}
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}
+          jwk-set-uri: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}/oauth2/jwks
+
+springdoc:
+  api-docs:
+    path: /business-order/v3/api-docs
+  swagger-ui:
+    path: /business-order/swagger-ui.html
+
+remote-provider:
+  configuration-service-url: http://${CONFIGURATION_SERVICE_HOST}:${CONFIGURATION_SERVICE_PORT}
+  user-service-url: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}
+  service-of-services-url: http://${SERVICE_OF_SERVICES_HOST}:${SERVICE_OF_SERVICES_PORT}
+  storage-service-url: http://${STORAGE_SERVICE_HOST}:${STORAGE_SERVICE_PORT}
+  order-service-url: http://${ORDER_SERVICE_HOST}:${ORDER_SERVICE_PORT}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${REGISTRY_SERVICE_HOST}:${REGISTRY_SERVICE_PORT}/eureka
+
+server:
+  port: ${BUSINESS_ORDER_SERVICE_PORT}

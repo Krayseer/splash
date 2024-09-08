@@ -1,0 +1,102 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://192.168.24.188:8080/realms/splash/protocol/openid-connect/certs
+      client:
+        provider:
+          keycloak:
+            user-name-attribute: preferred_username
+            issuer-uri: http://192.168.24.188:8080/realms/splash
+        registration:
+          spring-with-test-scope:
+            provider: keycloak
+            client-id: splash-client
+            client-secret: 5C8ouTg025KJaT1rMoSHc5C3MMcQ8mzw
+            authorization-grant-type: authorization_code
+            scope: openid
+
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay=
+      routes:
+        - id: order-service
+          uri: http://localhost:8051
+          predicates:
+            Path=/order/**
+
+#        - id: authorization-server
+#          uri: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}
+#          predicates:
+#            - Path=/auth-server/**
+
+#
+#        - id: configuration-service
+#          uri: http://${CONFIGURATION_SERVICE_HOST}:${CONFIGURATION_SERVICE_PORT}
+#          predicates:
+#            Path=/car-wash/**
+#          filters:
+#            - TokenRelay
+#
+#        - id: service-of-services
+#          uri: http://${SERVICE_OF_SERVICES_HOST}:${SERVICE_OF_SERVICES_PORT}
+#          predicates:
+#            Path=/service/**
+#
+#        - id: business-order-service
+#          uri: http://${BUSINESS_ORDER_SERVICE_HOST}:${BUSINESS_ORDER_SERVICE_PORT}
+#          predicates:
+#            Path=/business-order/**
+#          filters:
+#            - TokenRelay
+#
+#        - id: statistics-service
+#          uri: http://${STATISTICS_HOST}:${STATISTICS_PORT}
+#          predicates:
+#            Path=/statistics/**
+#          filters:
+#            - TokenRelay
+#
+#        - id: notification-service
+#          uri: http://${NOTIFICATION_SERVICE_HOST}:${NOTIFICATION_SERVICE_PORT}
+#          predicates:
+#            Path=/notification/**
+#          filters:
+#            - TokenRelay
+
+#  session:
+#    redis:
+#      flush-mode: on_save
+#      namespace: gateway:session
+
+#  data:
+#    redis:
+#      host: ${REDIS_HOST}
+#      port: ${REDIS_PORT}
+
+#springdoc:
+#  api-docs:
+#    enabled: true
+#  swagger-ui:
+#    enabled: true
+#    path: /swagger-ui.html
+#    operationsSorter: method
+#    config-url: /v3/api-docs/swagger-config
+#    urls:
+#      - url: /order/v3/api-docs
+#        name: Order service
+#      - url: /car-wash/v3/api-docs
+#        name: Car wash service
+#      - url: /business-order/v3/api-docs
+#        name: Business order service
+#      - url: /statistics/v3/api-docs
+#        name: Statistics
+#      - url: /notification/v3/api-docs
+#        name: Notification service
+#      - url: /service/v3/api-docs
+#        name: Service of services
+
+server:
+  port: 8070
