@@ -35,21 +35,6 @@ public class SecurityConfig {
                 .filter(new ServletBearerExchangeFilterFunction())
                 .build();
     }
-//        return http
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .cors(AbstractHttpConfigurer::disable)
-//                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-//                .build();
-
-//    @Bean
-//    public JwtAuthenticationConverter jwtAuthenticationConverter() {
-//        JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-//        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("authorities");
-//        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
-//        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-//        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
-//        return jwtAuthenticationConverter;
-//    }
 
 }
 

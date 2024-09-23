@@ -7,10 +7,11 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
 @Slf4j
+@Component
 public class AmazonConfigurator {
 
     public AmazonS3 createAmazonS3Client(String accessKeyId, String secretAccessKey) {
@@ -32,3 +33,4 @@ public class AmazonConfigurator {
     }
 
 }
+

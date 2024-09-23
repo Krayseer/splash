@@ -39,7 +39,9 @@ public class YandexPhotoService implements PhotoService {
     @SneakyThrows
     public String upload(MultipartFile photo) {
         String bucketName = storageConfig.getBucketName();
-        AmazonS3 s3Client = amazonConfigurator.createAmazonS3Client(storageConfig.getAccessKeyId(), storageConfig.getSecretAccessKey());
+        AmazonS3 s3Client = amazonConfigurator.createAmazonS3Client(
+                storageConfig.getAccessKeyId(), storageConfig.getSecretAccessKey()
+        );
         String photoName = generateUniqueName();
         byte[] photoBytes = photo.getBytes();
         ByteArrayInputStream photoInputStream = new ByteArrayInputStream(photoBytes);

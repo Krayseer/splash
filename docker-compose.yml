@@ -55,7 +55,7 @@ services:
     image: 'krayseer/registry-service:${APPLICATION_VERSION}'
     container_name: registry-service
     ports:
-      - '${REGISTRY_SERVICE_PORT}:${REGISTRY_SERVICE_PORT}'
+      - '${DISCOVERY_HOST}:${DISCOVERY_PORT}'
 
   service-of-services:
     build:

@@ -57,10 +57,5 @@ remote-provider:
   service-of-services-url: http://${SERVICE_OF_SERVICES_HOST}:${SERVICE_OF_SERVICES_PORT}
   storage-service-url: http://${STORAGE_SERVICE_HOST}:${STORAGE_SERVICE_PORT}
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://${REGISTRY_SERVICE_HOST}:${REGISTRY_SERVICE_PORT}/eureka
-
 server:
   port: ${NOTIFICATION_SERVICE_PORT}

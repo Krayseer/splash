@@ -2,7 +2,7 @@ package ru.anykeyers.orderservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.DateUtils;
+import ru.anykeyers.commonsapi.utils.DateUtils;
 import ru.anykeyers.commonsapi.domain.configuration.BoxDTO;
 import ru.anykeyers.commonsapi.domain.configuration.ConfigurationDTO;
 import ru.anykeyers.orderservice.domain.exception.BoxFreeNotFoundException;

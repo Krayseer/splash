@@ -1,6 +1,7 @@
 eureka:
   instance:
-    hostname: ${REGISTRY_SERVICE_HOST}
+    hostname: ${DISCOVERY_HOST}
+
   client:
     register-with-eureka: false
     fetch-registry: false
@@ -8,4 +9,4 @@ eureka:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 server:
-  port: ${REGISTRY_SERVICE_PORT}
+  port: ${DISCOVERY_PORT}

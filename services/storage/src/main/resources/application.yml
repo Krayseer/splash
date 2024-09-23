@@ -7,10 +7,5 @@ spring:
   application:
     name: storage-service
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://${REGISTRY_SERVICE_HOST}:${REGISTRY_SERVICE_PORT}/eureka
-
 server:
   port: ${STORAGE_SERVICE_PORT}

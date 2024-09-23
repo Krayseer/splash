@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import ru.anykeyers.commonsapi.utils.JwtUtils;
 import ru.anykeyers.notificationservice.domain.PushNotificationDTO;
 import ru.anykeyers.notificationservice.service.impl.PushNotificationService;
 
@@ -22,7 +23,7 @@ public class PushNotificationController {
     @Operation(summary = "Получить все уведомления авторизованного пользователя")
     @GetMapping
     public List<PushNotificationDTO> getNotifications(@AuthenticationPrincipal Jwt jwt) {
-        return pushNotificationService.getNotifications(jwt.getSubject());
+        return pushNotificationService.getNotifications(JwtUtils.extractUser(jwt));
     }
 
     @Operation(summary = "Удалить push уведомление")

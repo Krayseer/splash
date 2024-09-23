@@ -34,11 +34,6 @@ springdoc:
   swagger-ui:
     path: /statistics/swagger-ui.html
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://${REGISTRY_SERVICE_HOST}:${REGISTRY_SERVICE_PORT}/eureka
-
 remote-configuration:
   configuration-service-url: http://${CONFIGURATION_SERVICE_HOST}:${CONFIGURATION_SERVICE_PORT}
   user-service-url: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}

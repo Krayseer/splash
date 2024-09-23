@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.anykeyers.businessorderservice.repository.BusinessOrderRepository;
 import ru.anykeyers.businessorderservice.domain.BusinessOrder;
-import ru.anykeyers.commonsapi.DateUtils;
+import ru.anykeyers.commonsapi.utils.DateUtils;
 import ru.anykeyers.commonsapi.MessageQueue;
 import ru.anykeyers.commonsapi.domain.order.OrderDTO;
 import ru.anykeyers.commonsapi.domain.user.UserDTO;

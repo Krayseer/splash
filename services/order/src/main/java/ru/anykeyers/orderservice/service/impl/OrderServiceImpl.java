@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.MessageQueue;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.remote.RemoteUserService;
 import ru.anykeyers.commonsapi.domain.order.OrderState;
 import ru.anykeyers.commonsapi.remote.RemoteServicesService;
@@ -87,10 +88,11 @@ public class OrderServiceImpl implements OrderService {
     public int getOrdersCount(Long carWashId, OrderState orderState) {
         return orderRepository.countByCarWashIdAndState(carWashId, orderState);
     }
+
     @Override
-    public List<Order> getActiveOrders(String username) {
+    public List<Order> getActiveOrders(User user) {
         List<OrderState> activeOrderStates = List.of(OrderState.WAIT_CONFIRM, OrderState.WAIT_PROCESS, OrderState.PROCESSING);
-        return orderRepository.findByUsernameAndStateIn(username, activeOrderStates);
+        return orderRepository.findByUsernameAndStateIn(user.getUsername(), activeOrderStates);
     }
 
     @Override

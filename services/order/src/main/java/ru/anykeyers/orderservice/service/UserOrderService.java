@@ -1,5 +1,6 @@
 package ru.anykeyers.orderservice.service;
 
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.orderservice.domain.Order;
 import ru.anykeyers.orderservice.domain.OrderRequest;
 
@@ -13,9 +14,9 @@ public interface UserOrderService {
     /**
      * Получить список активных заказов
      *
-     * @param username имя пользователя
+     * @param user пользователь
      */
-    List<Order> getActiveOrders(String username);
+    List<Order> getActiveOrders(User user);
 
     /**
      * Получить список завершенных заказов

@@ -7,7 +7,7 @@ import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.domain.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.domain.user.UserSettingDTO;
 import ru.anykeyers.notificationservice.domain.Notification;
 import ru.anykeyers.notificationservice.service.NotificationService;
@@ -23,10 +23,10 @@ public class SmtpEmailService implements NotificationService {
     private final JavaMailSender emailSender;
 
     @Value("${spring.mail.username}")
-    private String sender;
+    private final String sender;
 
     @Override
-    public void sendNotification(UserDTO user, Notification notification) {
+    public void sendNotification(User user, Notification notification) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(sender);
         message.setTo(user.getEmail());
@@ -44,4 +44,5 @@ public class SmtpEmailService implements NotificationService {
     public boolean supports(UserSettingDTO userSetting) {
         return userSetting.emailEnabled();
     }
+
 }

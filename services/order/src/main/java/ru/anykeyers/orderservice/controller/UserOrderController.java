@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+import ru.anykeyers.commonsapi.utils.JwtUtils;
 import ru.anykeyers.orderservice.domain.Order;
 import ru.anykeyers.orderservice.domain.OrderMapper;
 import ru.anykeyers.orderservice.domain.OrderRequest;
@@ -41,7 +42,7 @@ public class UserOrderController {
     })
     @GetMapping("/active")
     public List<OrderDTO> getActiveOrders(@AuthenticationPrincipal Jwt jwt) {
-        return orderMapper.toDTO(orderService.getActiveOrders(jwt.getSubject()));
+        return orderMapper.toDTO(orderService.getActiveOrders(JwtUtils.extractUser(jwt)));
     }
 
     @Operation(summary = "Получить все завершенные заказы пользователя")

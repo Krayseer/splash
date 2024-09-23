@@ -3,6 +3,7 @@ package ru.anykeyers.notificationservice.service;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.domain.user.UserDTO;
 import ru.anykeyers.commonsapi.domain.user.UserSettingDTO;
 import ru.anykeyers.notificationservice.domain.Notification;
@@ -29,7 +30,7 @@ public class NotificationServiceCompound {
      * @param user          пользователь
      * @param notification  уведомление
      */
-    public void sendNotification(UserDTO user, Notification notification) {
+    public void sendNotification(User user, Notification notification) {
         for (NotificationService service : getNotificationServices(user.getUserSetting())) {
             threadPool.execute(() -> service.sendNotification(user, notification));
         }

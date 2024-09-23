@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.domain.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.domain.user.UserSettingDTO;
 import ru.anykeyers.notificationservice.domain.Notification;
 import ru.anykeyers.notificationservice.repository.NotificationRepository;
@@ -30,16 +30,16 @@ public class PushNotificationService implements NotificationService {
     /**
      * Получить список push-уведомлений
      *
-     * @param username имя пользователя
+     * @param user пользователь
      */
-    public List<PushNotificationDTO> getNotifications(String username) {
-        return notificationRepository.findByUsername(username).stream()
+    public List<PushNotificationDTO> getNotifications(User user) {
+        return notificationRepository.findByUsername(user.getUsername()).stream()
                 .map(notification -> modelMapper.map(notification, PushNotificationDTO.class))
                 .toList();
     }
 
     @Override
-    public void sendNotification(UserDTO user, Notification notification) {
+    public void sendNotification(User user, Notification notification) {
         PushNotification pushNotification = PushNotification.builder()
                 .username(user.getUsername())
                 .subject(notification.getSubject())

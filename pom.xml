@@ -51,7 +51,7 @@
     <module>services/configuration</module>
     <module>services/config-server</module>
     <module>services/business-order</module>
-    <module>services/authorization-server</module>
+    <module>services/user</module>
   </modules>
 
   <dependencyManagement>

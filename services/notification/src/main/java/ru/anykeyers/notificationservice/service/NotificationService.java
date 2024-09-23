@@ -1,5 +1,6 @@
 package ru.anykeyers.notificationservice.service;
 
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.domain.user.UserDTO;
 import ru.anykeyers.commonsapi.domain.user.UserSettingDTO;
 import ru.anykeyers.notificationservice.domain.Notification;
@@ -15,7 +16,7 @@ public interface NotificationService {
      * @param user          пользователь, которому нужно отправить уведомление
      * @param notification  уведомление
      */
-    void sendNotification(UserDTO user, Notification notification);
+    void sendNotification(User user, Notification notification);
 
     /**
      * Поддерживается ли отправка уведомлений

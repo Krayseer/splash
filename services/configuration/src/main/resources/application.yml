@@ -27,11 +27,6 @@ springdoc:
   swagger-ui:
     path: /car-wash/swagger-ui.html
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://${REGISTRY_SERVICE_HOST}:${REGISTRY_SERVICE_PORT}/eureka
-
 server:
   port: ${CONFIGURATION_SERVICE_PORT}
 
