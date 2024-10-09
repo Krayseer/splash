@@ -58,14 +58,12 @@ public class Order {
     /**
      * Время начала заказа
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    private Instant startTime;
+    private long startTime;
 
     /**
      * Время окончания заказа
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    private Instant endTime;
+    private long endTime;
 
     /**
      * Тип оплаты

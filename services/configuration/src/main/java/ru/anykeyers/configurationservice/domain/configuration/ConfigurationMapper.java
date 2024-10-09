@@ -7,7 +7,10 @@ import ru.anykeyers.commonsapi.domain.service.ServiceDTO;
 import ru.anykeyers.commonsapi.domain.configuration.ConfigurationSimpleDTO;
 import ru.anykeyers.commonsapi.remote.RemoteServicesService;
 import ru.anykeyers.commonsapi.remote.RemoteUserService;
+import ru.anykeyers.configurationservice.domain.Configuration;
 import ru.anykeyers.configurationservice.domain.box.BoxMapper;
+import ru.anykeyers.configurationservice.web.dto.ConfigurationInfoDTO;
+import ru.anykeyers.configurationservice.web.dto.ConfigurationRegisterRequest;
 
 import java.time.Instant;
 import java.util.List;

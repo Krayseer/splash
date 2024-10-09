@@ -1,27 +1,21 @@
 package ru.anykeyers.commonsapi.remote;
 
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import ru.anykeyers.commonsapi.remote.provider.RemoteStorageProvider;
 
 /**
  * Удаленный сервис хранилища
  */
 @Service
+@RequiredArgsConstructor
 public class RemoteStorageService {
 
-    private final String URL;
-
-    private final RestTemplate restTemplate;
-
-    public RemoteStorageService(RestTemplate restTemplate,
-                                RemoteProvider remoteProvider) {
-        this.restTemplate = restTemplate;
-        this.URL = remoteProvider.getStorageServiceUrl() + "/storage/";
-    }
+    private final RemoteStorageProvider remoteStorageProvider;
 
     /**
      * Загрузить фото в хранилище
@@ -35,8 +29,8 @@ public class RemoteStorageService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<byte[]> requestEntity = new HttpEntity<>(photo.getBytes(), headers);
         try {
-            ResponseEntity<String> response = restTemplate.exchange(
-                    URL + "photo", HttpMethod.POST, requestEntity, new ParameterizedTypeReference<>() {}
+            ResponseEntity<String> response = remoteStorageProvider.getRestTemplate().exchange(
+                    remoteStorageProvider.getBaseUrl() + "/photo", HttpMethod.POST, requestEntity, new ParameterizedTypeReference<>() {}
             );
             if (response.getStatusCode().is2xxSuccessful()) {
                 return response;

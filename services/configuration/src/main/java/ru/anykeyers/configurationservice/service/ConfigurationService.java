@@ -1,10 +1,8 @@
 package ru.anykeyers.configurationservice.service;
 
-import ru.anykeyers.commonsapi.domain.configuration.ConfigurationDTO;
-import ru.anykeyers.configurationservice.domain.configuration.Configuration;
-import ru.anykeyers.configurationservice.domain.configuration.ConfigurationInfoDTO;
-import ru.anykeyers.configurationservice.domain.configuration.ConfigurationRegisterRequest;
-import ru.anykeyers.configurationservice.domain.configuration.ConfigurationUpdateRequest;
+import ru.anykeyers.configurationservice.domain.Configuration;
+import ru.anykeyers.configurationservice.web.dto.ConfigurationRegisterRequest;
+import ru.anykeyers.configurationservice.web.dto.ConfigurationUpdateRequest;
 
 import java.util.List;
 

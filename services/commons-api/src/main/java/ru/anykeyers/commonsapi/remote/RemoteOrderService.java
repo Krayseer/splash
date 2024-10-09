@@ -1,10 +1,10 @@
 package ru.anykeyers.commonsapi.remote;
 
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.anykeyers.commonsapi.domain.order.OrderDTO;
+import ru.anykeyers.commonsapi.remote.provider.RemoteOrderProvider;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,16 +14,10 @@ import java.util.List;
  * Удаленный сервис обработки заказов
  */
 @Service
+@RequiredArgsConstructor
 public class RemoteOrderService {
 
-    private final String URL;
-
-    private final RestTemplate restTemplate;
-
-    public RemoteOrderService(RestTemplate restTemplate, RemoteProvider remoteProvider) {
-        this.restTemplate = restTemplate;
-        this.URL = remoteProvider.getOrderServiceUrl() + "/order/";
-    }
+    private final RemoteOrderProvider remoteProvider;
 
     /**
      * Получить список заказов
@@ -33,12 +27,12 @@ public class RemoteOrderService {
      */
     public List<OrderDTO> getOrders(Long carWashId, String date) {
         String url = UriComponentsBuilder
-                .fromHttpUrl(URL + "car-wash/by-date")
+                .fromHttpUrl(remoteProvider.getBaseUrl() + "/by-date")
                 .queryParam("carWashId", carWashId)
                 .queryParam("date", date)
                 .encode()
                 .toUriString();
-        OrderDTO[] orders = restTemplate.getForObject(url, OrderDTO[].class);
+        OrderDTO[] orders = remoteProvider.getRestTemplate().getForObject(url, OrderDTO[].class);
         return orders == null ? Collections.emptyList() : Arrays.stream(orders).toList();
     }
 
@@ -53,11 +47,11 @@ public class RemoteOrderService {
      */
     public List<OrderDTO> getOrders(List<Long> orderIds) {
         String url = UriComponentsBuilder
-                .fromHttpUrl(URL + "list")
+                .fromHttpUrl(remoteProvider.getBaseUrl() + "/list")
                 .queryParam("order-ids", orderIds.toArray())
                 .encode()
                 .toUriString();
-        OrderDTO[] orders = restTemplate.getForObject(url, OrderDTO[].class);
+        OrderDTO[] orders = remoteProvider.getRestTemplate().getForObject(url, OrderDTO[].class);
         return orders == null ? Collections.emptyList() : Arrays.stream(orders).toList();
     }
 

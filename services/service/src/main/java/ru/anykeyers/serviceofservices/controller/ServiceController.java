@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(ControllerName.BASE_URL)
+@RequestMapping(ControllerName.SERVICE_URL)
 @Tag(name = "Обработка услуг")
 public class ServiceController {
 

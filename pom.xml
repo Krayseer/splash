@@ -24,23 +24,18 @@
     <swagger.version>2.5.0</swagger.version>
     <lombok.version>1.18.32</lombok.version>
     <amazon.version>1.12.429</amazon.version>
+    <keycloak.version>11.0.3</keycloak.version>
     <postgres.version>42.7.3</postgres.version>
     <modelmapper.version>3.2.1</modelmapper.version>
     <commons-api.version>1.0.0</commons-api.version>
+    <resteasy.version>3.1.3.Final</resteasy.version>
     <spring-boot.version>3.2.5</spring-boot.version>
     <spring-cloud.version>2023.0.1</spring-cloud.version>
-    <vk.oauth-starter.version>0.0.1</vk.oauth-starter.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
-    </repository>
-  </repositories>
-
   <modules>
+    <module>services/user</module>
     <module>services/order</module>
     <module>services/gateway</module>
     <module>services/service</module>
@@ -51,7 +46,6 @@
     <module>services/configuration</module>
     <module>services/config-server</module>
     <module>services/business-order</module>
-    <module>services/user</module>
   </modules>
 
   <dependencyManagement>
@@ -63,6 +57,7 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
@@ -70,58 +65,69 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>${junit.version}</version>
         <scope>test</scope>
       </dependency>
+
       <dependency>
         <groupId>org.springdoc</groupId>
         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         <version>${swagger.version}</version>
       </dependency>
+
       <dependency>
         <groupId>org.springdoc</groupId>
         <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
         <version>${swagger.version}</version>
       </dependency>
+
       <dependency>
         <groupId>org.springframework.kafka</groupId>
         <artifactId>spring-kafka</artifactId>
         <version>${kafka.version}</version>
       </dependency>
+
       <dependency>
         <groupId>org.postgresql</groupId>
         <artifactId>postgresql</artifactId>
         <version>${postgres.version}</version>
         <scope>runtime</scope>
       </dependency>
-      <dependency>
-        <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
-        <version>${mysql.version}</version>
-      </dependency>
+
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${lombok.version}</version>
       </dependency>
+
       <dependency>
         <groupId>org.modelmapper</groupId>
         <artifactId>modelmapper</artifactId>
         <version>${modelmapper.version}</version>
       </dependency>
-      <dependency>
-        <groupId>com.github.Kravuar</groupId>
-        <artifactId>vk-oauth-spring-boot-starter</artifactId>
-        <version>${vk.oauth-starter.version}</version>
-      </dependency>
+
       <dependency>
         <groupId>com.amazonaws</groupId>
         <artifactId>aws-java-sdk</artifactId>
         <version>${amazon.version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>org.keycloak</groupId>
+        <artifactId>keycloak-admin-client</artifactId>
+        <version>${keycloak.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.jboss.resteasy</groupId>
+        <artifactId>resteasy-client</artifactId>
+        <version>${resteasy.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>ru.anykeyers</groupId>
         <artifactId>commons-api</artifactId>

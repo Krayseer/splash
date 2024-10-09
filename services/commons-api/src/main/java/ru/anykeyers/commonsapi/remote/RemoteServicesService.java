@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.anykeyers.commonsapi.domain.service.ServiceDTO;
+import ru.anykeyers.commonsapi.remote.provider.RemoteProvider;
+import ru.anykeyers.commonsapi.remote.provider.RemoteServiceProvider;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -15,13 +17,10 @@ import java.util.List;
 @Service
 public class RemoteServicesService {
 
-    private final RestTemplate restTemplate;
+    private final RemoteServiceProvider remoteServiceProvider;
 
-    private final RemoteProvider remoteProvider;
-
-    public RemoteServicesService(RestTemplate restTemplate, RemoteProvider remoteProvider) {
-        this.restTemplate = restTemplate;
-        this.remoteProvider = remoteProvider;
+    public RemoteServicesService(RemoteServiceProvider remoteServiceProvider) {
+        this.remoteServiceProvider = remoteServiceProvider;
     }
 
     /**
@@ -30,7 +29,8 @@ public class RemoteServicesService {
      * @param carWashId идентификатор автомойки
      */
     public List<ServiceDTO> getServices(Long carWashId) {
-        ServiceDTO[] services = restTemplate.getForObject(getBaseUrl() + "/car-wash/" + carWashId, ServiceDTO[].class);
+        ServiceDTO[] services = remoteServiceProvider.getRestTemplate()
+                .getForObject(remoteServiceProvider.getBaseUrl() + "/car-wash/" + carWashId, ServiceDTO[].class);
         return services == null ? Collections.emptyList() : Arrays.stream(services).toList();
     }
 
@@ -41,11 +41,11 @@ public class RemoteServicesService {
      */
     public List<ServiceDTO> getServices(List<Long> serviceIds) {
         String url = UriComponentsBuilder
-                .fromHttpUrl(getBaseUrl() + "/list")
+                .fromHttpUrl(remoteServiceProvider.getBaseUrl() + "/list")
                 .queryParam("service-ids", serviceIds.toArray())
                 .encode()
                 .toUriString();
-        ServiceDTO[] services = restTemplate.getForObject(url, ServiceDTO[].class);
+        ServiceDTO[] services = remoteServiceProvider.getRestTemplate().getForObject(url, ServiceDTO[].class);
         return services == null ? Collections.emptyList() : Arrays.stream(services).toList();
     }
 
@@ -56,16 +56,12 @@ public class RemoteServicesService {
      */
     public long getServicesDuration(List<Long> serviceIds) {
         String url = UriComponentsBuilder
-                .fromHttpUrl(getBaseUrl() + "/duration")
+                .fromHttpUrl(remoteServiceProvider.getBaseUrl() + "/duration")
                 .queryParam("service-ids", serviceIds.toArray())
                 .encode()
                 .toUriString();
-        Long duration = restTemplate.getForObject(url, Long.class);
+        Long duration = remoteServiceProvider.getRestTemplate().getForObject(url, Long.class);
         return duration == null ? 0 : duration;
-    }
-
-    private String getBaseUrl() {
-        return remoteProvider.getServiceOfServicesUrl() + "/service";
     }
 
 }

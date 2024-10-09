@@ -1,29 +1,18 @@
 package ru.anykeyers.commonsapi.remote;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 import ru.anykeyers.commonsapi.domain.user.UserDTO;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import ru.anykeyers.commonsapi.remote.provider.RemoteUserProvider;
 
 /**
  * Удаленный сервис обработки пользователей
  */
 @Service
+@RequiredArgsConstructor
 public class RemoteUserService {
 
-    private final String URL;
-
-    private final RestTemplate restTemplate;
-
-    public RemoteUserService(RestTemplate restTemplate,
-                             RemoteProvider remoteProvider) {
-        this.restTemplate = restTemplate;
-        this.URL = remoteProvider.getUserServiceUrl() + "/auth-server/user";
-    }
+    private final RemoteUserProvider remoteUserProvider;
 
     /**
      * Получить информацию о пользователе
@@ -31,7 +20,8 @@ public class RemoteUserService {
      * @param username имя пользователя
      */
     public UserDTO getUser(String username) {
-        return restTemplate.getForObject(URL + "/" + username, UserDTO.class);
+        return remoteUserProvider.getRestTemplate()
+                .getForObject(remoteUserProvider.getBaseUrl() + "/" + username, UserDTO.class);
     }
 
     /**
@@ -40,23 +30,23 @@ public class RemoteUserService {
      * @param id идентификатор пользователя
      */
     public UserDTO getUser(Long id) {
-        String url = URL + "/id/" + id;
-        return restTemplate.getForObject(url, UserDTO.class);
+        return remoteUserProvider.getRestTemplate()
+                .getForObject(remoteUserProvider.getBaseUrl() + "/by-id/" + id, UserDTO.class);
     }
 
-    /**
-     * Получить информацию о пользователях
-     *
-     * @param userIds идентификаторы пользователей
-     */
-    public List<UserDTO> getUsers(List<String> usernames) {
-        String url = UriComponentsBuilder
-                .fromHttpUrl(URL + "/collection")
-                .queryParam("usernames", usernames.toArray())
-                .encode()
-                .toUriString();
-        UserDTO[] users = restTemplate.getForObject(url, UserDTO[].class);
-        return users == null ? Collections.emptyList() : Arrays.stream(users).toList();
-    }
+//    /**
+//     * Получить информацию о пользователях
+//     *
+//     * @param userIds идентификаторы пользователей
+//     */
+//    public List<UserDTO> getUsers(List<String> usernames) {
+//        String url = UriComponentsBuilder
+//                .fromHttpUrl(URL + "/collection")
+//                .queryParam("usernames", usernames.toArray())
+//                .encode()
+//                .toUriString();
+//        UserDTO[] users = restTemplate.getForObject(url, UserDTO[].class);
+//        return users == null ? Collections.emptyList() : Arrays.stream(users).toList();
+//    }
 
 }

@@ -4,14 +4,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.commonsapi.utils.DateUtils;
 import ru.anykeyers.commonsapi.domain.order.OrderDTO;
 import ru.anykeyers.commonsapi.domain.order.OrderState;
-import ru.anykeyers.orderservice.domain.OrderMapper;
 import ru.anykeyers.commonsapi.domain.Interval;
-import ru.anykeyers.orderservice.service.BoxService;
-import ru.anykeyers.orderservice.service.CarWashOrderService;
+import ru.anykeyers.orderservice.service.CarWashService;
 
 import java.util.List;
 import java.util.Set;
@@ -22,9 +21,9 @@ import java.util.Set;
 @Tag(name = "Обработка заказов автомойки")
 public class CarWashOrderController {
 
-    private final BoxService boxService;
-    private final OrderMapper orderMapper;
-    private final CarWashOrderService orderService;
+    private final ModelMapper modelMapper;
+
+    private final CarWashService orderService;
 
     @Operation(summary = "Получить список свободных отрезков времени в конкретный день")
     @GetMapping("/free-times")
@@ -32,7 +31,7 @@ public class CarWashOrderController {
             @Parameter(description = "Идентификатор автомойки") @RequestParam("id") Long carWashId,
             @Parameter(description = "Дата для получения свободных отрезков") @RequestParam("date") String date
     ) {
-        return boxService.getOrderFreeTimes(carWashId, DateUtils.toInstant(date));
+        return orderService.getOrderFreeTimes(carWashId, DateUtils.toInstant(date));
     }
 
     @Operation(summary = "Получить список заказов автомойки в конкретный день")
@@ -41,7 +40,9 @@ public class CarWashOrderController {
             @Parameter(description = "Идентификатор автомойки") @RequestParam("carWashId") Long carWashId,
             @Parameter(description = "Дата для получения заказов") @RequestParam("date") String date
     ) {
-        return orderMapper.toDTO(orderService.getOrders(carWashId, DateUtils.toInstant(date)));
+        return orderService.findOrdersByDate(carWashId, DateUtils.toInstant(date)).stream()
+                .map(o -> modelMapper.map(o, OrderDTO.class))
+                .toList();
     }
 
     @Operation(summary = "Получить список заказов, ожидающих одобрения")
@@ -49,7 +50,9 @@ public class CarWashOrderController {
     public List<OrderDTO> getWaitConfirmOrders(
             @Parameter(description = "Идентификатор автомойки") @RequestParam("carWashId") Long carWashId
     ) {
-        return orderMapper.toDTO(orderService.getWaitConfirmOrders(carWashId));
+        return orderService.getWaitConfirmOrders(carWashId).stream()
+                .map(o -> modelMapper.map(o, OrderDTO.class))
+                .toList();
     }
 
     @Operation(summary = "Получить количество заказов, ожидающих одобрения")

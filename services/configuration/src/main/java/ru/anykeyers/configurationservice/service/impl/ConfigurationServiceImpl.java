@@ -4,13 +4,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.remote.RemoteStorageService;
-import ru.anykeyers.configurationservice.TaskManager;
+import ru.anykeyers.configurationservice.service.TaskManager;
 import ru.anykeyers.configurationservice.UploadPhotoTask;
+import ru.anykeyers.configurationservice.domain.Configuration;
 import ru.anykeyers.configurationservice.domain.configuration.*;
 import ru.anykeyers.configurationservice.repository.ConfigurationRepository;
 import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundException;
 import ru.anykeyers.configurationservice.exception.UserNotFoundConfigurationException;
 import ru.anykeyers.configurationservice.service.ConfigurationService;
+import ru.anykeyers.configurationservice.web.dto.ConfigurationRegisterRequest;
+import ru.anykeyers.configurationservice.web.dto.ConfigurationUpdateRequest;
 
 import java.util.List;
 

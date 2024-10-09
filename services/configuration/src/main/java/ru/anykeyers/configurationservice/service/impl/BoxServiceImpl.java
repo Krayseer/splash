@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.domain.configuration.BoxDTO;
-import ru.anykeyers.configurationservice.domain.box.BoxRequest;
-import ru.anykeyers.configurationservice.domain.box.Box;
-import ru.anykeyers.configurationservice.domain.configuration.Configuration;
+import ru.anykeyers.configurationservice.web.dto.BoxRequest;
+import ru.anykeyers.configurationservice.domain.Box;
+import ru.anykeyers.configurationservice.domain.Configuration;
 import ru.anykeyers.configurationservice.exception.BoxNotFoundException;
 import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundException;
 import ru.anykeyers.configurationservice.domain.box.BoxMapper;
@@ -58,9 +58,7 @@ public class BoxServiceImpl implements BoxService {
 
     @Override
     public void updateBox(Long boxId, BoxRequest boxRequest) {
-        Box box = boxRepository.findById(boxId).orElseThrow(
-                () -> new BoxNotFoundException(boxId)
-        );
+        Box box = boxRepository.findById(boxId).orElseThrow(() -> new BoxNotFoundException(boxId));
         box.setName(boxRequest.getName());
         boxRepository.save(box);
         log.info("Update box: {}", box);

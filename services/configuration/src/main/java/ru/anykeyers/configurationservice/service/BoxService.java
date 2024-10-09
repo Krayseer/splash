@@ -1,7 +1,7 @@
 package ru.anykeyers.configurationservice.service;
 
 import ru.anykeyers.commonsapi.domain.configuration.BoxDTO;
-import ru.anykeyers.configurationservice.domain.box.BoxRequest;
+import ru.anykeyers.configurationservice.web.dto.BoxRequest;
 
 import java.util.List;
 

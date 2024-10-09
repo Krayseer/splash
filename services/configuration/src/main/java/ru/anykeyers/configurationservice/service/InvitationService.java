@@ -2,7 +2,7 @@ package ru.anykeyers.configurationservice.service;
 
 import ru.anykeyers.commonsapi.domain.invitation.InvitationDTO;
 import ru.anykeyers.commonsapi.domain.invitation.InvitationState;
-import ru.anykeyers.configurationservice.domain.invitation.InvitationRequest;
+import ru.anykeyers.configurationservice.web.dto.InvitationRequest;
 
 import java.util.List;
 

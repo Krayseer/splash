@@ -1,27 +1,30 @@
 package ru.anykeyers.orderservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.anykeyers.commonsapi.MessageQueue;
-import ru.anykeyers.commonsapi.domain.user.User;
-import ru.anykeyers.commonsapi.remote.RemoteUserService;
-import ru.anykeyers.commonsapi.domain.order.OrderState;
-import ru.anykeyers.commonsapi.remote.RemoteServicesService;
 import ru.anykeyers.commonsapi.domain.Interval;
-import ru.anykeyers.orderservice.domain.OrderMapper;
+import ru.anykeyers.commonsapi.domain.configuration.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.order.OrderDTO;
+import ru.anykeyers.commonsapi.domain.user.User;
+import ru.anykeyers.commonsapi.domain.order.OrderState;
+import ru.anykeyers.commonsapi.remote.RemoteConfigurationService;
+import ru.anykeyers.commonsapi.utils.DateUtils;
 import ru.anykeyers.orderservice.repository.OrderRepository;
 import ru.anykeyers.orderservice.domain.Order;
-import ru.anykeyers.orderservice.domain.OrderRequest;
 import ru.anykeyers.orderservice.domain.exception.OrderNotFoundException;
-import ru.anykeyers.orderservice.service.BoxService;
+import ru.anykeyers.orderservice.calculator.OrderCalculator;
 import ru.anykeyers.orderservice.service.OrderService;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Реализация сервисов обработки заказов
@@ -31,12 +34,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    private final BoxService boxService;
+    private final ModelMapper modelMapper;
+
+    private final RemoteConfigurationService remoteConfigurationService;
+
     private final OrderRepository orderRepository;
-    private final RemoteUserService remoteUserService;
-    private final RemoteServicesService remoteServicesService;
+
+    private final OrderCalculator orderCalculator;
+
     private final KafkaTemplate<String, Object> kafkaTemplate;
-    private final OrderMapper orderMapper;
 
     @Override
     public Order getOrder(Long id) {
@@ -49,34 +55,28 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void applyOrderEmployee(Long orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(
-                () -> new OrderNotFoundException(orderId)
-        );
-        order.setState(OrderState.WAIT_PROCESS);
-        orderRepository.save(order);
-        log.info("Process order apply employee: {}", order);
+    public List<Order> getOrders(OrderState orderState) {
+        return orderRepository.findByState(orderState);
     }
 
     @Override
-    public void disappointEmployeeFromOrder(long orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(
-                () -> new OrderNotFoundException(orderId)
-        );
-        order.setState(OrderState.WAIT_CONFIRM);
-        orderRepository.save(order);
-        log.info("Disappoint employee from order: {}", order);
+    public List<Order> getCarWashOrders(Long carWashId) {
+        return orderRepository.findByCarWashId(carWashId);
     }
 
     @Override
-    public List<Order> getOrders(Long carWashId, Instant date) {
-        List<Order> orders = orderRepository.findByCarWashIdAndStateIn(
-                carWashId, List.of(OrderState.WAIT_CONFIRM, OrderState.WAIT_PROCESS, OrderState.PROCESSING)
+    public List<Order> getBoxOrders(List<Long> boxIds) {
+        return orderRepository.findByBoxIdIn(boxIds);
+    }
+
+    @Override
+    public List<Order> findOrdersByDate(Long carWashId, Instant date) {
+        return orderRepository.findCarWashOrdersByStatesAndInterval(
+                carWashId,
+                List.of(OrderState.WAIT_CONFIRM, OrderState.WAIT_PROCESS, OrderState.PROCESSING),
+                date.toEpochMilli(),
+                date.plus(1, ChronoUnit.DAYS).toEpochMilli()
         );
-        Instant endTime = date.plus(1, ChronoUnit.DAYS);
-        return orders.stream()
-                .filter(order -> order.getStartTime().equals(date) || (order.getStartTime().isAfter(date) && order.getEndTime().isBefore(endTime)))
-                .toList();
     }
 
     @Override
@@ -90,9 +90,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Set<Interval> getOrderFreeTimes(Long carWashId, Instant date) {
+        ConfigurationDTO configuration = remoteConfigurationService.getConfiguration(carWashId);
+        Instant startTime = Optional.ofNullable(configuration.getOpenTime())
+                .map(openTime -> DateUtils.addTimeToInstant(date, openTime))
+                .orElse(date);
+        Instant endTime = Optional.ofNullable(configuration.getCloseTime())
+                .map(closeTime -> DateUtils.addTimeToInstant(date, closeTime))
+                .orElse(date.plus(1, ChronoUnit.DAYS));
+        return orderCalculator.getOrderFreeTimes(
+                getCarWashOrders(carWashId), startTime.toEpochMilli(), endTime.toEpochMilli()
+        );
+    }
+
+    @Override
     public List<Order> getActiveOrders(User user) {
-        List<OrderState> activeOrderStates = List.of(OrderState.WAIT_CONFIRM, OrderState.WAIT_PROCESS, OrderState.PROCESSING);
-        return orderRepository.findByUsernameAndStateIn(user.getUsername(), activeOrderStates);
+        return orderRepository.findByUsernameAndStateIn(
+                user.getUsername(), List.of(OrderState.WAIT_CONFIRM, OrderState.WAIT_PROCESS, OrderState.PROCESSING)
+        );
     }
 
     @Override
@@ -101,37 +116,30 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @SneakyThrows
-    public Order saveOrder(String username, OrderRequest orderRequest) {
-        log.info("Processing order: {}", orderRequest);
-        Order order = OrderMapper.toOrder(username, orderRequest);
-        Instant endTime = calculateEndTime(orderRequest);
-        Long boxId = boxService.getBoxForOrder(orderRequest.getCarWashId(), new Interval(orderRequest.getTime(), endTime));
-        order.setEndTime(endTime);
-        order.setBoxId(boxId);
+    @Transactional
+    public Order createOrder(String username, OrderDTO orderDTO) {
+        Order order = modelMapper.map(orderDTO, Order.class);
+        order.setEndTime(orderCalculator.calculateOrderEndTime(orderDTO));
+        order.setBoxId(
+                orderCalculator.findFreeBox(
+                        getCarWashOrders(orderDTO.getCarWashId()), order.getStartTime(), order.getEndTime()
+                )
+        );
         Order savedOrder = orderRepository.save(order);
-        kafkaTemplate.send(MessageQueue.ORDER_CREATE, orderMapper.toDTO(savedOrder));
+        kafkaTemplate.send(MessageQueue.ORDER_CREATE, modelMapper.map(savedOrder, OrderDTO.class));
+        log.info("Save new order: {}", orderDTO);
         return savedOrder;
+    }
+
+    @Override
+    public void saveOrUpdate(Order order) {
+        orderRepository.save(order);
     }
 
     @Override
     public void deleteOrder(Long orderId) {
         orderRepository.deleteById(orderId);
         log.info("Delete order: {}", orderId);
-    }
-
-    @Override
-    public void deleteOrder(String username, Long orderId) {
-        orderRepository.deleteByUsernameAndId(username, orderId);
-        log.info("Delete order: {}", orderId);
-    }
-
-    /**
-     * Рассчитать время окончания заказа
-     */
-    private Instant calculateEndTime(OrderRequest orderRequest) {
-        long duration = remoteServicesService.getServicesDuration(orderRequest.getServiceIds());
-        return orderRequest.getTime().plusMillis(duration);
     }
 
 }

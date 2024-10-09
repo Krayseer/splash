@@ -1,8 +1,9 @@
 package ru.anykeyers.orderservice.repository;
 
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.anykeyers.orderservice.domain.Order;
 import ru.anykeyers.commonsapi.domain.order.OrderState;
@@ -19,9 +20,8 @@ public interface OrderRepository extends JpaRepository<Order, Long>, PagingAndSo
      * Получить список заказов по статусу
      *
      * @param orderState    статус заказа
-     * @param pageable      настройка пагинации
      */
-    List<Order> findByState(OrderState orderState, Pageable pageable);
+    List<Order> findByState(OrderState orderState);
 
     /**
      * Получить список заказов пользователя по статусу
@@ -63,19 +63,26 @@ public interface OrderRepository extends JpaRepository<Order, Long>, PagingAndSo
     int countByCarWashIdAndState(Long carWashId, OrderState status);
 
     /**
-     * Получить список заказов по идентификатору автомойки и списку статусов
+     * Получить список заказов автомойки
      *
-     * @param carWashId     идентификатор автомойки
-     * @param waitConfirm   список состояний
+     * @param carWashId идентификатор автомойки
      */
-    List<Order> findByCarWashIdAndStateIn(Long carWashId, List<OrderState> waitConfirm);
+    List<Order> findByCarWashId(Long carWashId);
 
     /**
-     * Удалить заказ
+     * Получить список заказов автомойки за промежуток времени
      *
-     * @param username  имя пользователя
-     * @param orderId   идентификатор заказа
+     * @param carWashId идентификатор автомойки
+     * @param states    статусы заказов
+     * @param startTime начало отрезка
+     * @param endTime   конец отрезка
      */
-    void deleteByUsernameAndId(String username, Long orderId);
+    @Query("SELECT o FROM Order o WHERE o.carWashId = :carWashId AND o.state IN :states AND (o.startTime = :startTime OR (o.startTime >= :startTime AND o.startTime <= :endTime))")
+    List<Order> findCarWashOrdersByStatesAndInterval(
+            @Param("carWashId") Long carWashId,
+            @Param("states") List<OrderState> states,
+            @Param("startTime") long startTime,
+            @Param("endTime") long endTime
+    );
 
 }

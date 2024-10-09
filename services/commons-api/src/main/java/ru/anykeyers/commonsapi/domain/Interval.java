@@ -17,21 +17,18 @@ public class Interval {
     /**
      * Время начала
      */
-    private Instant start;
+    private long start;
 
     /**
      * Время конца
      */
-    private Instant end;
+    private long end;
 
-    /**
-     * Совпадает ли текущий отрезок с принимаемым
-     */
-    public boolean isInRange(Instant instant) {
-        return !instant.isBefore(start) && instant.isBefore(end);
+    public boolean isInRange(long time) {
+        return time >= start && time <= end;
     }
 
-    public static Interval of(Instant start, Instant end) {
+    public static Interval of(long start, long end) {
         return new Interval(start, end);
     }
 

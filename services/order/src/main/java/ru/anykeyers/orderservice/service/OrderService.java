@@ -1,5 +1,6 @@
 package ru.anykeyers.orderservice.service;
 
+import ru.anykeyers.commonsapi.domain.order.OrderState;
 import ru.anykeyers.orderservice.domain.Order;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * Сервис обработки заказов
  */
-public interface OrderService extends UserOrderService, CarWashOrderService {
+public interface OrderService extends UserOrderService, CarWashService {
 
     /**
      * Получить информацию о заказе
@@ -25,22 +26,17 @@ public interface OrderService extends UserOrderService, CarWashOrderService {
     List<Order> getOrders(List<Long> orderIds);
 
     /**
-     * Обработать назначение работника заказу
+     * Получить список заказов
+     *
+     * @param orderState статус заказа
      */
-    void applyOrderEmployee(Long orderId);
+    List<Order> getOrders(OrderState orderState);
 
     /**
-     * Обработать удаление работника с заказа
+     * Сохранить заказ
      *
-     * @param orderId идентификатор заказа
+     * @param order заказ
      */
-    void disappointEmployeeFromOrder(long orderId);
-
-    /**
-     * Удалить заказ
-     *
-     * @param orderId идентификатор заказа
-     */
-    void deleteOrder(Long orderId);
+    void saveOrUpdate(Order order);
 
 }

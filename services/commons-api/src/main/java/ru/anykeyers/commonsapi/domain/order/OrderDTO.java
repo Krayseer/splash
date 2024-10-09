@@ -1,27 +1,53 @@
 package ru.anykeyers.commonsapi.domain.order;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import ru.anykeyers.commonsapi.domain.PaymentType;
 
-import java.time.Instant;
 import java.util.List;
 
 @Data
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDTO {
+    @JsonProperty(
+            access = JsonProperty.Access.READ_ONLY
+    )
     private Long id;
+
+    @JsonProperty(
+            access = JsonProperty.Access.READ_ONLY
+    )
     private String username;
+
     private Long carWashId;
+
+    @JsonProperty(
+            access = JsonProperty.Access.READ_ONLY
+    )
     private Long boxId;
-    private OrderState state;
+
+    @JsonProperty(
+            access = JsonProperty.Access.READ_ONLY
+    )
+    private OrderState orderState;
+
     private List<Long> serviceIds;
+
     private PaymentType paymentType;
-    private Instant startTime;
-    private Instant endTime;
-    private Instant createdAt;
+
+    private long startTime;
+
+    @JsonProperty(
+            access = JsonProperty.Access.READ_ONLY
+    )
+    private long endTime;
+
+    @JsonProperty(
+            access = JsonProperty.Access.READ_ONLY
+    )
+    private long createdAt;
+
 }

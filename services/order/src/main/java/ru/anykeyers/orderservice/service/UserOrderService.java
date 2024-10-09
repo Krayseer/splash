@@ -1,8 +1,8 @@
 package ru.anykeyers.orderservice.service;
 
+import ru.anykeyers.commonsapi.domain.order.OrderDTO;
 import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.orderservice.domain.Order;
-import ru.anykeyers.orderservice.domain.OrderRequest;
 
 import java.util.List;
 
@@ -28,10 +28,12 @@ public interface UserOrderService {
     /**
      * Создать заказ
      *
-     * @param username      имя пользователя
-     * @param orderRequest  данные о заказе
+     * @param username  имя пользователя
+     * @param orderDTO  данные о заказе
+     *
+     * @return обработанный заказ
      */
-    Order saveOrder(String username, OrderRequest orderRequest);
+    Order createOrder(String username, OrderDTO orderDTO);
 
     /**
      * Удалить заказ
@@ -39,6 +41,6 @@ public interface UserOrderService {
      * @param username  имя пользователя
      * @param orderId   идентификатор заказа
      */
-    void deleteOrder(String username, Long orderId);
+    void deleteOrder(Long orderId);
 
 }

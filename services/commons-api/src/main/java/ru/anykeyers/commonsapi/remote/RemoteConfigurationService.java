@@ -1,10 +1,11 @@
 package ru.anykeyers.commonsapi.remote;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import ru.anykeyers.commonsapi.domain.configuration.BoxDTO;
 import ru.anykeyers.commonsapi.domain.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.user.UserDTO;
+import ru.anykeyers.commonsapi.remote.provider.RemoteConfigurationProvider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,16 +16,10 @@ import java.util.List;
  * Удаленный сервис конфигурации автомоек
  */
 @Service
+@RequiredArgsConstructor
 public class RemoteConfigurationService {
 
-    private final String URL;
-
-    private final RestTemplate restTemplate;
-
-    public RemoteConfigurationService(RestTemplate restTemplate, RemoteProvider remoteProvider) {
-        this.restTemplate = restTemplate;
-        this.URL = remoteProvider.getConfigurationServiceUrl() + "/car-wash/";
-    }
+    private final RemoteConfigurationProvider remoteProvider;
 
     /**
      * Получить информацию о конфигурации автомойки
@@ -32,7 +27,9 @@ public class RemoteConfigurationService {
      * @param id идентификатор автомойки
      */
     public ConfigurationDTO getConfiguration(Long id) {
-        return restTemplate.getForObject(URL + "configuration/" + id, ConfigurationDTO.class);
+        return remoteProvider.getRestTemplate().getForObject(
+                remoteProvider.getBaseUrl() + "/configuration/" + id, ConfigurationDTO.class
+        );
     }
 
     /**
@@ -41,7 +38,9 @@ public class RemoteConfigurationService {
      * @param id идентификатор автомойки
      */
     public List<Long> getBoxIds(Long id) {
-        Long[] ids = restTemplate.getForObject(URL + "box/" + id + "/ids", Long[].class);
+        Long[] ids = remoteProvider.getRestTemplate().getForObject(
+                remoteProvider.getBaseUrl() + "/box/" + id + "/ids", Long[].class
+        );
         return ids == null ? Collections.emptyList() : Arrays.stream(ids).toList();
     }
 
@@ -51,7 +50,9 @@ public class RemoteConfigurationService {
      * @param id идентификатор автомойки
      */
     public List<UserDTO> getEmployees(Long id) {
-        UserDTO[] users = restTemplate.getForObject(URL + "employee/" + id, UserDTO[].class);
+        UserDTO[] users = remoteProvider.getRestTemplate().getForObject(
+                remoteProvider.getBaseUrl() + "/employee/" + id, UserDTO[].class
+        );
         return users == null ? new ArrayList<>() : Arrays.stream(users).toList();
     }
 

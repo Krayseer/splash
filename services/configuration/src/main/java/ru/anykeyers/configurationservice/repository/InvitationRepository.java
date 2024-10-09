@@ -3,7 +3,7 @@ package ru.anykeyers.configurationservice.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.anykeyers.commonsapi.domain.invitation.InvitationState;
-import ru.anykeyers.configurationservice.domain.invitation.Invitation;
+import ru.anykeyers.configurationservice.domain.Invitation;
 
 import java.util.List;
 

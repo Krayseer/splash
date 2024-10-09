@@ -1,6 +1,7 @@
 package ru.anykeyers.configurationservice.domain.employee;
 
 import ru.anykeyers.commonsapi.domain.user.EmployeeDTO;
+import ru.anykeyers.configurationservice.domain.Employee;
 
 /**
  * Маппер для работников

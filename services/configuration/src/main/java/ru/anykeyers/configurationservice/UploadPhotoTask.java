@@ -3,8 +3,9 @@ package ru.anykeyers.configurationservice;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
-import ru.anykeyers.commonsapi.remote.RemoteStorageService;
-import ru.anykeyers.configurationservice.domain.configuration.Configuration;
+import ru.anykeyers.commonsapi.remote.RemoteConfigurationService;
+import ru.anykeyers.commonsapi.remote.provider.RemoteStorageProvider;
+import ru.anykeyers.configurationservice.domain.Configuration;
 import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundException;
 import ru.anykeyers.configurationservice.repository.ConfigurationRepository;
 
@@ -16,13 +17,13 @@ import java.util.concurrent.Future;
 
 public class UploadPhotoTask implements Runnable {
 
-    private final RemoteStorageService remoteStorageService;
+    private final RemoteStorageProvider remoteStorageService;
     private final ConfigurationRepository configurationRepository;
     private final List<MultipartFile> photoFiles;
     private final Long configurationId;
     private final ExecutorService threadPool = Executors.newVirtualThreadPerTaskExecutor();
 
-    public UploadPhotoTask(RemoteStorageService remoteStorageService,
+    public UploadPhotoTask(RemoteStorageProvider remoteStorageService,
                            List<MultipartFile> photoFiles,
                            ConfigurationRepository configurationRepository,
                            Long configurationId) {

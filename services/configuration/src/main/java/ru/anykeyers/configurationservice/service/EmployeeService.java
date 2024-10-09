@@ -1,7 +1,7 @@
 package ru.anykeyers.configurationservice.service;
 
 import ru.anykeyers.commonsapi.domain.user.UserDTO;
-import ru.anykeyers.configurationservice.domain.configuration.Configuration;
+import ru.anykeyers.configurationservice.domain.Configuration;
 
 import java.util.List;
 
