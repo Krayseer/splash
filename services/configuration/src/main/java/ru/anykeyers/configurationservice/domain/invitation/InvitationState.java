@@ -1,4 +1,4 @@
-package ru.anykeyers.commonsapi.domain.invitation;
+package ru.anykeyers.configurationservice.domain.invitation;
 
 /**
  * Состояние приглашения

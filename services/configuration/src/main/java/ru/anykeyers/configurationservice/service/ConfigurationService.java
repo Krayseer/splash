@@ -1,10 +1,11 @@
 package ru.anykeyers.configurationservice.service;
 
+import ru.anykeyers.commonsapi.domain.configuration.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.configurationservice.domain.Configuration;
-import ru.anykeyers.configurationservice.web.dto.ConfigurationRegisterRequest;
-import ru.anykeyers.configurationservice.web.dto.ConfigurationUpdateRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Сервис обработки конфигурации автомойки
@@ -17,11 +18,18 @@ public interface ConfigurationService {
     List<Configuration> getAllConfigurations();
 
     /**
-     * Получить информацию об автомойке
+     * Получить конфигурацию автомойки
      *
-     * @param username имя пользователя хозяина автомойки
+     * @param user пользователь - хозяин автомойки
      */
-    Configuration getConfiguration(String username);
+    Configuration getConfiguration(User user);
+
+    /**
+     * Получить конфигурацию автомойки
+     *
+     * @param userId идентификатор пользователя
+     */
+    Configuration getConfiguration(UUID userId);
 
     /**
      * Получить информацию об автомойке
@@ -33,24 +41,23 @@ public interface ConfigurationService {
     /**
      * Зарегистрировать автомойку
      *
-     * @param username          имя пользователя хозяина автомойки
-     * @param registerRequest   данные для регистрации автомойки
+     * @param user              пользователь, регистрирующий автомойку
+     * @param configurationDTO  данные для регистрации автомойки
      */
-    void registerConfiguration(String username, ConfigurationRegisterRequest registerRequest);
+    void registerConfiguration(User user, ConfigurationDTO configurationDTO);
 
     /**
      * Обновить данные об автомойке
      *
-     * @param username                      имя пользователя хозяина автомойки
-     * @param configurationUpdateRequest    данные об автомойке
+     * @param configurationDTO обновлённая конфигурация автомойки
      */
-    void updateConfiguration(String username, ConfigurationUpdateRequest configurationUpdateRequest);
+    void updateConfiguration(ConfigurationDTO configurationDTO);
 
     /**
      * Удалить конфигурацию автомойки
      *
-     * @param username имя пользователя хозяина автомойки
+     * @param user хозяин автомойки
      */
-    void deleteConfiguration(String username);
+    void deleteConfiguration(User user);
 
 }

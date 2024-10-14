@@ -21,11 +21,12 @@ public interface CarWashService {
     List<Order> getCarWashOrders(Long carWashId);
 
     /**
-     * Получить список заказов автомойки
+     * Получить список свободных интервалов времени для заказа
      *
-     * @param boxIds идентификаторы боксов
+     * @param carWashId идентификатор автомойки
+     * @param date      дата
      */
-    List<Order> getBoxOrders(List<Long> boxIds);
+    Set<Interval> getOrderFreeTimes(Long carWashId, Instant date);
 
     /**
      * Получить список заказов
@@ -49,6 +50,4 @@ public interface CarWashService {
      * @param orderState    статус заказа
      */
     int getOrdersCount(Long carWashId, OrderState orderState);
-
-    Set<Interval> getOrderFreeTimes(Long carWashId, Instant instant);
 }

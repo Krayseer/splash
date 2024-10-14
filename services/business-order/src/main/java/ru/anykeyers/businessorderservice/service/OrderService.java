@@ -7,16 +7,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import ru.anykeyers.businessorderservice.repository.BusinessOrderRepository;
 import ru.anykeyers.businessorderservice.domain.BusinessOrder;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.utils.DateUtils;
 import ru.anykeyers.commonsapi.MessageQueue;
 import ru.anykeyers.commonsapi.domain.order.OrderDTO;
-import ru.anykeyers.commonsapi.domain.user.UserDTO;
 import ru.anykeyers.commonsapi.remote.RemoteConfigurationService;
 import ru.anykeyers.commonsapi.remote.RemoteOrderService;
 import ru.anykeyers.commonsapi.remote.RemoteUserService;
 
-import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -47,7 +47,7 @@ public class OrderService {
      *
      * @param orderId идентификатор заказа
      */
-    public List<UserDTO> getFreeEmployees(Long orderId) {
+    public List<User> getFreeEmployees(Long orderId) {
         OrderDTO order = remoteOrderService.getOrder(orderId);
         return remoteUserService.getUsers(getFreeEmployees(order));
     }
@@ -55,16 +55,16 @@ public class OrderService {
     /**
      * Назначить работника на заказ
      *
-     * @param orderId          идентификатор заказа
-     * @param employeeUsername имя пользователя работника
+     * @param orderId       идентификатор заказа
+     * @param employeeId    идентификатор работника
      */
-    public void appointOrderEmployee(Long orderId, String employeeUsername) {
+    public void appointOrderEmployee(Long orderId, UUID employeeId) {
         BusinessOrder businessOrder = BusinessOrder.builder()
                 .orderId(orderId)
-                .employeeUsername(employeeUsername)
+                .employeeId(employeeId)
                 .build();
         businessOrderRepository.save(businessOrder);
-        log.info("Appoint order employee '{}' for order '{}'", employeeUsername, orderId);
+        log.info("Appoint order employee '{}' for order '{}'", employeeId, orderId);
     }
 
     /**
@@ -85,9 +85,9 @@ public class OrderService {
      *
      * @param order заказ
      */
-    public List<String> getFreeEmployees(OrderDTO order) {
-        List<String> employees = remoteConfigurationService.getEmployees(order.getCarWashId()).stream()
-                .map(UserDTO::username)
+    public List<UUID> getFreeEmployees(OrderDTO order) {
+        List<UUID> employees = remoteConfigurationService.getEmployees(order.getCarWashId()).stream()
+                .map(User::getId)
                 .collect(Collectors.toList());
         List<OrderDTO> orders = remoteOrderService.getOrders(order.getCarWashId(), DateUtils.toDate(order.getStartTime()));
         if (CollectionUtils.isEmpty(orders)) {
@@ -97,12 +97,12 @@ public class OrderService {
         return employees;
     }
 
-    private List<String> getBusyEmployees(List<OrderDTO> savedOrders, OrderDTO newOrder) {
+    private List<UUID> getBusyEmployees(List<OrderDTO> savedOrders, OrderDTO newOrder) {
         return savedOrders.stream()
                 .filter(savedOrder -> isOverlapOrders(savedOrder, newOrder))
                 .map(OrderDTO::getId)
                 .map(businessOrderRepository::findByOrderId)
-                .map(BusinessOrder::getEmployeeUsername)
+                .map(BusinessOrder::getEmployeeId)
                 .toList();
     }
 
@@ -113,13 +113,13 @@ public class OrderService {
      * @param currentOrder  текущий заказ
      */
     private boolean isOverlapOrders(OrderDTO savedOrder, OrderDTO currentOrder) {
-        Instant savedStart = savedOrder.getStartTime();
-        Instant currentStart = currentOrder.getStartTime();
-        Instant savedEnd = savedOrder.getEndTime();
-        Instant currentEnd = currentOrder.getEndTime();
-        return currentStart.isBefore(savedEnd) && currentEnd.isAfter(savedStart) && currentEnd.isBefore(savedEnd) ||
-                currentStart.isAfter(savedStart) && currentEnd.isBefore(savedEnd) ||
-                currentEnd.isAfter(savedEnd) && currentStart.isAfter(savedStart) && currentStart.isBefore(savedEnd);
+        long savedStart = savedOrder.getStartTime();
+        long currentStart = currentOrder.getStartTime();
+        long savedEnd = savedOrder.getEndTime();
+        long currentEnd = currentOrder.getEndTime();
+        return currentStart <= savedEnd && currentEnd >= savedStart && currentEnd <= savedEnd ||
+               currentStart >= savedStart && currentEnd <= savedEnd ||
+                currentEnd >= savedEnd && currentStart >= savedStart && currentStart <= savedEnd;
     }
 
 }

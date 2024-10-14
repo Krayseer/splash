@@ -2,10 +2,11 @@ package ru.anykeyers.configurationservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.anykeyers.commonsapi.domain.invitation.InvitationState;
-import ru.anykeyers.configurationservice.domain.Invitation;
+import ru.anykeyers.configurationservice.domain.invitation.InvitationState;
+import ru.anykeyers.configurationservice.domain.invitation.Invitation;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * DAO для работы с приглашениями
@@ -16,9 +17,9 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
     /**
      * Получить список приглашений пользователя
      *
-     * @param username имя пользователя
+     * @param userId идентификатор пользователя
      */
-    List<Invitation> findByUsername(String username);
+    List<Invitation> findByUserId(UUID userId);
 
     /**
      * Получить список приглашений автомойки
@@ -34,4 +35,5 @@ public interface InvitationRepository extends JpaRepository<Invitation, Long> {
      * @param invitationState   статус приглашения
      */
     List<Invitation> findByConfigurationIdAndInvitationState(Long carWashId, InvitationState invitationState);
+
 }

@@ -11,20 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoxDTO {
-
-    /**
-     * Идентификатор
-     */
-    private Long id;
-
-    /**
-     * Название
-     */
+    private Long carWashId;
     private String name;
 
-    /**
-     * Идентификатор автомойки
-     */
-    private Long carWashId;
-
+    private Long id;
 }

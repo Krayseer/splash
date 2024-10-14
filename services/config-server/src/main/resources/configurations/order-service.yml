@@ -24,18 +24,14 @@ spring:
 #    template:
 #      default-topic: topic
 
-remote-provider:
-  configuration-service-url: http://${CONFIGURATION_SERVICE_HOST}:${CONFIGURATION_SERVICE_PORT}
-  user-service-url: http://${AUTHORIZATION_SERVER_HOST}:${AUTHORIZATION_SERVER_PORT}
-  service-of-services-url: http://${SERVICE_OF_SERVICES_HOST}:${SERVICE_OF_SERVICES_PORT}
-  storage-service-url: http://${STORAGE_SERVICE_HOST}:${STORAGE_SERVICE_PORT}
-
-springdoc:
-  api-docs:
-    path: /order/v3/api-docs
-  swagger-ui:
-    path: /order/swagger-ui.html
+#springdoc:
+#  api-docs:
+#    path: /order/v3/api-docs
+#  swagger-ui:
+#    path: /order/swagger-ui.html
 
 server:
   port: ${ORDER_SERVICE_PORT}
+  error:
+    include-message: always
 

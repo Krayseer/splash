@@ -43,4 +43,9 @@ public class UserInfo {
      * Список ролей
      */
     private List<String> roles;
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
 }

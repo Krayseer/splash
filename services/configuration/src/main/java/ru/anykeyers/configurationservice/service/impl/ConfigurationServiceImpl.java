@@ -2,20 +2,21 @@ package ru.anykeyers.configurationservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import ru.anykeyers.commonsapi.domain.configuration.ConfigurationDTO;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.remote.RemoteStorageService;
-import ru.anykeyers.configurationservice.service.TaskManager;
 import ru.anykeyers.configurationservice.UploadPhotoTask;
+import ru.anykeyers.configurationservice.service.TaskManager;
 import ru.anykeyers.configurationservice.domain.Configuration;
-import ru.anykeyers.configurationservice.domain.configuration.*;
 import ru.anykeyers.configurationservice.repository.ConfigurationRepository;
 import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundException;
 import ru.anykeyers.configurationservice.exception.UserNotFoundConfigurationException;
 import ru.anykeyers.configurationservice.service.ConfigurationService;
-import ru.anykeyers.configurationservice.web.dto.ConfigurationRegisterRequest;
-import ru.anykeyers.configurationservice.web.dto.ConfigurationUpdateRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Реализация сервиса обработки конфигураций
@@ -26,7 +27,11 @@ import java.util.List;
 public class ConfigurationServiceImpl implements ConfigurationService {
 
     private final TaskManager taskManager;
+
+    private final ModelMapper modelMapper;
+
     private final RemoteStorageService remoteStorageService;
+
     private final ConfigurationRepository configurationRepository;
 
     @Override
@@ -35,9 +40,14 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     @Override
-    public Configuration getConfiguration(String username) {
-        return configurationRepository.findByUsername(username).orElseThrow(
-                () -> new UserNotFoundConfigurationException(username)
+    public Configuration getConfiguration(User user) {
+        return getConfiguration(user.getId());
+    }
+
+    @Override
+    public Configuration getConfiguration(UUID userId) {
+        return configurationRepository.findByUserId(userId).orElseThrow(
+                () -> new UserNotFoundConfigurationException(userId)
         );
     }
 
@@ -47,34 +57,24 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     }
 
     @Override
-    public void registerConfiguration(String username, ConfigurationRegisterRequest registerRequest) {
-        Configuration configuration = ConfigurationMapper.toConfiguration(username, registerRequest);
+    public void registerConfiguration(User user, ConfigurationDTO configurationDTO) {
+        Configuration configuration = modelMapper.map(configurationDTO, Configuration.class);
         configurationRepository.save(configuration);
     }
 
     @Override
-    public void updateConfiguration(String username, ConfigurationUpdateRequest configurationUpdateRequest) {
-        Configuration configuration = getConfiguration(username);
-        configuration.setName(configurationUpdateRequest.getName());
-        configuration.setDescription(configurationUpdateRequest.getDescription());
-        configuration.setPhoneNumber(configurationUpdateRequest.getPhoneNumber());
-        configuration.setAddress(configurationUpdateRequest.getAddress());
-        configuration.setLongitude(configurationUpdateRequest.getLongitude());
-        configuration.setLatitude(configurationUpdateRequest.getLatitude());
-        configuration.setOpenTime(configurationUpdateRequest.getOpenTime());
-        configuration.setCloseTime(configurationUpdateRequest.getCloseTime());
-        configuration.setManagementProcessOrders(configurationUpdateRequest.isManagementProcessOrders());
-        configuration.setSelfService(configuration.isSelfService());
-        configurationRepository.save(configuration);
-        if (configurationUpdateRequest.getPhotos() != null) {
-            taskManager.addTask(new UploadPhotoTask(remoteStorageService, configurationUpdateRequest.getPhotos(), configurationRepository, configuration.getId()));
+    public void updateConfiguration(ConfigurationDTO configurationDTO) {
+        Configuration updatedConfiguration = modelMapper.map(configurationDTO, Configuration.class);
+        configurationRepository.save(updatedConfiguration);
+        if (configurationDTO.getPhotoUrls() != null) {
+            taskManager.addTask(new UploadPhotoTask(remoteStorageService, configurationDTO.getPhotos(), configurationRepository, updatedConfiguration.getId()));
         }
-        log.info("Update configuration: {}", configuration);
+        log.info("Update configuration: {}", updatedConfiguration);
     }
 
     @Override
-    public void deleteConfiguration(String username) {
-        Configuration configuration = getConfiguration(username);
+    public void deleteConfiguration(User user) {
+        Configuration configuration = getConfiguration(user);
         configurationRepository.delete(configuration);
         log.info("Deleted configuration: {}", configuration);
     }

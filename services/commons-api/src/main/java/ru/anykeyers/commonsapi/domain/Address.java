@@ -1,11 +1,15 @@
 package ru.anykeyers.commonsapi.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Адрес
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Address {
     /**
      * Долгота

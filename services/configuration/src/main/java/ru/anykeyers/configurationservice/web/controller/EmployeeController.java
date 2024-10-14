@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.anykeyers.commonsapi.domain.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.configurationservice.service.EmployeeService;
 import ru.anykeyers.configurationservice.web.ControllerName;
 
@@ -20,7 +20,7 @@ public class EmployeeController {
 
     @Operation(summary = "Получить список работников автомойки")
     @GetMapping("/{carWashId}")
-    public List<UserDTO> getEmployees(@PathVariable Long carWashId) {
+    public List<User> getEmployees(@PathVariable Long carWashId) {
         return employeeService.getCarWashEmployees(carWashId);
     }
 

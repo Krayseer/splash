@@ -1,12 +1,15 @@
 package ru.anykeyers.configurationservice.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 /**
- * Ошибка отстутствия автомойки
+ * Ошибка отсутствия автомойки
  */
-public class ConfigurationNotFoundException extends RuntimeException {
+public class ConfigurationNotFoundException extends ResponseStatusException {
 
     public ConfigurationNotFoundException(Long id) {
-        super("Configuration with id " + id + " not found");
+        super(HttpStatus.NOT_FOUND, "Configuration with id " + id + " not found");
     }
 
 }

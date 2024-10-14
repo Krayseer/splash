@@ -1,4 +1,4 @@
-package ru.anykeyers.user.service;
+package ru.anykeyers.user.service.keycloak;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.anykeyers.user.config.KeycloakConfig;
 import ru.anykeyers.user.exception.UserNotFoundException;
 import ru.anykeyers.user.exception.UserAlreadyExistsException;
-import ru.anykeyers.user.web.mapper.KeycloakUserMapper;
+import ru.anykeyers.user.service.UserService;
 import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.domain.user.UserInfo;
 import ru.anykeyers.commonsapi.remote.RemoteStorageService;

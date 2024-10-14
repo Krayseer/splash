@@ -1,9 +1,10 @@
 package ru.anykeyers.configurationservice.service;
 
-import ru.anykeyers.commonsapi.domain.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.configurationservice.domain.Configuration;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Сервис обработки работников автомойки
@@ -15,7 +16,7 @@ public interface EmployeeService {
      *
      * @param carWashId идентификатор автомойки
      */
-    List<UserDTO> getCarWashEmployees(Long carWashId);
+    List<User> getCarWashEmployees(Long carWashId);
 
     /**
      * Добавить работника автомойке
@@ -23,7 +24,7 @@ public interface EmployeeService {
      * @param configuration автомойка
      * @param userId        идентификатор пользователя
      */
-    void addCarWashEmployee(Configuration configuration, String username);
+    void addCarWashEmployee(Configuration configuration, UUID userId);
 
     /**
      * Удалить работника с автомойки

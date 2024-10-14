@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 /**
  * Данные о бизнес заказе
  */
@@ -22,6 +24,6 @@ public class BusinessOrderRequest {
      * Имя пользователя работника
      */
     @NotNull
-    private String employeeUsername;
+    private UUID employeeId;
 
 }

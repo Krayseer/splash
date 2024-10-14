@@ -40,13 +40,6 @@ public interface OrderRepository extends JpaRepository<Order, Long>, PagingAndSo
     List<Order> findByUsernameAndStateIn(String username, List<OrderState> orderStates);
 
     /**
-     * Получить список заказов по идентификаторам боксов
-     *
-     * @param boxIds идентификаторы боксов
-     */
-    List<Order> findByBoxIdIn(List<Long> boxIds);
-
-    /**
      * Получить список заказов у автомойки
      *
      * @param carWashId     идентификатор автомойки

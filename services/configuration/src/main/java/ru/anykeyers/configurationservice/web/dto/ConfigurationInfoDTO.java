@@ -1,13 +1,22 @@
 package ru.anykeyers.configurationservice.web.dto;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.anykeyers.commonsapi.domain.Address;
+import ru.anykeyers.commonsapi.domain.configuration.OrderProcessMode;
+import ru.anykeyers.commonsapi.domain.configuration.OrganizationInfo;
 import ru.anykeyers.commonsapi.domain.service.ServiceDTO;
 import ru.anykeyers.commonsapi.domain.configuration.BoxDTO;
+import ru.anykeyers.commonsapi.validation.OnCreate;
+import ru.anykeyers.commonsapi.validation.OnUpdate;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Информационное DTO о конфигурации автомойки
@@ -18,54 +27,24 @@ import java.util.List;
 @AllArgsConstructor
 public class ConfigurationInfoDTO {
 
-    /**
-     * Идентификатор
-     */
     private Long id;
 
-    /**
-     * Название
-     */
-    private String name;
+    private UUID userId;
 
-    /**
-     * Описание
-     */
-    private String description;
+    private OrganizationInfo organizationInfo;
 
-    /**
-     * Номер телефона
-     */
-    private String phoneNumber;
+    private Address address;
 
-    /**
-     * Адрес
-     */
-    private String address;
-
-    /**
-     * Долгота
-     */
-    private String longitude;
-
-    /**
-     * Ширина
-     */
-    private String latitude;
-
-    /**
-     * Список услуг
-     */
     private List<ServiceDTO> services;
 
-    /**
-     * Список боксов
-     */
     private List<BoxDTO> boxes;
 
-    /**
-     * Список идентификаторов картинок
-     */
     private List<String> photoUrls;
+
+    private Instant openTime;
+
+    private Instant closeTime;
+
+    private OrderProcessMode orderProcessMode;
 
 }

@@ -29,7 +29,7 @@ public class SmtpEmailService implements NotificationService {
     public void sendNotification(User user, Notification notification) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(sender);
-        message.setTo(user.getEmail());
+        message.setTo(user.getUserInfo().getEmail());
         message.setSubject(notification.getSubject());
         message.setText(notification.getMessage());
         try {

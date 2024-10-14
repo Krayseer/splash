@@ -3,17 +3,15 @@ package ru.anykeyers.configurationservice.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.domain.invitation.InvitationDTO;
-import ru.anykeyers.commonsapi.domain.user.UserDTO;
-import ru.anykeyers.commonsapi.domain.invitation.InvitationState;
-import ru.anykeyers.commonsapi.remote.RemoteUserService;
+import ru.anykeyers.commonsapi.domain.user.User;
+import ru.anykeyers.configurationservice.web.dto.InvitationDTO;
+import ru.anykeyers.configurationservice.domain.invitation.InvitationState;
 import ru.anykeyers.configurationservice.domain.Configuration;
-import ru.anykeyers.configurationservice.domain.Invitation;
-import ru.anykeyers.configurationservice.web.dto.InvitationRequest;
+import ru.anykeyers.configurationservice.domain.invitation.Invitation;
 import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundException;
 import ru.anykeyers.configurationservice.exception.InvitationNotFoundException;
-import ru.anykeyers.configurationservice.domain.invitation.InvitationMapper;
 import ru.anykeyers.configurationservice.repository.ConfigurationRepository;
 import ru.anykeyers.configurationservice.repository.InvitationRepository;
 import ru.anykeyers.configurationservice.service.EmployeeService;
@@ -29,37 +27,35 @@ import java.util.List;
 @RequiredArgsConstructor
 public class InvitationServiceImpl implements InvitationService {
 
-    private final EmployeeService employeeService;
+    private final ModelMapper modelMapper;
 
-    private final RemoteUserService remoteUserService;
+    private final EmployeeService employeeService;
 
     private final InvitationRepository invitationRepository;
 
     private final ConfigurationRepository configurationRepository;
 
     @Override
-    public List<InvitationDTO> getInvitations(String username) {
-        return InvitationMapper.toDTO(invitationRepository.findByUsername(username));
+    public List<Invitation> getInvitations(User user) {
+        return invitationRepository.findByUserId(user.getId());
     }
 
     @Override
-    public List<InvitationDTO> getInvitations(Long carWashId) {
-        return InvitationMapper.toDTO(invitationRepository.findByConfigurationId(carWashId));
+    public List<Invitation> getInvitations(Long carWashId) {
+        return invitationRepository.findByConfigurationId(carWashId);
     }
 
     @Override
-    public List<InvitationDTO> getInvitations(Long carWashId, InvitationState invitationState) {
-        return InvitationMapper.toDTO(
-                invitationRepository.findByConfigurationIdAndInvitationState(carWashId, invitationState)
+    public List<Invitation> getInvitations(Long carWashId, InvitationState invitationState) {
+        return invitationRepository.findByConfigurationIdAndInvitationState(carWashId, invitationState);
+    }
+
+    @Override
+    public void addInvitation(InvitationDTO invitationDTO) {
+        Configuration configuration = configurationRepository.findById(invitationDTO.getCarWashId()).orElseThrow(
+                () -> new ConfigurationNotFoundException(invitationDTO.getCarWashId())
         );
-    }
-
-    @Override
-    public void addInvitation(InvitationRequest invitationRequest) {
-        Configuration configuration = configurationRepository.findById(invitationRequest.getCarWashId()).orElseThrow(
-                () -> new ConfigurationNotFoundException(invitationRequest.getCarWashId())
-        );
-        Invitation invitation = InvitationMapper.toInvitation(invitationRequest);
+        Invitation invitation = modelMapper.map(invitationDTO, Invitation.class);
         invitation.setConfiguration(configuration);
         invitationRepository.save(invitation);
         log.info("Send invitation: {}", invitation);
@@ -72,8 +68,7 @@ public class InvitationServiceImpl implements InvitationService {
                 () -> new InvitationNotFoundException(invitationId)
         );
         invitation.setInvitationState(InvitationState.ACCEPTED);
-        UserDTO user = remoteUserService.getUser(invitation.getUsername());
-        employeeService.addCarWashEmployee(invitation.getConfiguration(), user.username());
+        employeeService.addCarWashEmployee(invitation.getConfiguration(), invitation.getUserId());
         invitationRepository.save(invitation);
         log.info("Apply invitation: {}", invitation);
     }

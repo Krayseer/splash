@@ -1,11 +1,10 @@
-package ru.anykeyers.user.web.controller;
+package ru.anykeyers.user.web;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
-import ru.anykeyers.user.web.ControllerName;
 import ru.anykeyers.user.service.UserService;
 import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.utils.JwtUtils;

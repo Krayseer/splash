@@ -8,7 +8,7 @@ public abstract class ControllerName {
     /**
      * Базовый контроллер
      */
-    public static final String BASE_URL = "/api/v1";
+    public static final String BASE_URL = "/api";
     /**
      * Контроллер для работы с пользователями
      */

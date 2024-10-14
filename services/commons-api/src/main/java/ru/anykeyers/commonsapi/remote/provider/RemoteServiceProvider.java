@@ -23,7 +23,7 @@ public class RemoteServiceProvider implements RemoteProvider {
 
     @Override
     public String getBaseUrl() {
-        return url + "/service";
+        return url + "/api/service";
     }
 
     @Override

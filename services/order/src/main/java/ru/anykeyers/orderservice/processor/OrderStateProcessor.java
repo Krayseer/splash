@@ -2,8 +2,6 @@ package ru.anykeyers.orderservice.processor;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.anykeyers.commonsapi.domain.order.OrderState;
@@ -23,12 +21,6 @@ import java.util.function.Consumer;
 @Component
 @RequiredArgsConstructor
 public class OrderStateProcessor {
-
-    /**
-     * Размер страницы с заказами
-     */
-    @Value("${order.processor.page-size:100}")
-    private int PAGE_SIZE = 100;
 
     /**
      * Периодичность выполнения обработки

@@ -1,4 +1,4 @@
-package ru.anykeyers.orderservice.controller;
+package ru.anykeyers.orderservice.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -16,6 +17,7 @@ import ru.anykeyers.commonsapi.utils.JwtUtils;
 import ru.anykeyers.orderservice.domain.Order;
 import ru.anykeyers.commonsapi.domain.order.OrderDTO;
 import ru.anykeyers.orderservice.service.UserOrderService;
+import ru.anykeyers.orderservice.web.ControllerName;
 
 import java.util.List;
 
@@ -55,8 +57,8 @@ public class UserOrderController {
     }
 
     @Operation(summary = "Сохранить заказ пользователя")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public OrderDTO createOrder(@AuthenticationPrincipal Jwt jwt, @RequestBody OrderDTO orderDTO) {
         Order order = userOrderService.createOrder(jwt.getSubject(), orderDTO);
         return modelMapper.map(order, OrderDTO.class);
@@ -64,6 +66,7 @@ public class UserOrderController {
 
     @Operation(summary = "Удалить заказ пользователя")
     @DeleteMapping("/{orderId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOrder(@AuthenticationPrincipal Jwt jwt, @PathVariable Long orderId) {
         userOrderService.deleteOrder(orderId);
     }

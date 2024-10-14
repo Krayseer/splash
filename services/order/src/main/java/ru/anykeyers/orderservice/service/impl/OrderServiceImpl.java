@@ -6,7 +6,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.anykeyers.commonsapi.MessageQueue;
 import ru.anykeyers.commonsapi.domain.Interval;
 import ru.anykeyers.commonsapi.domain.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.order.OrderDTO;
@@ -65,11 +64,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getBoxOrders(List<Long> boxIds) {
-        return orderRepository.findByBoxIdIn(boxIds);
-    }
-
-    @Override
     public List<Order> findOrdersByDate(Long carWashId, Instant date) {
         return orderRepository.findCarWashOrdersByStatesAndInterval(
                 carWashId,
@@ -122,11 +116,11 @@ public class OrderServiceImpl implements OrderService {
         order.setEndTime(orderCalculator.calculateOrderEndTime(orderDTO));
         order.setBoxId(
                 orderCalculator.findFreeBox(
-                        getCarWashOrders(orderDTO.getCarWashId()), order.getStartTime(), order.getEndTime()
+                        order.getCarWashId(), getCarWashOrders(order.getCarWashId()), order.getStartTime(), order.getEndTime()
                 )
         );
         Order savedOrder = orderRepository.save(order);
-        kafkaTemplate.send(MessageQueue.ORDER_CREATE, modelMapper.map(savedOrder, OrderDTO.class));
+//        kafkaTemplate.send(MessageQueue.ORDER_CREATE, modelMapper.map(savedOrder, OrderDTO.class));
         log.info("Save new order: {}", orderDTO);
         return savedOrder;
     }

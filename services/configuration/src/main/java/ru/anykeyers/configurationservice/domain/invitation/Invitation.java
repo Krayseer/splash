@@ -1,10 +1,11 @@
-package ru.anykeyers.configurationservice.domain;
+package ru.anykeyers.configurationservice.domain.invitation;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.anykeyers.commonsapi.domain.invitation.InvitationState;
+import ru.anykeyers.configurationservice.domain.Configuration;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Приглашение
@@ -26,9 +27,9 @@ public class Invitation {
     private Long id;
 
     /**
-     * Имя пользователя, кому отправлено приглашение
+     * Идентификатор пользователя, кому отправлено приглашение
      */
-    private String username;
+    private UUID userId;
 
     /**
      * Идентификатор автомойки

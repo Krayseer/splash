@@ -1,4 +1,4 @@
-package ru.anykeyers.orderservice.controller;
+package ru.anykeyers.orderservice.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,6 +11,7 @@ import ru.anykeyers.commonsapi.domain.order.OrderDTO;
 import ru.anykeyers.commonsapi.domain.order.OrderState;
 import ru.anykeyers.commonsapi.domain.Interval;
 import ru.anykeyers.orderservice.service.CarWashService;
+import ru.anykeyers.orderservice.web.ControllerName;
 
 import java.util.List;
 import java.util.Set;

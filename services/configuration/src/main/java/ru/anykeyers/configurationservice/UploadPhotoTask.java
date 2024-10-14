@@ -3,8 +3,7 @@ package ru.anykeyers.configurationservice;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
-import ru.anykeyers.commonsapi.remote.RemoteConfigurationService;
-import ru.anykeyers.commonsapi.remote.provider.RemoteStorageProvider;
+import ru.anykeyers.commonsapi.remote.RemoteStorageService;
 import ru.anykeyers.configurationservice.domain.Configuration;
 import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundException;
 import ru.anykeyers.configurationservice.repository.ConfigurationRepository;
@@ -17,13 +16,13 @@ import java.util.concurrent.Future;
 
 public class UploadPhotoTask implements Runnable {
 
-    private final RemoteStorageProvider remoteStorageService;
-    private final ConfigurationRepository configurationRepository;
-    private final List<MultipartFile> photoFiles;
     private final Long configurationId;
+    private final List<MultipartFile> photoFiles;
+    private final RemoteStorageService remoteStorageService;
+    private final ConfigurationRepository configurationRepository;
     private final ExecutorService threadPool = Executors.newVirtualThreadPerTaskExecutor();
 
-    public UploadPhotoTask(RemoteStorageProvider remoteStorageService,
+    public UploadPhotoTask(RemoteStorageService remoteStorageService,
                            List<MultipartFile> photoFiles,
                            ConfigurationRepository configurationRepository,
                            Long configurationId) {
@@ -37,7 +36,7 @@ public class UploadPhotoTask implements Runnable {
     @Override
     public void run() {
         List<String> photoUrls = new ArrayList<>();
-        for (Future<ResponseEntity<String>> future : getFutures()) {
+        for (Future<ResponseEntity<String>> future : getPhotoUploadFutures()) {
             photoUrls.add(future.get().getBody());
         }
         Configuration configuration = configurationRepository.findById(configurationId).orElseThrow(
@@ -47,7 +46,7 @@ public class UploadPhotoTask implements Runnable {
         configurationRepository.save(configuration);
     }
 
-    private List<Future<ResponseEntity<String>>> getFutures() {
+    private List<Future<ResponseEntity<String>>> getPhotoUploadFutures() {
         List<Future<ResponseEntity<String>>> futures = new ArrayList<>();
         photoFiles.forEach(photoFile -> futures.add(
                 threadPool.submit(() -> remoteStorageService.uploadPhoto(photoFile))

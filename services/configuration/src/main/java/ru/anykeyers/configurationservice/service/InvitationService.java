@@ -1,8 +1,9 @@
 package ru.anykeyers.configurationservice.service;
 
-import ru.anykeyers.commonsapi.domain.invitation.InvitationDTO;
-import ru.anykeyers.commonsapi.domain.invitation.InvitationState;
-import ru.anykeyers.configurationservice.web.dto.InvitationRequest;
+import ru.anykeyers.commonsapi.domain.user.User;
+import ru.anykeyers.configurationservice.web.dto.InvitationDTO;
+import ru.anykeyers.configurationservice.domain.invitation.InvitationState;
+import ru.anykeyers.configurationservice.domain.invitation.Invitation;
 
 import java.util.List;
 
@@ -14,16 +15,16 @@ public interface InvitationService {
     /**
      * Получить список приглашений пользователя
      *
-     * @param username имя пользователя
+     * @param user пользователь
      */
-    List<InvitationDTO> getInvitations(String username);
+    List<Invitation> getInvitations(User user);
 
     /**
      * Получить список приглашений автомойки
      *
      * @param carWashId идентификатор автомойки
      */
-    List<InvitationDTO> getInvitations(Long carWashId);
+    List<Invitation> getInvitations(Long carWashId);
 
     /**
      * Получить список приглашений автомойки
@@ -31,14 +32,14 @@ public interface InvitationService {
      * @param carWashId         идентификатор автомойки
      * @param invitationState   статус приглашения
      */
-    List<InvitationDTO> getInvitations(Long carWashId, InvitationState invitationState);
+    List<Invitation> getInvitations(Long carWashId, InvitationState invitationState);
 
     /**
      * Добавить приглашение
      *
-     * @param invitation данные о приглашении
+     * @param invitationDTO данные о приглашении
      */
-    void addInvitation(InvitationRequest invitation);
+    void addInvitation(InvitationDTO invitationDTO);
 
     /**
      * Одобрить приглашение

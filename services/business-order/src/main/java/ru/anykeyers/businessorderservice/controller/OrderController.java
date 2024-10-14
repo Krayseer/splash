@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.anykeyers.businessorderservice.domain.BusinessOrderRequest;
 import ru.anykeyers.businessorderservice.service.OrderService;
 import ru.anykeyers.commonsapi.domain.order.OrderDTO;
-import ru.anykeyers.commonsapi.domain.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.user.User;
 
 import java.util.List;
 
@@ -36,14 +36,14 @@ public class OrderController {
 
     @Operation(summary = "Получить свободных работников на заказ")
     @GetMapping("/free-employees/{orderId}")
-    public List<UserDTO> getFreeEmployeesOrder(@PathVariable Long orderId) {
+    public List<User> getFreeEmployeesOrder(@PathVariable Long orderId) {
         return orderService.getFreeEmployees(orderId);
     }
 
     @Operation(summary = "Назначить работника на заказ")
     @PostMapping("/appoint")
     public void appointOrderEmployee(@RequestBody BusinessOrderRequest request) {
-        orderService.appointOrderEmployee(request.getOrderId(), request.getEmployeeUsername());
+        orderService.appointOrderEmployee(request.getOrderId(), request.getEmployeeId());
     }
 
     @Operation(summary = "Убрать работника с заказа")

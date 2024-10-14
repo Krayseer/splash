@@ -2,8 +2,11 @@ package ru.anykeyers.commonsapi.remote;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.domain.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.remote.provider.RemoteUserProvider;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Удаленный сервис обработки пользователей
@@ -19,9 +22,9 @@ public class RemoteUserService {
      *
      * @param username имя пользователя
      */
-    public UserDTO getUser(String username) {
+    public User getUser(UUID userId) {
         return remoteUserProvider.getRestTemplate()
-                .getForObject(remoteUserProvider.getBaseUrl() + "/" + username, UserDTO.class);
+                .getForObject(remoteUserProvider.getBaseUrl() + "/" + userId, User.class);
     }
 
     /**
@@ -29,9 +32,13 @@ public class RemoteUserService {
      *
      * @param id идентификатор пользователя
      */
-    public UserDTO getUser(Long id) {
+    public User getUser(Long id) {
         return remoteUserProvider.getRestTemplate()
-                .getForObject(remoteUserProvider.getBaseUrl() + "/by-id/" + id, UserDTO.class);
+                .getForObject(remoteUserProvider.getBaseUrl() + "/by-id/" + id, User.class);
+    }
+
+    public List<User> getUsers(List<UUID> userIds) {
+        return null;
     }
 
 //    /**

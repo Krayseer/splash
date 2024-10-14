@@ -9,4 +9,3 @@ server:
   port: ${USER_SERVICE_PORT}
   error:
     include-message: always
-

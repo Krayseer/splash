@@ -5,6 +5,7 @@ import lombok.*;
 import ru.anykeyers.commonsapi.domain.PaymentType;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -20,7 +21,7 @@ public class OrderDTO {
     @JsonProperty(
             access = JsonProperty.Access.READ_ONLY
     )
-    private String username;
+    private UUID userId;
 
     private Long carWashId;
 

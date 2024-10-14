@@ -2,9 +2,8 @@ package ru.anykeyers.commonsapi.remote;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.domain.configuration.BoxDTO;
 import ru.anykeyers.commonsapi.domain.configuration.ConfigurationDTO;
-import ru.anykeyers.commonsapi.domain.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.remote.provider.RemoteConfigurationProvider;
 
 import java.util.ArrayList;
@@ -33,31 +32,15 @@ public class RemoteConfigurationService {
     }
 
     /**
-     * Получить список идентификаторов боксов для автомойки
-     *
-     * @param id идентификатор автомойки
-     */
-    public List<Long> getBoxIds(Long id) {
-        Long[] ids = remoteProvider.getRestTemplate().getForObject(
-                remoteProvider.getBaseUrl() + "/box/" + id + "/ids", Long[].class
-        );
-        return ids == null ? Collections.emptyList() : Arrays.stream(ids).toList();
-    }
-
-    /**
      * Получить список работников автомойки
      *
      * @param id идентификатор автомойки
      */
-    public List<UserDTO> getEmployees(Long id) {
-        UserDTO[] users = remoteProvider.getRestTemplate().getForObject(
-                remoteProvider.getBaseUrl() + "/employee/" + id, UserDTO[].class
+    public List<User> getEmployees(Long id) {
+        User[] users = remoteProvider.getRestTemplate().getForObject(
+                remoteProvider.getBaseUrl() + "/employee/" + id, User[].class
         );
         return users == null ? new ArrayList<>() : Arrays.stream(users).toList();
-    }
-
-    public BoxDTO getBox(Long boxId) {
-        return null;
     }
 
 }

@@ -3,6 +3,8 @@ package ru.anykeyers.configurationservice.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 /**
  * Работник
  */
@@ -25,7 +27,7 @@ public class Employee {
     /**
      * Имя пользователя
      */
-    private String username;
+    private UUID userId;
 
     /**
      * Автомойка, которой принадлежнит работник

@@ -2,6 +2,7 @@ package ru.anykeyers.configurationservice.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.anykeyers.commonsapi.domain.Address;
 import ru.anykeyers.commonsapi.domain.Interval;
 import ru.anykeyers.commonsapi.domain.configuration.OrderProcessMode;
@@ -10,6 +11,7 @@ import ru.anykeyers.commonsapi.domain.configuration.OrganizationInfo;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Конфигурация автомойки
@@ -30,9 +32,9 @@ public class Configuration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
-     * Имя пользователя хозяина автомойки
+     * Идентификатор хозяина автомойки
      */
-    private String username;
+    private UUID userId;
     /**
      * Информация об организации
      */
@@ -68,13 +70,14 @@ public class Configuration {
     )
     private List<String> photoUrls;
     /**
-     * Время регистрации автомойки
-     */
-    private Instant createdAt;
-    /**
      * Режим обработки заказов
      */
     private OrderProcessMode orderProcessMode;
+    /**
+     * Время регистрации автомойки
+     */
+    @CreationTimestamp
+    private Instant createdAt;
 
     public void addPhotoUrls(List<String> photoUrls) {
         if (this.photoUrls == null) {

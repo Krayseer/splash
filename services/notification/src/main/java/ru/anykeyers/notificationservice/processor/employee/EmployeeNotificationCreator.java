@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.domain.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.order.OrderDTO;
 import ru.anykeyers.commonsapi.domain.user.EmployeeDTO;
-import ru.anykeyers.commonsapi.domain.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.remote.RemoteConfigurationService;
 import ru.anykeyers.commonsapi.remote.RemoteUserService;
 import ru.anykeyers.notificationservice.Messages;
@@ -39,10 +39,13 @@ class EmployeeNotificationCreator {
      * Создать уведомление хозяину автомойки о новом работнике
      */
     public Notification createCarWashOwnerNotificationEmployeeApplyInvitation(EmployeeDTO employee) {
-        UserDTO employeeAsUser = remoteUserService.getUser(employee.getUsername());
+        User employeeAsUser = remoteUserService.getUser(employee.getUserId());
         return new Notification(
                 messages.getMessage("car-wash.owner.invitation.apply.subject"),
-                messages.getMessage("car-wash.owner.invitation.apply", employeeAsUser.getName(), employeeAsUser.getUsername(), employeeAsUser.getRoles())
+                messages.getMessage("car-wash.owner.invitation.apply",
+                        employeeAsUser.getUserInfo().getFullName(),
+                        employeeAsUser.getUsername(),
+                        employeeAsUser.getUserInfo().getRoles())
         );
     }
 

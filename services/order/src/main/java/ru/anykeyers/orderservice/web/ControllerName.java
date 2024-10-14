@@ -1,4 +1,4 @@
-package ru.anykeyers.orderservice.controller;
+package ru.anykeyers.orderservice.web;
 
 /**
  * Название контроллера
@@ -8,7 +8,7 @@ public final class ControllerName {
     /**
      * Базовое название контроллеров
      */
-    public static final String BASE_CONTROLLER = "/order";
+    public static final String BASE_CONTROLLER = "/api/order";
 
     /**
      * Название контроллера для обработки заказов пользователей

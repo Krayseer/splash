@@ -5,10 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.anykeyers.commonsapi.domain.configuration.ConfigurationDTO;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmployeeDTO{
-    private String username;
+    private UUID userId;
     private ConfigurationDTO configuration;
 }

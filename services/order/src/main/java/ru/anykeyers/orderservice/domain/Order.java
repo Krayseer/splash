@@ -2,6 +2,7 @@ package ru.anykeyers.orderservice.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.anykeyers.commonsapi.domain.order.OrderState;
 import ru.anykeyers.commonsapi.domain.PaymentType;
 
@@ -74,7 +75,7 @@ public class Order {
     /**
      * Время создания заказа
      */
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private Instant createdAt;
 
 }

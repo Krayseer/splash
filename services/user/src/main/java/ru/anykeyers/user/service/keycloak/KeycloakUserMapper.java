@@ -1,4 +1,4 @@
-package ru.anykeyers.user.web.mapper;
+package ru.anykeyers.user.service.keycloak;
 
 import lombok.RequiredArgsConstructor;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 @Component
 @RequiredArgsConstructor
-public class KeycloakUserMapper {
+class KeycloakUserMapper {
 
     private static final String PHONE_NUMBER_ATTRIBUTE = "phone_number";
 

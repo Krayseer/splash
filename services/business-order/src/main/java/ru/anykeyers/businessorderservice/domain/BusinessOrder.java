@@ -3,6 +3,8 @@ package ru.anykeyers.businessorderservice.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
+
 /**
  * Бизнес заказ
  */
@@ -32,6 +34,6 @@ public class BusinessOrder {
      * Имя пользователя работника
      */
     @Column(name = "EMPLOYEE_USERNAME")
-    private String employeeUsername;
+    private UUID employeeId;
 
 }

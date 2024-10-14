@@ -1,10 +1,8 @@
 package ru.anykeyers.commonsapi.remote;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.anykeyers.commonsapi.domain.service.ServiceDTO;
-import ru.anykeyers.commonsapi.remote.provider.RemoteProvider;
 import ru.anykeyers.commonsapi.remote.provider.RemoteServiceProvider;
 
 import java.util.Arrays;

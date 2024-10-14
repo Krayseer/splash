@@ -2,16 +2,13 @@ package ru.anykeyers.configurationservice.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import ru.anykeyers.commonsapi.domain.configuration.BoxDTO;
-import ru.anykeyers.configurationservice.web.dto.BoxRequest;
+import ru.anykeyers.configurationservice.service.ConfigurationService;
 import ru.anykeyers.configurationservice.domain.Box;
 import ru.anykeyers.configurationservice.domain.Configuration;
-import ru.anykeyers.configurationservice.exception.BoxNotFoundException;
-import ru.anykeyers.configurationservice.exception.ConfigurationNotFoundException;
-import ru.anykeyers.configurationservice.domain.box.BoxMapper;
 import ru.anykeyers.configurationservice.repository.BoxRepository;
-import ru.anykeyers.configurationservice.repository.ConfigurationRepository;
 import ru.anykeyers.configurationservice.service.BoxService;
 
 import java.util.List;
@@ -24,42 +21,28 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoxServiceImpl implements BoxService {
 
+    private final ModelMapper modelMapper;
+
     private final BoxRepository boxRepository;
 
-    private final ConfigurationRepository configurationRepository;
+    private final ConfigurationService configurationService;
 
     @Override
-    public List<BoxDTO> getCarWashBoxes(Long carWashId) {
-        Configuration configuration = configurationRepository.findById(carWashId).orElseThrow(
-                () -> new ConfigurationNotFoundException(carWashId)
-        );
-        List<Box> boxes = boxRepository.findByConfiguration(configuration);
-        return BoxMapper.createDTO(boxes);
+    public List<Box> getCarWashBoxes(Long carWashId) {
+        Configuration configuration = configurationService.getConfiguration(carWashId);
+        return boxRepository.findByConfiguration(configuration);
     }
 
     @Override
-    public List<Long> getCarWashBoxesIds(Long carWashId) {
-        Configuration configuration = configurationRepository.findById(carWashId).orElseThrow(
-                () -> new ConfigurationNotFoundException(carWashId)
-        );
-        List<Box> boxes = boxRepository.findByConfiguration(configuration);
-        return boxes.stream().map(Box::getId).toList();
-    }
-
-    @Override
-    public void addBox(Long carWashId, BoxRequest boxRequest) {
-        Configuration configuration = configurationRepository.findById(carWashId).orElseThrow(
-                () -> new ConfigurationNotFoundException(carWashId)
-        );
-        Box box = BoxMapper.createBox(configuration, boxRequest);
+    public void addBox(BoxDTO boxDTO) {
+        Box box = modelMapper.map(boxDTO, Box.class);
         boxRepository.save(box);
         log.info("Add box: {}", box);
     }
 
     @Override
-    public void updateBox(Long boxId, BoxRequest boxRequest) {
-        Box box = boxRepository.findById(boxId).orElseThrow(() -> new BoxNotFoundException(boxId));
-        box.setName(boxRequest.getName());
+    public void updateBox(BoxDTO boxDTO) {
+        Box box = modelMapper.map(boxDTO, Box.class);
         boxRepository.save(box);
         log.info("Update box: {}", box);
     }

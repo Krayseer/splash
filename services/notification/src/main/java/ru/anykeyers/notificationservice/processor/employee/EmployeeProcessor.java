@@ -2,10 +2,9 @@ package ru.anykeyers.notificationservice.processor.employee;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.anykeyers.commonsapi.domain.configuration.ConfigurationDTO;
 import ru.anykeyers.commonsapi.domain.order.OrderDTO;
 import ru.anykeyers.commonsapi.domain.user.EmployeeDTO;
-import ru.anykeyers.commonsapi.domain.user.UserDTO;
+import ru.anykeyers.commonsapi.domain.user.User;
 import ru.anykeyers.commonsapi.remote.RemoteUserService;
 import ru.anykeyers.notificationservice.service.NotificationServiceCompound;
 
@@ -29,11 +28,11 @@ class EmployeeProcessor {
      */
     public void processEmployeeInvitationApply(EmployeeDTO employee) {
         notificationServiceCompound.sendNotification(
-                remoteUserService.getUser(employee.getUsername()),
+                remoteUserService.getUser(employee.getUserId()),
                 employeeNotificationCreator.createEmployeeInvitationNotification(employee)
         );
         notificationServiceCompound.sendNotification(
-                remoteUserService.getUser(employee.getConfiguration().getUsername()),
+                remoteUserService.getUser(employee.getConfiguration().getUserId()),
                 employeeNotificationCreator.createCarWashOwnerNotificationEmployeeApplyInvitation(employee)
         );
     }
@@ -44,7 +43,7 @@ class EmployeeProcessor {
      * @param order заказ
      */
     public void processOrderEmployeeApply(OrderDTO order) {
-        UserDTO user = remoteUserService.getUser(order.getUsername());
+        User user = remoteUserService.getUser(order.getUserId());
         notificationServiceCompound.sendNotification(
                 user, employeeNotificationCreator.createNotificationEmployeeOrderApply(order)
         );
