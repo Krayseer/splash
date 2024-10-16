@@ -2,33 +2,33 @@ FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
 
 COPY pom.xml .
-COPY services/business-order/pom.xml services/business-order/
-COPY services/commons-api/pom.xml services/commons-api/
-COPY services/config-server/pom.xml services/config-server/
-COPY services/configuration/pom.xml services/configuration/
-COPY services/discovery/pom.xml services/discovery/
-COPY services/gateway/pom.xml services/gateway/
-COPY services/notification/pom.xml services/notification/
-COPY services/order/pom.xml services/order/
-COPY services/service/pom.xml services/service/
-COPY services/statistics/pom.xml services/statistics/
-COPY services/storage/pom.xml services/storage/
-COPY services/user/pom.xml services/user/
+COPY backend/services/business-order/pom.xml services/business-order/
+COPY backend/services/commons-api/pom.xml services/commons-api/
+COPY backend/services/config-server/pom.xml services/config-server/
+COPY backend/services/configuration/pom.xml services/configuration/
+COPY backend/services/discovery/pom.xml services/discovery/
+COPY backend/services/gateway/pom.xml services/gateway/
+COPY backend/services/notification/pom.xml services/notification/
+COPY backend/services/order/pom.xml services/order/
+COPY backend/services/service/pom.xml services/service/
+COPY backend/services/statistics/pom.xml services/statistics/
+COPY backend/services/storage/pom.xml services/storage/
+COPY backend/services/user/pom.xml services/user/
 
 RUN mvn dependency:go-offline
 
-COPY services/business-order/src services/business-order/src
-COPY services/commons-api/src services/commons-api/src
-COPY services/config-server/src services/config-server/src
-COPY services/configuration/src services/configuration/src
-COPY services/discovery/src services/discovery/src
-COPY services/gateway/src services/gateway/src
-COPY services/notification/src services/notification/src
-COPY services/order/src services/order/src
-COPY services/service/src services/service/src
-COPY services/statistics/src services/statistics/src
-COPY services/storage/src services/storage/src
-COPY services/user/src services/user/src
+COPY backend/services/business-order/src services/business-order/src
+COPY backend/services/commons-api/src services/commons-api/src
+COPY backend/services/config-server/src services/config-server/src
+COPY backend/services/configuration/src services/configuration/src
+COPY backend/services/discovery/src services/discovery/src
+COPY backend/services/gateway/src services/gateway/src
+COPY backend/services/notification/src services/notification/src
+COPY backend/services/order/src services/order/src
+COPY backend/services/service/src services/service/src
+COPY backend/services/statistics/src services/statistics/src
+COPY backend/services/storage/src services/storage/src
+COPY backend/services/user/src services/user/src
 
 RUN mvn clean package -DskipTests
 

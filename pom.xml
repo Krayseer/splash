@@ -36,17 +36,17 @@
   </properties>
 
   <modules>
-    <module>services/user</module>
-    <module>services/order</module>
-    <module>services/gateway</module>
-    <module>services/service</module>
-    <module>services/storage</module>
-    <module>services/discovery</module>
-    <module>services/statistics</module>
-    <module>services/notification</module>
-    <module>services/configuration</module>
-    <module>services/config-server</module>
-    <module>services/business-order</module>
+    <module>backend/gateway</module>
+    <module>backend/discovery</module>
+    <module>backend/config-server</module>
+    <module>backend/services/user</module>
+    <module>backend/services/order</module>
+    <module>backend/services/service</module>
+    <module>backend/services/storage</module>
+    <module>backend/services/statistics</module>
+    <module>backend/services/notification</module>
+    <module>backend/services/configuration</module>
+    <module>backend/services/business-order</module>
   </modules>
 
   <dependencyManagement>
@@ -137,7 +137,7 @@
 
       <dependency>
         <groupId>ru.anykeyers</groupId>
-        <artifactId>commons-api</artifactId>
+        <artifactId>splash-api</artifactId>
         <version>${commons-api.version}</version>
       </dependency>
     </dependencies>
