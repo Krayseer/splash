@@ -3,12 +3,12 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://${KEYCLOAK_SERVER_URL}/realms/splash/protocol/openid-connect/certs
+          jwk-set-uri: ${KEYCLOAK_SERVER_URL}/realms/splash/protocol/openid-connect/certs
 
       client:
         provider:
           keycloak:
-            issuer-uri: http://localhost/realms/splash
+            issuer-uri: ${KEYCLOAK_SERVER_URL}/realms/splash
 
         registration:
           splash-client:
@@ -22,7 +22,6 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
-
       default-filters:
         - TokenRelay=
       routes:

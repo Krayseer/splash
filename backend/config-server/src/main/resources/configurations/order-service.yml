@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: order-service
+
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${ORDER_SERVICE_DB}
     username: ${POSTGRES_USER}
