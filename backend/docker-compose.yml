@@ -1,33 +1,21 @@
 version: '3.1'
 
 services:
-  authorization-server:
-    build:
-      context: authorization-server/
-    image: 'krayseer/authorization-server:${APPLICATION_VERSION}'
-    container_name: authorization-server
-    ports:
-      - '${AUTHORIZATION_SERVER_PORT}:${AUTHORIZATION_SERVER_PORT}'
-
   business-order-service:
     build:
-      context: business-order-service/
+      context: services/business-order
     image: 'krayseer/business-order-service:${APPLICATION_VERSION}'
     container_name: business-order-service
-    ports:
-      - '${BUSINESS_ORDER_SERVICE_PORT}:${BUSINESS_ORDER_SERVICE_PORT}'
 
   configuration-service:
     build:
-      context: configuration-service/
+      context: services/configuration
     image: 'krayseer/configuration-service:${APPLICATION_VERSION}'
     container_name: configuration-service
-    ports:
-      - '${CONFIGURATION_SERVICE_PORT}:${CONFIGURATION_SERVICE_PORT}'
 
   gateway:
     build:
-      context: gateway/
+      context: gateway
     image: 'krayseer/gateway:${APPLICATION_VERSION}'
     container_name: gateway
     ports:
@@ -35,51 +23,41 @@ services:
 
   notification-service:
     build:
-      context: notification-service/
+      context: services/notification
     image: 'krayseer/notification-service:${APPLICATION_VERSION}'
     container_name: notification-service
-    ports:
-      - '${NOTIFICATION_SERVICE_PORT}:${NOTIFICATION_SERVICE_PORT}'
 
   order-service:
     build:
-      context: order-service/
+      context: services/order
     image: 'krayseer/order-service:${APPLICATION_VERSION}'
     container_name: order-service
-    ports:
-      - '${ORDER_SERVICE_PORT}:${ORDER_SERVICE_PORT}'
 
   registry-service:
     build:
-      context: registry-service/
-    image: 'krayseer/registry-service:${APPLICATION_VERSION}'
+      context: discovery
+    image: 'krayseer/discovery:${APPLICATION_VERSION}'
     container_name: registry-service
     ports:
       - '${DISCOVERY_HOST}:${DISCOVERY_PORT}'
 
   service-of-services:
     build:
-      context: service-of-services/
+      context: services/service
     image: 'krayseer/service-of-services:${APPLICATION_VERSION}'
     container_name: service-of-services
-    ports:
-      - '${SERVICE_OF_SERVICES_PORT}:${SERVICE_OF_SERVICES_PORT}'
 
   statistics:
     build:
-      context: statistics/
+      context: services/statistics
     image: 'krayseer/statistics:${APPLICATION_VERSION}'
     container_name: statistics
-    ports:
-      - '${STATISTICS_PORT}:${STATISTICS_PORT}'
 
   storage-service:
     build:
-      context: storage-service/
+      context: backend/services/storage-service
     image: 'krayseer/storage-service:${APPLICATION_VERSION}'
     container_name: storage-service
-    ports:
-      - '${STORAGE_SERVICE_PORT}:${STORAGE_SERVICE_PORT}'
 
   postgres:
     image: 'postgres'
