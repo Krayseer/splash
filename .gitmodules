@@ -1,0 +1,3 @@
+[submodule "splash-backend"]
+	path = splash-backend
+	url = https://github.com/Krayseer/splash-backend.git
