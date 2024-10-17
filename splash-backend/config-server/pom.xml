@@ -5,7 +5,7 @@
 
 	<parent>
 		<groupId>ru.anykeyers</groupId>
-		<artifactId>backend</artifactId>
+		<artifactId>splash-backend</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
