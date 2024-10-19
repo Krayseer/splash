@@ -24,10 +24,9 @@
 Другие функции, которые могут быть полезны в процессе бронирования
 
 ## Стэк
-* Spring boot 3.2.5
 * Java 21
-* Redis
-* MySQL
+* Spring boot 3.2.5
+* Keycloak
 * PostgreSQL
 * Kafka
 * Zookeeper
